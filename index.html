@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileBuddyAI — Prototype</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Geist:wght@400;500;600;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Geist', 'Helvetica Neue', sans-serif;
+    background: #f0f4f9;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .logo-mark {
+    width: 40px; height: 40px; border-radius: 11px;
+    background: linear-gradient(135deg, #0ea5e9, #0d9488);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-name {
+    font-family: 'Syne', sans-serif; font-size: 22px;
+    font-weight: 800; color: #0a1628;
+  }
+  .tagline {
+    font-size: 14px; color: #64748b; margin-bottom: 40px; text-align: center;
+  }
+  .cards {
+    display: flex; flex-direction: column; gap: 14px;
+    width: 100%; max-width: 460px;
+  }
+  .card {
+    background: white; border-radius: 20px;
+    padding: 24px 26px; text-decoration: none;
+    box-shadow: 0 2px 8px rgba(10,22,40,0.08);
+    border: 1.5px solid transparent;
+    transition: all 0.2s; display: flex; align-items: center; gap: 18px;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(10,22,40,0.12);
+    border-color: rgba(14,165,233,0.25);
+  }
+  .card-icon {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-icon.broker { background: linear-gradient(135deg, #0a1628, #1e40af); }
+  .card-icon.agent  { background: linear-gradient(135deg, #6d28d9, #0ea5e9); }
+  .card-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.7px; color: #94a3b8; margin-bottom: 4px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-size: 17px;
+    font-weight: 800; color: #0a1628; margin-bottom: 4px;
+  }
+  .card-desc { font-size: 12px; color: #64748b; line-height: 1.5; }
+  .card-arrow { margin-left: auto; flex-shrink: 0; color: #cbd5e1; }
+  .badge-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .badge {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 999px; border: 1px solid;
+  }
+  .badge.c { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
+  .badge.r { background:#fffbeb; color:#92400e; border-color:#fde68a; }
+  .badge.g { background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+  .badge.b { background:rgba(14,165,233,0.08); color:#0369a1; border-color:rgba(14,165,233,0.2); }
+  .divider {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; color: #94a3b8; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin: 4px 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: #e2e8f0;
+  }
+  .footer {
+    margin-top: 36px; font-size: 11px; color: #94a3b8; text-align: center;
+  }
+  .footer span { color: #64748b; font-weight: 600; }
+</style>
+</head>
+<body>
+
+  <div class="logo-row">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    </div>
+    <div class="logo-name">FileBuddyAI</div>
+  </div>
+  <div class="tagline">Automated compliance review · Interactive prototype · Confidential</div>
+
+  <div class="cards">
+
+    <a class="card" href="FileBuddyAI_Dashboard_RealDoc.html">
+      <div class="card-icon broker">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <div>
+        <div class="card-label">View 1</div>
+        <div class="card-title">Broker Dashboard</div>
+        <div class="card-desc">Full compliance dashboard · All agents · Live issues feed · Upload &amp; review</div>
+        <div class="badge-row">
+          <span class="badge c">3 compliance</span>
+          <span class="badge r">2 cost risks</span>
+          <span class="badge g">28 checks passed</span>
+        </div>
+      </div>
+      <div class="card-arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+    <div class="divider">or</div>
+
+    <a class="card" href="FileBuddyAI_Agent_RichHernandez.html">
+      <div class="card-icon agent">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="card-label">View 2</div>
+        <div class="card-title">Agent View — Rich Hernandez</div>
+        <div class="card-desc">4 active transactions · Self-review · Closing checklist · Audit trail</div>
+        <div class="badge-row">
+          <span class="badge b">Upload new transaction</span>
+          <span class="badge c">5 issues to fix</span>
+        </div>
+      </div>
+      <div class="card-arrow">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    Built with <span>FileBuddyAI</span> · Prototype — not for distribution
+  </div>
+
+</body>
+</html>
