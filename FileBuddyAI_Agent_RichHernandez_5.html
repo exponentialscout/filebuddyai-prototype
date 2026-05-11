@@ -1,0 +1,3473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FileBuddyAI — Rich Hernandez</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Geist:wght@300;400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM — same tokens as broker
+   ═══════════════════════════════════════ */
+:root {
+  --navy:       #0a1628;
+  --blue:       #1e40af;
+  --sky:        #0ea5e9;
+  --teal:       #0d9488;
+  --green:      #10b981;
+
+  --compliance:        #b91c1c;
+  --compliance-bg:     #fef2f2;
+  --compliance-border: #fecaca;
+  --compliance-text:   #991b1b;
+
+  --cost-risk:        #b45309;
+  --cost-risk-bg:     #fffbeb;
+  --cost-risk-border: #fde68a;
+  --cost-risk-text:   #92400e;
+
+  --verified:        #047857;
+  --verified-bg:     #ecfdf5;
+  --verified-border: #a7f3d0;
+  --verified-text:   #065f46;
+
+  --slate-500: #64748b;
+  --slate-300: #cbd5e1;
+  --slate-100: #f1f5f9;
+  --slate-50:  #f8fafc;
+  --border:    #e2e8f0;
+
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'Geist', 'Helvetica Neue', sans-serif;
+
+  --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-full: 999px;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: var(--font-b);
+  background: #f0f4f9;
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--navy);
+  padding: 0 20px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-mark {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--sky), var(--teal));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-name { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.brand-sub  { font-size: 10px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.6px; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.notif-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: background 0.15s;
+}
+.notif-btn:hover { background: rgba(255,255,255,0.14); }
+.notif-pip {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--compliance); border: 1.5px solid var(--navy);
+}
+.agent-chip {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-full); padding: 5px 12px 5px 6px;
+  cursor: pointer;
+}
+.agent-ava {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+  font-size: 10px; font-weight: 700; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d);
+}
+.agent-chip-name { font-size: 12px; font-weight: 600; color: white; }
+
+/* ─── LAYOUT ─── */
+.layout {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+}
+
+/* ─── TRANSACTION HERO ─── */
+.txn-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%);
+  border-radius: var(--r-xl);
+  padding: 22px 22px 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.txn-hero::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(14,165,233,0.18), transparent 70%);
+  border-radius: 50%;
+}
+.txn-hero::after {
+  content: '';
+  position: absolute; bottom: -30px; left: 40px;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(13,148,136,0.14), transparent 70%);
+  border-radius: 50%;
+}
+.txn-hero-inner { position: relative; z-index: 1; }
+.txn-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.8px; color: rgba(255,255,255,0.45);
+  margin-bottom: 5px;
+}
+.txn-address {
+  font-family: var(--font-d); font-size: 20px; font-weight: 800;
+  color: white; line-height: 1.2; margin-bottom: 4px;
+}
+.txn-city { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 16px; }
+.txn-meta-row {
+  display: flex; gap: 20px;
+}
+.txn-meta-item { }
+.txn-meta-val {
+  font-family: var(--font-d); font-size: 16px; font-weight: 700; color: white;
+}
+.txn-meta-lbl { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+.txn-status-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.txn-days-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(245,158,11,0.18); border: 1px solid rgba(245,158,11,0.3);
+  border-radius: var(--r-full); padding: 4px 12px;
+}
+.txn-days-text { font-size: 12px; font-weight: 700; color: #fbbf24; }
+.txn-issues-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(185,28,28,0.2); border: 1px solid rgba(185,28,28,0.3);
+  border-radius: var(--r-full); padding: 4px 12px;
+  cursor: pointer; transition: background 0.15s;
+}
+.txn-issues-chip:hover { background: rgba(185,28,28,0.32); }
+.txn-issues-text { font-size: 12px; font-weight: 700; color: #fca5a5; }
+.txn-issues-count {
+  background: var(--compliance); color: white;
+  font-size: 10px; font-weight: 800;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ─── SECTION LABEL ─── */
+.sec-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--slate-500);
+  margin: 20px 0 10px 2px;
+}
+
+/* ─── PROGRESS BAR ─── */
+.progress-card {
+  background: white; border-radius: var(--r-xl);
+  padding: 18px 20px; margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+}
+.progress-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.progress-title { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--navy); }
+.progress-frac { font-size: 12px; color: var(--slate-500); font-weight: 600; }
+.progress-track {
+  height: 6px; background: var(--slate-100); border-radius: var(--r-full);
+  overflow: hidden; margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%; border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--sky), var(--teal));
+  transition: width 0.6s var(--ease);
+}
+.progress-sub { font-size: 11px; color: var(--slate-500); }
+
+/* ─── CHECKLIST ─── */
+.checklist-card {
+  background: white; border-radius: var(--r-xl);
+  overflow: hidden; margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+}
+.check-item {
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 14px 18px; border-bottom: 1px solid var(--slate-100);
+  cursor: pointer; transition: background 0.14s;
+}
+.check-item:last-child { border-bottom: none; }
+.check-item:hover { background: var(--slate-50); }
+.check-item.done { opacity: 0.55; }
+.check-box {
+  width: 22px; height: 22px; border-radius: 7px; flex-shrink: 0;
+  border: 2px solid var(--border); display: flex; align-items: center;
+  justify-content: center; transition: all 0.18s; margin-top: 1px;
+}
+.check-item.done .check-box {
+  background: var(--verified); border-color: var(--verified);
+}
+.check-item.blocked .check-box {
+  background: var(--compliance-bg); border-color: var(--compliance-border);
+}
+.check-item.warning .check-box {
+  background: var(--cost-risk-bg); border-color: var(--cost-risk-border);
+}
+.check-item.active .check-box {
+  background: rgba(14,165,233,0.1); border-color: var(--sky);
+}
+.check-body { flex: 1; min-width: 0; }
+.check-title {
+  font-size: 13px; font-weight: 600; color: var(--navy);
+  margin-bottom: 2px; line-height: 1.35;
+}
+.check-item.done .check-title { text-decoration: line-through; color: var(--slate-500); }
+.check-detail { font-size: 11px; color: var(--slate-500); line-height: 1.4; }
+.check-tag {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.4px; padding: 2px 7px; border-radius: var(--r-full);
+  border: 1px solid; margin-top: 5px;
+}
+.tag-c { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.tag-r { background: var(--cost-risk-bg); color: var(--cost-risk-text); border-color: var(--cost-risk-border); }
+.tag-ok { background: var(--verified-bg); color: var(--verified-text); border-color: var(--verified-border); }
+.tag-sky { background: rgba(14,165,233,0.08); color: #0369a1; border-color: rgba(14,165,233,0.2); }
+.check-chevron {
+  flex-shrink: 0; color: var(--slate-300); margin-top: 3px;
+}
+
+/* ─── ISSUE CARDS ─── */
+.issue-card {
+  border-radius: var(--r-xl); padding: 16px 18px;
+  margin-bottom: 10px; border-left: 3px solid;
+  cursor: pointer; transition: all 0.17s;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.05);
+}
+.issue-card.compliance {
+  background: var(--compliance-bg); border-left-color: var(--compliance);
+  border: 1px solid var(--compliance-border); border-left: 3px solid var(--compliance);
+}
+.issue-card.compliance:hover { background: #fee2e2; transform: translateX(3px); }
+.issue-card.cost-risk {
+  background: var(--cost-risk-bg); border-left-color: var(--cost-risk);
+  border: 1px solid var(--cost-risk-border); border-left: 3px solid var(--cost-risk);
+}
+.issue-card.cost-risk:hover { background: #fef3c7; transform: translateX(3px); }
+.issue-type {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; margin-bottom: 4px;
+}
+.issue-card.compliance .issue-type { color: var(--compliance-text); }
+.issue-card.cost-risk .issue-type { color: var(--cost-risk-text); }
+.issue-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+.issue-detail { font-size: 12px; color: var(--slate-500); line-height: 1.45; }
+.issue-action-row {
+  display: flex; gap: 8px; margin-top: 10px;
+}
+.issue-btn {
+  flex: 1; padding: 8px 10px; border-radius: var(--r-md);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  border: none; font-family: var(--font-b); transition: all 0.15s;
+  text-align: center;
+}
+.issue-btn.fix {
+  background: var(--navy); color: white;
+}
+.issue-btn.fix:hover { background: #0f2040; }
+.issue-btn.ask {
+  background: white; color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.issue-btn.ask:hover { border-color: var(--sky); color: var(--sky); }
+
+/* ─── HAVE A MINUTE BUTTON ─── */
+.hamin-btn {
+  width: 100%; padding: 16px 20px;
+  background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+  border: none; border-radius: var(--r-xl);
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 10px;
+  box-shadow: 0 4px 16px rgba(109,40,217,0.25);
+}
+.hamin-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(109,40,217,0.35); }
+.hamin-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: rgba(255,255,255,0.15); display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.hamin-text { text-align: left; }
+.hamin-title { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.hamin-sub { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+
+/* ─── ACTIVITY FEED ─── */
+.activity-card {
+  background: white; border-radius: var(--r-xl);
+  padding: 18px 20px; margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+}
+.activity-hdr {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.activity-title { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--navy); }
+.activity-see-all { font-size: 12px; color: var(--sky); font-weight: 600; cursor: pointer; }
+.act-row {
+  display: flex; gap: 12px; padding-bottom: 14px;
+}
+.act-row:last-child { padding-bottom: 0; }
+.act-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 28px; }
+.act-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid; flex-shrink: 0;
+}
+.act-dot.sys { background: #f8fafc; border-color: #e2e8f0; }
+.act-dot.comp { background: var(--compliance-bg); border-color: var(--compliance-border); }
+.act-dot.ok { background: var(--verified-bg); border-color: var(--verified-border); }
+.act-dot.msg { background: rgba(109,40,217,0.08); border-color: rgba(109,40,217,0.2); }
+.act-line {
+  width: 2px; flex: 1; background: #e2e8f0; margin-top: 4px; min-height: 8px;
+}
+.act-body { flex: 1; padding-top: 3px; }
+.act-time { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.act-text { font-size: 12px; color: var(--navy); font-weight: 600; margin-bottom: 2px; }
+.act-detail { font-size: 11px; color: var(--slate-500); line-height: 1.4; }
+
+/* ─── MODAL OVERLAY ─── */
+.overlay {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(10,22,40,0.65); backdrop-filter: blur(6px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.overlay.active { opacity: 1; pointer-events: all; }
+.sheet {
+  background: white; border-radius: 24px 24px 20px 20px;
+  width: 100%; max-width: 520px;
+  transform: translateY(40px); transition: transform 0.3s var(--ease);
+  max-height: 88vh; overflow-y: auto;
+}
+.overlay.active .sheet { transform: translateY(0); }
+
+.sheet-handle {
+  width: 36px; height: 4px; background: #e2e8f0;
+  border-radius: var(--r-full); margin: 14px auto 0;
+}
+.sheet-header {
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sheet-title { font-family: var(--font-d); font-size: 17px; font-weight: 700; color: var(--navy); }
+.sheet-close {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--slate-100); border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; color: var(--slate-500);
+}
+.sheet-body { padding: 20px; }
+
+/* Issue detail sheet */
+.detail-badge {
+  display: inline-flex; align-items: center;
+  padding: 4px 12px; border-radius: var(--r-full);
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; border: 1px solid; margin-bottom: 14px;
+}
+.badge-c { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.badge-r { background: var(--cost-risk-bg); color: var(--cost-risk-text); border-color: var(--cost-risk-border); }
+.detail-sec { margin-bottom: 16px; }
+.detail-sec-lbl {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--sky); margin-bottom: 6px;
+}
+.detail-sec-body {
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 12px 14px;
+  font-size: 13px; color: #475569; line-height: 1.6;
+}
+.detail-sec-body strong { color: var(--navy); }
+.doc-excerpt {
+  background: white; border-radius: var(--r-lg); overflow: hidden; margin-bottom: 16px;
+}
+.doc-exc-hdr {
+  padding: 7px 12px; border-bottom: 1px solid;
+}
+.doc-exc-hdr.c { background: var(--compliance-bg); border-color: var(--compliance-border); }
+.doc-exc-hdr.r { background: var(--cost-risk-bg); border-color: var(--cost-risk-border); }
+.doc-exc-pg { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.doc-exc-hdr.c .doc-exc-pg { color: var(--compliance-text); }
+.doc-exc-hdr.r .doc-exc-pg { color: var(--cost-risk-text); }
+.doc-exc-body {
+  padding: 10px 12px; font-size: 11px; color: #475569;
+  line-height: 1.7; font-family: 'Courier New', monospace;
+}
+.exc-c { background: rgba(185,28,28,0.1); color: #b91c1c; padding: 0 2px; border-radius: 3px; border-bottom: 2px solid #b91c1c; font-weight: 700; }
+.exc-r { background: rgba(180,83,9,0.1); color: #b45309; padding: 0 2px; border-radius: 3px; border-bottom: 2px solid #b45309; font-weight: 700; }
+
+/* Have a minute sheet */
+.ham-section-lbl {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--slate-500); margin-bottom: 6px;
+}
+.ham-subject-display {
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 10px 12px;
+  font-size: 13px; font-weight: 600; color: var(--navy);
+  margin-bottom: 14px;
+}
+.ham-to {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: 9px 12px; margin-bottom: 14px;
+}
+.ham-to-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sky), var(--teal));
+  font-size: 10px; font-weight: 700; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); flex-shrink: 0;
+}
+.ham-to-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+.ham-to-role { font-size: 11px; color: var(--slate-500); }
+.ham-textarea {
+  width: 100%; min-height: 120px;
+  border: 1.5px solid var(--border); border-radius: var(--r-lg);
+  padding: 12px 14px; font-family: var(--font-b);
+  font-size: 13px; color: var(--navy); line-height: 1.6;
+  resize: vertical; margin-bottom: 14px;
+  transition: border-color 0.15s;
+}
+.ham-textarea:focus { outline: none; border-color: var(--sky); }
+.ham-sends {
+  display: flex; gap: 8px; margin-bottom: 14px;
+}
+.ham-send-tag {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-full); padding: 5px 10px;
+  font-size: 11px; font-weight: 600; color: var(--slate-500);
+}
+.ham-send-tag svg { color: var(--verified); }
+.ham-submit {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+  color: white; border: none; border-radius: var(--r-lg);
+  font-family: var(--font-b); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+}
+.ham-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(109,40,217,0.3); }
+
+/* Profile sheet */
+.prof-avatar-lg {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+  font-size: 22px; font-weight: 800; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); margin: 0 auto 12px;
+}
+.prof-name { font-family: var(--font-d); font-size: 20px; font-weight: 700; color: var(--navy); text-align: center; }
+.prof-role { font-size: 13px; color: var(--slate-500); text-align: center; margin-top: 3px; margin-bottom: 20px; }
+.prof-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.prof-row:last-child { border-bottom: none; }
+.prof-key { color: var(--slate-500); }
+.prof-val { font-weight: 600; color: var(--navy); }
+
+/* Notification sheet */
+.notif-item {
+  display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border);
+}
+.notif-item:last-child { border-bottom: none; }
+.notif-dot-outer { width: 8px; display: flex; justify-content: center; padding-top: 5px; }
+.notif-unread { width: 8px; height: 8px; border-radius: 50%; background: var(--sky); flex-shrink: 0; }
+.notif-text { font-size: 13px; color: var(--navy); line-height: 1.45; }
+.notif-time { font-size: 11px; color: var(--slate-500); margin-top: 2px; }
+
+/* Success confirmation */
+.success-check {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--verified), #059669);
+  display: flex; align-items: center; justify-content: center;
+  margin: 24px auto 14px;
+  animation: cpop 0.45s var(--ease);
+  box-shadow: 0 8px 20px rgba(4,120,87,0.3);
+}
+@keyframes cpop { 0%{opacity:0;transform:scale(0.4)} 70%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
+.success-title { font-family: var(--font-d); font-size: 18px; font-weight: 700; color: var(--navy); text-align: center; margin-bottom: 6px; }
+.success-sub { font-size: 13px; color: var(--slate-500); text-align: center; line-height: 1.5; margin-bottom: 20px; }
+.success-detail {
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 12px 14px; margin-bottom: 18px;
+  font-size: 12px; color: var(--slate-500); line-height: 1.6;
+}
+.success-detail strong { color: var(--navy); }
+
+/* Bottom sheet BTNs */
+.sheet-btns { display: flex; flex-direction: column; gap: 9px; }
+.sheet-btn {
+  padding: 13px 16px; border: none; border-radius: var(--r-lg);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all 0.17s; font-family: var(--font-b);
+}
+.sheet-btn.primary { background: linear-gradient(135deg, var(--sky), var(--teal)); color: white; }
+.sheet-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14,165,233,0.28); }
+.sheet-btn.secondary { background: var(--slate-100); color: var(--navy); }
+.sheet-btn.danger { background: #fef2f2; color: var(--compliance-text); border: 1px solid var(--compliance-border); }
+.sheet-btn.success { background: linear-gradient(135deg, var(--verified), #059669); color: white; }
+.sheet-btn.success:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(4,120,87,0.28); }
+
+/* Animations */
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.layout > * { animation: fadeUp 0.35s ease both; }
+.layout > *:nth-child(1) { animation-delay: 0.04s; }
+.layout > *:nth-child(2) { animation-delay: 0.08s; }
+.layout > *:nth-child(3) { animation-delay: 0.12s; }
+.layout > *:nth-child(4) { animation-delay: 0.16s; }
+.layout > *:nth-child(5) { animation-delay: 0.20s; }
+.layout > *:nth-child(6) { animation-delay: 0.24s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+/* ═══════════════════════════════════════
+   VIEW SYSTEM — dashboard vs detail
+   ═══════════════════════════════════════ */
+#view-dashboard { display: block; }
+#view-detail    { display: none; }
+body.in-detail #view-dashboard { display: none; }
+body.in-detail #view-detail    { display: block; }
+
+/* ─── DASHBOARD HEADER ─── */
+.dash-header {
+  padding: 20px 20px 4px;
+  max-width: 520px; margin: 0 auto;
+}
+.dash-greeting {
+  font-family: var(--font-d); font-size: 22px; font-weight: 800;
+  color: var(--navy); margin-bottom: 2px;
+}
+.dash-date { font-size: 12px; color: var(--slate-500); margin-bottom: 16px; }
+
+/* ─── SUMMARY STRIP ─── */
+.dash-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 20px;
+}
+.dash-strip-item {
+  background: white; border-radius: var(--r-lg);
+  padding: 13px 14px; text-align: center;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+}
+.dash-strip-val {
+  font-family: var(--font-d); font-size: 22px; font-weight: 800;
+  margin-bottom: 2px;
+}
+.dash-strip-lbl { font-size: 10px; color: var(--slate-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* ─── TRANSACTION CARDS ─── */
+.txn-card {
+  background: white; border-radius: var(--r-xl);
+  margin-bottom: 12px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.07);
+  cursor: pointer; transition: all 0.18s;
+  border: 1.5px solid transparent;
+}
+.txn-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,22,40,0.1); border-color: rgba(14,165,233,0.2); }
+.txn-card:active { transform: translateY(0); }
+
+.txn-card-top {
+  padding: 16px 18px 14px;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.txn-card-addr {
+  font-family: var(--font-d); font-size: 15px; font-weight: 700;
+  color: var(--navy); margin-bottom: 2px; line-height: 1.25;
+}
+.txn-card-city { font-size: 11px; color: var(--slate-500); margin-bottom: 8px; }
+.txn-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.txn-card-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: var(--r-full); border: 1px solid;
+}
+.txn-card-price {
+  font-family: var(--font-d); font-size: 16px; font-weight: 800;
+  color: var(--navy); text-align: right; white-space: nowrap;
+}
+.txn-card-close-lbl { font-size: 10px; color: var(--slate-500); text-align: right; margin-top: 2px; }
+
+.txn-card-bar-row {
+  padding: 0 18px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.txn-card-track {
+  flex: 1; height: 5px; background: var(--slate-100);
+  border-radius: var(--r-full); overflow: hidden;
+}
+.txn-card-fill {
+  height: 100%; border-radius: var(--r-full);
+  background: linear-gradient(90deg, var(--sky), var(--teal));
+}
+.txn-card-pct { font-size: 11px; font-weight: 700; color: var(--slate-500); white-space: nowrap; }
+
+.txn-card-footer {
+  padding: 10px 18px; background: var(--slate-50);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.txn-card-footer-left { display: flex; align-items: center; gap: 14px; }
+.txn-card-stat { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; }
+.txn-card-chevron { color: var(--slate-300); }
+
+/* ─── DETAIL BACK BUTTON ─── */
+.detail-back {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 20px 8px;
+  max-width: 520px; margin: 0 auto;
+  cursor: pointer;
+}
+.back-circle {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: white; border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 3px rgba(10,22,40,0.08);
+  transition: all 0.14s; flex-shrink: 0;
+}
+.back-circle:hover { border-color: var(--sky); }
+.back-lbl { font-size: 13px; font-weight: 600; color: var(--slate-500); }
+.back-txn { font-size: 12px; color: var(--slate-500); }
+
+
+/* ══════════════════════════════════════════
+   UPLOAD / REVIEW BUTTON — in transaction detail
+   ══════════════════════════════════════════ */
+.upload-review-bar {
+  background: white; border-radius: var(--r-xl);
+  padding: 16px 18px; margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+  display: flex; align-items: center; gap: 14px;
+}
+.urb-icon {
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(13,148,136,0.12));
+  border: 1px solid rgba(14,165,233,0.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.urb-text { flex: 1; min-width: 0; }
+.urb-title { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.urb-sub { font-size: 11px; color: var(--slate-500); }
+.urb-btn {
+  padding: 9px 14px; background: linear-gradient(135deg, var(--sky), var(--teal));
+  color: white; border: none; border-radius: var(--r-md);
+  font-family: var(--font-b); font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; transition: all 0.17s; flex-shrink: 0;
+}
+.urb-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(14,165,233,0.3); }
+
+/* Audit trail button row */
+.audit-row {
+  display: flex; gap: 9px; margin-bottom: 16px;
+}
+.audit-row-btn {
+  flex: 1; padding: 11px 14px; border-radius: var(--r-lg);
+  font-family: var(--font-b); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.15s; border: 1.5px solid;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.audit-row-btn.primary {
+  background: linear-gradient(135deg, var(--sky), var(--teal));
+  color: white; border-color: transparent;
+}
+.audit-row-btn.ghost {
+  background: white; color: var(--navy); border-color: var(--border);
+}
+.audit-row-btn.ghost:hover { border-color: var(--sky); color: var(--sky); }
+
+/* ── PROCESSING OVERLAY ── */
+#agent-proc-overlay {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(10,22,40,0.82); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+}
+#agent-proc-overlay.active { display: flex; }
+.proc-card {
+  background: white; border-radius: 24px;
+  padding: 32px 36px; width: calc(100% - 48px); max-width: 400px;
+  text-align: center;
+}
+.proc-pulse {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sky), var(--teal));
+  margin: 0 auto 22px; position: relative;
+  animation: procpulse 2s ease-in-out infinite;
+  display: flex; align-items: center; justify-content: center;
+}
+.proc-pulse::before, .proc-pulse::after {
+  content: ''; position: absolute; inset: -8px; border-radius: 50%;
+  border: 2px solid; animation: procring 2s ease-out infinite;
+}
+.proc-pulse::after { animation-delay: 0.5s; }
+@keyframes procpulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes procring { 0%{border-color:rgba(14,165,233,0.5);transform:scale(1);opacity:1} 100%{border-color:rgba(14,165,233,0);transform:scale(1.5);opacity:0} }
+.proc-title { font-family: var(--font-d); font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+.proc-sub { font-size: 12px; color: var(--slate-500); margin-bottom: 20px; }
+.proc-item {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 11px; border-radius: 9px; font-size: 12px;
+  color: var(--slate-500); background: var(--slate-50);
+  border: 1px solid transparent; transition: all 0.22s; margin-bottom: 6px; text-align: left;
+}
+.proc-item.running { background: rgba(14,165,233,0.07); border-color: rgba(14,165,233,0.18); color: var(--sky); }
+.proc-item.done    { background: rgba(4,120,87,0.05); border-color: rgba(4,120,87,0.13); color: #065f46; }
+.proc-item.flagged { background: var(--compliance-bg); border-color: var(--compliance-border); color: var(--compliance-text); }
+.proc-dot { width: 7px; height: 7px; border-radius: 50%; background: #cbd5e1; flex-shrink: 0; transition: all 0.22s; }
+.proc-item.running .proc-dot { background: var(--sky); animation: pdp 1.4s ease-in-out infinite; }
+.proc-item.done .proc-dot    { background: var(--verified); }
+.proc-item.flagged .proc-dot { background: var(--compliance); }
+.proc-badge { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; display: none; }
+.proc-item.done .proc-badge    { background: #ecfdf5; color: #065f46; }
+.proc-item.flagged .proc-badge { background: var(--compliance-bg); color: var(--compliance-text); }
+@keyframes pdp { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
+.proc-bar-row { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; margin: 14px 0 4px; }
+.proc-track { height: 4px; background: var(--slate-100); border-radius: 999px; overflow: hidden; }
+.proc-fill  { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--sky), var(--teal)); transition: width 0.4s ease; }
+
+/* ── UPLOAD DROP OVERLAY ── */
+#agent-drop-overlay {
+  position: fixed; inset: 0; z-index: 95;
+  background: rgba(10,22,40,0.82); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+#agent-drop-overlay.active { display: flex; }
+.drop-card {
+  background: white; border-radius: 28px;
+  padding: 36px 40px; width: 100%; max-width: 420px;
+  position: relative;
+}
+.drop-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--slate-100); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--slate-500); font-size: 14px;
+}
+.drop-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.drop-hdr-icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--sky), var(--teal));
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.drop-hdr-title { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--navy); }
+.drop-hdr-sub { font-size: 11px; color: var(--slate-500); }
+.drop-zone {
+  border: 2.5px dashed #cbd5e1; border-radius: 18px;
+  padding: 28px 20px; cursor: pointer;
+  transition: all 0.2s; background: var(--slate-50);
+  margin-bottom: 16px; text-align: center;
+}
+.drop-zone:hover { border-color: var(--sky); background: rgba(14,165,233,0.04); }
+.drop-zone-title { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: var(--navy); margin: 12px 0 5px; }
+.drop-zone-sub { font-size: 12px; color: var(--slate-500); line-height: 1.5; }
+.drop-zone-tags { display: flex; gap: 7px; justify-content: center; margin-top: 11px; }
+.drop-zone-tag { font-size: 10px; font-weight: 600; color: var(--slate-500); background: var(--slate-100); border: 1px solid var(--border); padding: 2px 9px; border-radius: 999px; }
+.drop-file-card {
+  display: none; flex-direction: row; align-items: center; gap: 11px;
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: 11px; padding: 11px 13px; margin-bottom: 14px;
+}
+.drop-file-card.visible { display: flex; }
+.drop-file-ico { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg,#b91c1c,#dc2626); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.drop-file-name { font-size: 12px; font-weight: 600; color: var(--navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drop-file-meta { font-size: 11px; color: var(--slate-500); margin-top: 1px; }
+.drop-file-rm { width: 24px; height: 24px; border-radius: 50%; background: var(--slate-100); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; flex-shrink: 0; }
+.drop-submit {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, var(--sky), var(--teal));
+  color: white; border: none; border-radius: 11px;
+  font-family: var(--font-b); font-size: 14px; font-weight: 700;
+  cursor: pointer; opacity: 0.45; pointer-events: none; transition: all 0.2s;
+}
+.drop-submit.ready { opacity: 1; pointer-events: auto; }
+.drop-submit.ready:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14,165,233,0.3); }
+.drop-sim-btn {
+  width: 100%; margin-top: 10px; padding: 9px;
+  background: transparent; border: 1.5px dashed #cbd5e1; border-radius: 9px;
+  font-family: var(--font-b); font-size: 12px; color: var(--slate-500);
+  cursor: pointer; transition: all 0.15s;
+}
+.drop-sim-btn:hover { border-color: var(--sky); color: var(--sky); }
+
+/* ── AGENT REVIEW RESULTS SHEET ── */
+.review-result-hero {
+  background: linear-gradient(135deg,rgba(180,83,9,0.05),rgba(185,28,28,0.03));
+  border: 1px solid rgba(180,83,9,0.14); border-radius: 13px;
+  padding: 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.rr-icon { width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg,#fffbeb,#fef3c7); border: 1px solid #fde68a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rr-title { font-family: var(--font-d); font-size: 17px; font-weight: 800; color: var(--navy); }
+.rr-meta  { font-size: 11px; color: var(--slate-500); margin-top: 2px; }
+
+/* ── AUDIT TRAIL SHEET ── */
+.trail-summary {
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 12px 14px; margin-bottom: 16px;
+  font-size: 12px; color: var(--slate-500); line-height: 1.6;
+}
+.trail-summary strong { color: var(--navy); }
+.trail-tl { display: flex; flex-direction: column; }
+.trail-row { display: flex; gap: 10px; padding-bottom: 16px; }
+.trail-row:last-child { padding-bottom: 0; }
+.trail-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 26px; }
+.trail-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid; flex-shrink: 0;
+}
+.trail-dot.sys  { background: var(--slate-50); border-color: var(--border); }
+.trail-dot.comp { background: var(--compliance-bg); border-color: var(--compliance-border); }
+.trail-dot.risk { background: var(--cost-risk-bg); border-color: var(--cost-risk-border); }
+.trail-dot.fixed{ background: var(--verified-bg); border-color: var(--verified-border); }
+.trail-dot.scan { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.2); }
+.trail-line { width: 2px; flex: 1; background: var(--border); margin-top: 4px; min-height: 8px; }
+.trail-body { flex: 1; padding-top: 2px; }
+.trail-time { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 2px; }
+.trail-action { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.trail-action.fixed { color: var(--verified); }
+.trail-detail { font-size: 11px; color: var(--slate-500); line-height: 1.45; }
+.trail-chip {
+  display: inline-flex; align-items: center; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px; border: 1px solid; margin-top: 4px;
+}
+.trail-chip.c { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.trail-chip.r { background: var(--cost-risk-bg); color: var(--cost-risk-text); border-color: var(--cost-risk-border); }
+.trail-chip.f { background: var(--verified-bg); color: var(--verified-text); border-color: var(--verified-border); }
+.trail-chip.s { background: rgba(14,165,233,0.07); color: #0369a1; border-color: rgba(14,165,233,0.18); }
+.trail-note {
+  background: var(--slate-50); border-left: 3px solid var(--border);
+  padding: 5px 8px; border-radius: 0 7px 7px 0;
+  margin-top: 4px; font-size: 11px; color: var(--slate-500);
+  font-style: italic; line-height: 1.4;
+}
+
+/* ── MARK AS FIXED SHEET ── */
+.fix-confirm-detail {
+  background: var(--compliance-bg); border: 1px solid var(--compliance-border);
+  border-radius: var(--r-lg); padding: 12px 14px; margin-bottom: 14px;
+  font-size: 12px; color: var(--compliance-text); line-height: 1.5;
+}
+.fix-confirm-detail.r { background: var(--cost-risk-bg); border-color: var(--cost-risk-border); color: var(--cost-risk-text); }
+.fix-note-area {
+  width: 100%; min-height: 80px; border: 1.5px solid var(--border);
+  border-radius: var(--r-lg); padding: 10px 12px;
+  font-family: var(--font-b); font-size: 13px; color: var(--navy);
+  line-height: 1.6; resize: vertical; margin-bottom: 14px; transition: border-color 0.15s;
+}
+.fix-note-area:focus { outline: none; border-color: var(--verified); }
+.fix-sends { display: flex; gap: 7px; margin-bottom: 14px; flex-wrap: wrap; }
+.fix-send-tag {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--verified-bg); border: 1px solid var(--verified-border);
+  border-radius: 999px; padding: 4px 10px;
+  font-size: 11px; font-weight: 600; color: var(--verified-text);
+}
+.fix-submit {
+  width: 100%; padding: 13px; background: linear-gradient(135deg, var(--verified), #059669);
+  color: white; border: none; border-radius: 11px;
+  font-family: var(--font-b); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+}
+.fix-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(4,120,87,0.3); }
+
+
+/* ══════════════════════════════════════════
+   DASHBOARD UPLOAD CARD
+   ══════════════════════════════════════════ */
+.dash-upload-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%);
+  border-radius: var(--r-xl); padding: 20px 20px 18px;
+  margin-bottom: 16px; position: relative; overflow: hidden;
+  cursor: pointer; transition: all 0.2s;
+  border: 2px dashed rgba(14,165,233,0.35);
+}
+.dash-upload-card:hover { border-color: rgba(14,165,233,0.7); transform: translateY(-2px); }
+.dash-upload-card::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(14,165,233,0.15), transparent 70%);
+  border-radius: 50%;
+}
+.duc-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; }
+.duc-icon {
+  width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+  background: rgba(14,165,233,0.18); border: 1px solid rgba(14,165,233,0.3);
+  display: flex; align-items: center; justify-content: center;
+  animation: pfloat2 3s ease-in-out infinite;
+}
+.duc-text { flex: 1; }
+.duc-title { font-family: var(--font-d); font-size: 16px; font-weight: 800; color: white; margin-bottom: 3px; }
+.duc-sub { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+.duc-tags { display: flex; gap: 6px; margin-top: 10px; }
+.duc-tag { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); padding: 2px 9px; border-radius: 999px; }
+.duc-arrow { color: rgba(255,255,255,0.3); flex-shrink: 0; }
+
+/* ── NEW TRANSACTION CARD STATE ── */
+.txn-card.new-txn {
+  border: 2px solid rgba(14,165,233,0.3);
+  background: linear-gradient(135deg, rgba(14,165,233,0.03), rgba(13,148,136,0.02));
+}
+.new-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; color: #0369a1;
+  background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2);
+  padding: 2px 8px; border-radius: 999px;
+}
+
+/* ══════════════════════════════════════════
+   BROKER ALERT GATE
+   ══════════════════════════════════════════ */
+#broker-alert-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(10,22,40,0.85); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 24px;
+}
+#broker-alert-overlay.active { display: flex; }
+.broker-alert-card {
+  background: white; border-radius: 24px;
+  padding: 32px 28px; max-width: 420px; width: 100%;
+  text-align: center; position: relative;
+}
+.bal-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  border: 2px solid var(--compliance-border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.bal-title {
+  font-family: var(--font-d); font-size: 20px; font-weight: 800;
+  color: var(--navy); margin-bottom: 8px;
+}
+.bal-sub {
+  font-size: 13px; color: var(--slate-500); line-height: 1.6; margin-bottom: 20px;
+}
+.bal-detail {
+  background: var(--compliance-bg); border: 1px solid var(--compliance-border);
+  border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 20px; text-align: left;
+}
+.bal-detail-title { font-size: 12px; font-weight: 700; color: var(--compliance-text); margin-bottom: 4px; }
+.bal-detail-body { font-size: 12px; color: var(--compliance-text); line-height: 1.5; }
+.bal-what-needed {
+  background: var(--slate-50); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 20px; text-align: left;
+}
+.bal-what-needed-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--sky); margin-bottom: 8px; }
+.bal-what-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #475569; margin-bottom: 6px; line-height: 1.4; }
+.bal-what-item:last-child { margin-bottom: 0; }
+.bal-what-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); flex-shrink: 0; margin-top: 4px; }
+.bal-btns { display: flex; flex-direction: column; gap: 9px; }
+.bal-btn {
+  padding: 13px; border: none; border-radius: var(--r-lg);
+  font-family: var(--font-b); font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.17s;
+}
+.bal-btn.block { background: var(--compliance-bg); color: var(--compliance-text); border: 1.5px solid var(--compliance-border); }
+.bal-btn.proceed { background: var(--slate-100); color: var(--navy); }
+.bal-btn.proceed:hover { background: #e2e8f0; }
+
+/* ── NEW TRANSACTION DROP OVERLAY ── */
+#new-txn-drop-overlay {
+  position: fixed; inset: 0; z-index: 95;
+  background: rgba(10,22,40,0.85); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+#new-txn-drop-overlay.active { display: flex; }
+
+/* ── REPRESENTATION AGREEMENT ITEM ── */
+.rep-alert-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; border: 1px solid;
+  margin-top: 5px; cursor: pointer;
+}
+.rep-alert-chip.missing { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.rep-alert-chip.ok { background: var(--verified-bg); color: var(--verified-text); border-color: var(--verified-border); }
+
+
+/* ══════════════════════════════════════════
+   SCAN RESULTS FULL-SCREEN OVERLAY
+   ══════════════════════════════════════════ */
+#scan-results-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: #f0f4f9;
+  display: none; flex-direction: column;
+  overflow-y: auto;
+}
+#scan-results-overlay.active { display: flex; }
+
+.sr-topbar {
+  background: var(--navy); padding: 0 20px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.sr-topbar-title { font-family: var(--font-d); font-size: 15px; font-weight: 700; color: white; }
+.sr-close-btn {
+  padding: 7px 14px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
+  font-family: var(--font-b); font-size: 12px; font-weight: 600; color: white;
+  cursor: pointer; transition: background 0.15s;
+}
+.sr-close-btn:hover { background: rgba(255,255,255,0.18); }
+
+.sr-body { max-width: 520px; width: 100%; margin: 0 auto; padding: 20px 16px 80px; flex: 1; }
+
+/* Phase headers */
+.sr-phase {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 0 10px; margin-bottom: 8px;
+}
+.sr-phase-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); font-size: 12px; font-weight: 800;
+}
+.sr-phase-num.done { background: var(--verified); color: white; }
+.sr-phase-num.active { background: var(--sky); color: white; animation: phPulse 1.5s ease-in-out infinite; }
+.sr-phase-num.pending { background: #e2e8f0; color: #94a3b8; }
+@keyframes phPulse { 0%,100%{box-shadow:0 0 0 0 rgba(14,165,233,0.4)} 50%{box-shadow:0 0 0 6px rgba(14,165,233,0)} }
+.sr-phase-title { font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--navy); }
+.sr-phase-sub { font-size: 11px; color: var(--slate-500); margin-top: 1px; }
+.sr-phase-connector { width: 2px; background: #e2e8f0; margin: 0 13px; height: 12px; }
+
+/* Checklist preview card */
+.sr-checklist-card {
+  background: white; border-radius: var(--r-xl);
+  overflow: hidden; margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(10,22,40,0.06);
+}
+.sr-cl-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 16px; border-bottom: 1px solid var(--slate-100);
+  font-size: 12px; animation: srSlideIn 0.3s ease both;
+}
+.sr-cl-item:last-child { border-bottom: none; }
+@keyframes srSlideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+.sr-cl-box {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.sr-cl-box.done { background: var(--verified); border: none; }
+.sr-cl-box.blocked { background: var(--compliance-bg); border: 1.5px solid var(--compliance-border); }
+.sr-cl-box.warn { background: var(--cost-risk-bg); border: 1.5px solid var(--cost-risk-border); }
+.sr-cl-box.todo { background: var(--slate-50); border: 1.5px solid var(--border); }
+.sr-cl-box.sky  { background: rgba(14,165,233,0.1); border: 1.5px solid rgba(14,165,233,0.25); }
+.sr-cl-label { flex: 1; color: var(--navy); font-weight: 500; line-height: 1.3; }
+.sr-cl-label.done-label { color: var(--slate-500); text-decoration: line-through; }
+.sr-cl-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; border: 1px solid; flex-shrink: 0;
+}
+.sr-cl-tag.c { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.sr-cl-tag.r { background: var(--cost-risk-bg); color: var(--cost-risk-text); border-color: var(--cost-risk-border); }
+.sr-cl-tag.ok { background: var(--verified-bg); color: var(--verified-text); border-color: var(--verified-border); }
+
+/* Issues card */
+.sr-issues-hero {
+  background: linear-gradient(135deg, rgba(180,83,9,0.05), rgba(185,28,28,0.03));
+  border: 1px solid rgba(180,83,9,0.15); border-radius: var(--r-xl);
+  padding: 16px 18px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sr-issues-icon { width: 44px; height: 44px; border-radius: 13px; background: linear-gradient(135deg,#fffbeb,#fef3c7); border: 1px solid #fde68a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sr-issues-title { font-family: var(--font-d); font-size: 18px; font-weight: 800; color: var(--navy); }
+.sr-issues-meta { font-size: 11px; color: var(--slate-500); margin-top: 2px; }
+
+.sr-issue-item {
+  border-radius: var(--r-lg); padding: 12px 14px; margin-bottom: 8px;
+  border-left: 3px solid; cursor: pointer; transition: transform 0.14s;
+  animation: srSlideIn 0.3s ease both;
+}
+.sr-issue-item:hover { transform: translateX(3px); }
+.sr-issue-item.c { background: var(--compliance-bg); border-color: var(--compliance); border: 1px solid var(--compliance-border); border-left: 3px solid var(--compliance); }
+.sr-issue-item.r { background: var(--cost-risk-bg); border-color: var(--cost-risk); border: 1px solid var(--cost-risk-border); border-left: 3px solid var(--cost-risk); }
+.sr-issue-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
+.sr-issue-item.c .sr-issue-type { color: var(--compliance-text); }
+.sr-issue-item.r .sr-issue-type { color: var(--cost-risk-text); }
+.sr-issue-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.sr-issue-detail { font-size: 11px; color: var(--slate-500); line-height: 1.4; }
+.sr-issue-tag { display: inline-flex; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; border: 1px solid; margin-top: 5px; }
+.sr-issue-tag.c { background: var(--compliance-bg); color: var(--compliance-text); border-color: var(--compliance-border); }
+.sr-issue-tag.r { background: var(--cost-risk-bg); color: var(--cost-risk-text); border-color: var(--cost-risk-border); }
+
+/* Passed block */
+.sr-passed {
+  background: var(--verified-bg); border: 1px solid var(--verified-border);
+  border-radius: var(--r-lg); padding: 11px 14px; margin-bottom: 12px;
+  font-size: 11px; color: var(--verified-text);
+}
+
+/* CTA buttons */
+.sr-cta { position: sticky; bottom: 0; background: #f0f4f9; padding: 14px 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; max-width: 520px; margin: 0 auto; width: 100%; }
+.sr-btn {
+  padding: 14px; border: none; border-radius: var(--r-lg);
+  font-family: var(--font-b); font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+}
+.sr-btn.primary { background: linear-gradient(135deg, var(--sky), var(--teal)); color: white; }
+.sr-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14,165,233,0.28); }
+.sr-btn.ghost { background: white; border: 1.5px solid var(--border); color: var(--navy); }
+@keyframes pfloat2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     TOPBAR
+     ════════════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">FileBuddyAI</div>
+      <div class="brand-sub">Agent View</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="notif-btn" onclick="openSheet('notif-sheet')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="notif-pip"></span>
+    </button>
+    <div class="agent-chip" onclick="openSheet('profile-sheet')">
+      <div class="agent-ava">RH</div>
+      <div class="agent-chip-name">Rich H.</div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════
+     MAIN LAYOUT
+     ════════════════════════════════════ -->
+<!-- ════════════════════════════════════
+     DASHBOARD VIEW
+     ════════════════════════════════════ -->
+<div id="view-dashboard">
+  <div class="dash-header">
+    <div class="dash-greeting">Good morning, Rich.</div>
+    <div class="dash-date" id="dash-date-lbl">Monday, May 11, 2026 · 4 active transactions</div>
+
+    <!-- Summary strip -->
+    <div class="dash-strip">
+      <div class="dash-strip-item">
+        <div class="dash-strip-val" style="color:var(--sky)" id="dash-active-count">4</div>
+        <div class="dash-strip-lbl">Active</div>
+      </div>
+      <div class="dash-strip-item">
+        <div class="dash-strip-val" style="color:var(--compliance)" id="dash-issues-count">7</div>
+        <div class="dash-strip-lbl">Open Issues</div>
+      </div>
+      <div class="dash-strip-item">
+        <div class="dash-strip-val" style="color:var(--verified)" id="dash-commission">$49K</div>
+        <div class="dash-strip-lbl">Est. Commission</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:520px;margin:0 auto;padding:0 16px 4px;">
+
+    <!-- Upload new transaction card -->
+    <div class="dash-upload-card" onclick="openNewTxnDrop()"
+      ondragover="event.preventDefault();this.style.borderColor='rgba(14,165,233,0.9)'"
+      ondragleave="this.style.borderColor='rgba(14,165,233,0.35)'"
+      ondrop="handleDashDrop(event)">
+      <div class="duc-inner">
+        <div class="duc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="duc-text">
+          <div class="duc-title">Start a new transaction</div>
+          <div class="duc-sub">Drop a purchase agreement or click to upload · FileBuddy reviews it and builds your closing checklist automatically</div>
+          <div class="duc-tags">
+            <span class="duc-tag">PDF</span>
+            <span class="duc-tag">DOCX</span>
+            <span class="duc-tag">ZIP</span>
+            <span class="duc-tag">CA RPA</span>
+          </div>
+        </div>
+        <div class="duc-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--slate-500);margin-bottom:10px;">Your Transactions</div>
+  </div>
+
+  <div id="txn-cards-container" style="max-width:520px;margin:0 auto;padding:0 16px 100px;">
+
+    <!-- ── TXN 1: Via Del Lago (real PDF, 5 issues) ── -->
+    <div class="txn-card" onclick="openTransaction('viadellago')">
+      <div class="txn-card-top">
+        <div>
+          <div class="txn-card-addr">13292 Via Del Lago</div>
+          <div class="txn-card-city">Victorville, CA 92392</div>
+          <div class="txn-card-tags">
+            <span class="txn-card-tag" style="background:#fef2f2;color:#991b1b;border-color:#fecaca;">3 compliance</span>
+            <span class="txn-card-tag" style="background:#fffbeb;color:#92400e;border-color:#fde68a;">2 cost risks</span>
+          </div>
+        </div>
+        <div>
+          <div class="txn-card-price">$410K</div>
+          <div class="txn-card-close-lbl">Closes May 30</div>
+        </div>
+      </div>
+      <div class="txn-card-bar-row">
+        <div class="txn-card-track"><div class="txn-card-fill" style="width:50%"></div></div>
+        <div class="txn-card-pct">50% · 7 of 14</div>
+      </div>
+      <div class="txn-card-footer">
+        <div class="txn-card-footer-left">
+          <div class="txn-card-stat">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span style="color:#b91c1c">5 issues to fix</span>
+          </div>
+          <div class="txn-card-stat" style="color:var(--slate-500)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            21 days left
+          </div>
+        </div>
+        <div class="txn-card-chevron">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TXN 2: Maple Grove (1 compliance, on track) ── -->
+    <div class="txn-card" onclick="openTransaction('maplegrove')">
+      <div class="txn-card-top">
+        <div>
+          <div class="txn-card-addr">847 Maple Grove Dr</div>
+          <div class="txn-card-city">Apple Valley, CA 92307</div>
+          <div class="txn-card-tags">
+            <span class="txn-card-tag" style="background:#fef2f2;color:#991b1b;border-color:#fecaca;">1 compliance</span>
+            <span class="txn-card-tag" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;">mostly clear</span>
+          </div>
+        </div>
+        <div>
+          <div class="txn-card-price">$385K</div>
+          <div class="txn-card-close-lbl">Closes Jun 6</div>
+        </div>
+      </div>
+      <div class="txn-card-bar-row">
+        <div class="txn-card-track"><div class="txn-card-fill" style="width:71%"></div></div>
+        <div class="txn-card-pct">71% · 10 of 14</div>
+      </div>
+      <div class="txn-card-footer">
+        <div class="txn-card-footer-left">
+          <div class="txn-card-stat">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span style="color:#b91c1c">1 issue to fix</span>
+          </div>
+          <div class="txn-card-stat" style="color:var(--slate-500)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            26 days left
+          </div>
+        </div>
+        <div class="txn-card-chevron">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TXN 3: Sierra Vista (clean, nearly done) ── -->
+    <div class="txn-card" onclick="openTransaction('sierravista')">
+      <div class="txn-card-top">
+        <div>
+          <div class="txn-card-addr">2204 Sierra Vista Blvd</div>
+          <div class="txn-card-city">Hesperia, CA 92345</div>
+          <div class="txn-card-tags">
+            <span class="txn-card-tag" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;">All clear</span>
+            <span class="txn-card-tag" style="background:rgba(14,165,233,0.08);color:#0369a1;border-color:rgba(14,165,233,0.2);">Final steps</span>
+          </div>
+        </div>
+        <div>
+          <div class="txn-card-price">$520K</div>
+          <div class="txn-card-close-lbl">Closes May 22</div>
+        </div>
+      </div>
+      <div class="txn-card-bar-row">
+        <div class="txn-card-track"><div class="txn-card-fill" style="width:86%"></div></div>
+        <div class="txn-card-pct">86% · 12 of 14</div>
+      </div>
+      <div class="txn-card-footer">
+        <div class="txn-card-footer-left">
+          <div class="txn-card-stat" style="color:var(--verified)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            No open issues
+          </div>
+          <div class="txn-card-stat" style="color:var(--slate-500)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            11 days left
+          </div>
+        </div>
+        <div class="txn-card-chevron">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TXN 4: Juniper (1 cost risk, early stage) ── -->
+    <div class="txn-card" onclick="openTransaction('juniper')">
+      <div class="txn-card-top">
+        <div>
+          <div class="txn-card-addr">9034 Juniper St</div>
+          <div class="txn-card-city">Victorville, CA 92392</div>
+          <div class="txn-card-tags">
+            <span class="txn-card-tag" style="background:#fffbeb;color:#92400e;border-color:#fde68a;">1 cost risk</span>
+            <span class="txn-card-tag" style="background:rgba(14,165,233,0.08);color:#0369a1;border-color:rgba(14,165,233,0.2);">Early stage</span>
+          </div>
+        </div>
+        <div>
+          <div class="txn-card-price">$295K</div>
+          <div class="txn-card-close-lbl">Closes Jun 18</div>
+        </div>
+      </div>
+      <div class="txn-card-bar-row">
+        <div class="txn-card-track"><div class="txn-card-fill" style="width:29%"></div></div>
+        <div class="txn-card-pct">29% · 4 of 14</div>
+      </div>
+      <div class="txn-card-footer">
+        <div class="txn-card-footer-left">
+          <div class="txn-card-stat">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span style="color:#b45309">1 thing to verify</span>
+          </div>
+          <div class="txn-card-stat" style="color:var(--slate-500)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            38 days left
+          </div>
+        </div>
+        <div class="txn-card-chevron">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end view-dashboard -->
+
+<div id="view-detail">
+<div class="detail-back" onclick="goToDashboard()">
+  <div class="back-circle">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
+  <div>
+    <div class="back-lbl">My Transactions</div>
+  </div>
+</div>
+<main class="layout" style="padding-top:8px">
+
+  <!-- Transaction Hero -->
+  <div class="txn-hero">
+    <div class="txn-hero-inner">
+      <div class="txn-label">Your Active Transaction</div>
+      <div class="txn-address">13292 Via Del Lago</div>
+      <div class="txn-city">Victorville, CA 92392</div>
+      <div class="txn-meta-row">
+        <div class="txn-meta-item">
+          <div class="txn-meta-val">$410,000</div>
+          <div class="txn-meta-lbl">Sale Price</div>
+        </div>
+        <div class="txn-meta-item">
+          <div class="txn-meta-val">May 30</div>
+          <div class="txn-meta-lbl">Target Close</div>
+        </div>
+        <div class="txn-meta-item">
+          <div class="txn-meta-val">3%</div>
+          <div class="txn-meta-lbl">Your Commission</div>
+        </div>
+      </div>
+      <div class="txn-status-row">
+        <div class="txn-days-chip">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="txn-days-text">21 days to close</div>
+        </div>
+        <div class="txn-issues-chip" onclick="openSheet('issues-sheet')">
+          <div class="txn-issues-count">5</div>
+          <div class="txn-issues-text">Issues to fix</div>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-card">
+    <div class="progress-header">
+      <div class="progress-title">Closing Progress</div>
+      <div class="progress-frac">7 of 14 complete</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+    <div class="progress-sub">5 items need your attention before you can proceed</div>
+  </div>
+
+  <!-- Upload / Review bar + Audit shortcut -->
+  <div class="upload-review-bar">
+    <div class="urb-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    </div>
+    <div class="urb-text">
+      <div class="urb-title">Review my document</div>
+      <div class="urb-sub">Drop updated file · See what FileBuddy flags</div>
+    </div>
+    <button class="urb-btn" onclick="checkBrokerAlertForCurrentTxn()">Review</button>
+  </div>
+
+  <div class="audit-row">
+    <button class="audit-row-btn ghost" onclick="openSheet('audit-trail-sheet')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Audit Trail
+    </button>
+    <button class="audit-row-btn ghost" onclick="openSheet('issues-sheet')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/></svg>
+      Open Issues
+    </button>
+  </div>
+
+  <!-- To-Do Checklist -->
+  <div class="sec-label">What Still Needs to Happen</div>
+  <div class="checklist-card">
+
+    <!-- DONE items -->
+    <!-- REPRESENTATION AGREEMENT — must be confirmed before broker review -->
+    <div class="check-item blocked" id="rep-checklist-item" onclick="openRepAgreementSheet()">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Representation agreement on file</div>
+        <div class="check-detail">Upload signed buyer or seller representation agreement · Required before broker review</div>
+        <span class="rep-alert-chip missing" onclick="event.stopPropagation();openRepAgreementSheet()">⚠ Not yet confirmed — tap to upload</span>
+      </div>
+      <div class="check-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Purchase Agreement signed</div>
+        <div class="check-detail">Both parties signed · Feb 3, 2026</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Buyer pre-approval verified</div>
+        <div class="check-detail">Loan $307,500 · 75% LTV · Approved</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Earnest money deposited</div>
+        <div class="check-detail">$10,250 · Received by escrow</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Title search ordered</div>
+        <div class="check-detail">Garcia Title Co. · In progress · Est. May 14</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Home inspection scheduled</div>
+        <div class="check-detail">May 15, 2026 · Ace Inspections LLC</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Property appraisal ordered</div>
+        <div class="check-detail">May 17, 2026 · Lender appraisal panel</div>
+      </div>
+    </div>
+
+    <div class="check-item done">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Buyer signatures on RPA forms</div>
+        <div class="check-detail">Guadalupe Estrada · All pages signed</div>
+      </div>
+    </div>
+
+    <!-- BLOCKED — compliance -->
+    <div class="check-item blocked" onclick="openIssueDetail('c1')">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Seller signs Agency Disclosure (AD)</div>
+        <div class="check-detail">Agustin R. De Leon Calderon · Pages 1 &amp; 32 · Required by law</div>
+        <span class="check-tag tag-c">Must fix · Civil Code § 2079.14</span>
+      </div>
+      <div class="check-chevron">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <div class="check-item blocked" onclick="openIssueDetail('c2')">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Seller signs Short Sale Addendum (SSA)</div>
+        <div class="check-detail">SSA Page 30 · Para 2A · Unenforceable without signature</div>
+        <span class="check-tag tag-c">Must fix · C.A.R. Form SSA</span>
+      </div>
+      <div class="check-chevron">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <div class="check-item blocked" onclick="openIssueDetail('c3')">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Seller dates Federal Reporting form (FRR-PA)</div>
+        <div class="check-detail">Page 20 · Date field blank · Escrow cannot close without it</div>
+        <span class="check-tag tag-c">Must fix · FinCEN / FRR-PA</span>
+      </div>
+      <div class="check-chevron">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- WARNING — cost risk -->
+    <div class="check-item warning" onclick="openIssueDetail('r1')">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Confirm dual agency is fully disclosed</div>
+        <div class="check-detail">You&#39;re listed as agent for both parties · Seller&#39;s AD signature completes this</div>
+        <span class="check-tag tag-r">Verify · Dual Agency</span>
+      </div>
+      <div class="check-chevron">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <div class="check-item warning" onclick="openIssueDetail('r2')">
+      <div class="check-box">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Add hard deadline to SSA Para 2A</div>
+        <div class="check-detail">Contingency date field blank · Only 45-day default applies · Risky</div>
+        <span class="check-tag tag-r">Verify · Timeline Risk</span>
+      </div>
+      <div class="check-chevron">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- ACTIVE — upcoming -->
+    <div class="check-item active">
+      <div class="check-box">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Home inspection completed &amp; reviewed</div>
+        <div class="check-detail">Scheduled May 15 · Report expected within 24 hrs</div>
+        <span class="check-tag tag-sky">Coming up</span>
+      </div>
+    </div>
+
+    <div class="check-item active">
+      <div class="check-box">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Loan underwriting approval received</div>
+        <div class="check-detail">Lender processing · Est. May 20</div>
+        <span class="check-tag tag-sky">In progress</span>
+      </div>
+    </div>
+
+    <div class="check-item active">
+      <div class="check-box">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Final walk-through with buyer</div>
+        <div class="check-detail">To be scheduled after inspection clears</div>
+        <span class="check-tag tag-sky">Upcoming</span>
+      </div>
+    </div>
+
+    <div class="check-item active">
+      <div class="check-box">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Closing disclosure reviewed &amp; signed</div>
+        <div class="check-detail">3 days before closing · Escrow will send</div>
+        <span class="check-tag tag-sky">Upcoming</span>
+      </div>
+    </div>
+
+    <div class="check-item active">
+      <div class="check-box">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>
+      </div>
+      <div class="check-body">
+        <div class="check-title">Keys &amp; possession transferred to buyer</div>
+        <div class="check-detail">Upon funding confirmation · Target May 30</div>
+        <span class="check-tag tag-sky">Upcoming</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Have a Minute -->
+  <div class="sec-label">Need Help?</div>
+  <button class="hamin-btn" onclick="openHaveAMinute(null)">
+    <div class="hamin-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="hamin-text">
+      <div class="hamin-title">"Have a Minute?"</div>
+      <div class="hamin-sub">Ask Sarah Chen a question · Sends email + in-system message</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+  <!-- Recent Activity -->
+  <div class="sec-label">Recent Activity</div>
+  <div class="activity-card">
+    <div class="activity-hdr">
+      <div class="activity-title">Transaction Log</div>
+      <div class="activity-see-all">See all</div>
+    </div>
+    <div class="act-row">
+      <div class="act-spine"><div class="act-dot comp"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="act-line"></div></div>
+      <div class="act-body"><div class="act-time">Today · 9:04 AM</div><div class="act-text">FileBuddy reviewed your document</div><div class="act-detail">5 issues flagged · 28 checks passed · 44 pages scanned</div></div>
+    </div>
+    <div class="act-row">
+      <div class="act-spine"><div class="act-dot comp"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="act-line"></div></div>
+      <div class="act-body"><div class="act-time">Today · 9:12 AM</div><div class="act-text">Broker notified of your open issues</div><div class="act-detail">Sarah Chen received your file · Awaiting your fixes</div></div>
+    </div>
+    <div class="act-row">
+      <div class="act-spine"><div class="act-dot ok"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="act-line"></div></div>
+      <div class="act-body"><div class="act-time">May 8 · 2:30 PM</div><div class="act-text">Home inspection scheduled</div><div class="act-detail">Ace Inspections LLC · May 15, 2026</div></div>
+    </div>
+    <div class="act-row">
+      <div class="act-spine"><div class="act-dot ok"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="act-line"></div></div>
+      <div class="act-body"><div class="act-time">Feb 3 · 11:00 AM</div><div class="act-text">Purchase Agreement signed</div><div class="act-detail">All parties · $410,000 · eXp Realty</div></div>
+    </div>
+    <div class="act-row">
+      <div class="act-spine"><div class="act-dot sys"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div></div>
+      <div class="act-body"><div class="act-time">Feb 3 · 10:45 AM</div><div class="act-text">Transaction opened</div><div class="act-detail">13292 Via Del Lago · Rich Hernandez</div></div>
+    </div>
+  </div>
+</main>
+</div><!-- end view-detail -->
+
+<!-- ════════════════════════════════════
+     ISSUES SHEET (overview)
+     ════════════════════════════════════ -->
+<div class="overlay" id="issues-sheet" onclick="if(event.target===this)closeSheet('issues-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">5 Issues to Fix</div>
+      <button class="sheet-close" onclick="closeSheet('issues-sheet')">✕</button>
+    </div>
+    <div class="sheet-body" id="issues-sheet-body">
+      <p style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5;">Fix these before the broker&#39;s final review. Tap any issue to see exactly what to do.</p>
+
+      <div class="issue-card compliance" onclick="closeSheet('issues-sheet');openIssueDetail('c1')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">Seller signature missing — Agency Disclosure</div>
+        <div class="issue-detail">Pages 1 &amp; 32 · Agustin R. De Leon Calderon · Required by CA law</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openIssueDetail('c1')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c1')">Ask broker</button>
+        </div>
+      </div>
+
+      <div class="issue-card compliance" onclick="closeSheet('issues-sheet');openIssueDetail('c2')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">Seller signature missing — Short Sale Addendum</div>
+        <div class="issue-detail">SSA Page 30 · Para 2A · Addendum is unenforceable without it</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openIssueDetail('c2')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c2')">Ask broker</button>
+        </div>
+      </div>
+
+      <div class="issue-card compliance" onclick="closeSheet('issues-sheet');openIssueDetail('c3')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">FRR-PA Seller date field blank</div>
+        <div class="issue-detail">Page 20 · FinCEN federal form · Escrow cannot close without it</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openIssueDetail('c3')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c3')">Ask broker</button>
+        </div>
+      </div>
+
+      <div class="issue-card cost-risk" onclick="closeSheet('issues-sheet');openIssueDetail('r1')">
+        <div class="issue-type">⚠️ Something to Check</div>
+        <div class="issue-title">Dual agency — full disclosure needed</div>
+        <div class="issue-detail">You&#39;re both parties&#39; agent · AD seller signature closes this loop</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openIssueDetail('r1')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('r1')">Ask broker</button>
+        </div>
+      </div>
+
+      <div class="issue-card cost-risk" onclick="closeSheet('issues-sheet');openIssueDetail('r2')">
+        <div class="issue-type">⚠️ Something to Check</div>
+        <div class="issue-title">Short sale deadline not set</div>
+        <div class="issue-detail">SSA Para 2A · Specific date missing · Only 45-day default applies</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openIssueDetail('r2')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('r2')">Ask broker</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     ISSUE DETAIL SHEETS
+     ════════════════════════════════════ -->
+<div class="overlay" id="detail-c1" onclick="if(event.target===this)closeSheet('detail-c1')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Agency Disclosure — Seller Sig</div>
+      <button class="sheet-close" onclick="closeSheet('detail-c1')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-c">🔴 Compliance · Must Fix</div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What&#39;s wrong</div>
+        <div class="detail-sec-body">The Agency Disclosure form (C.A.R. AD) requires <strong>both parties</strong> to sign. The Buyer (Guadalupe Estrada) signed on Feb 3 ✓ — but the Seller (Agustin R. De Leon Calderon) has <strong>not signed</strong> on pages 1 or 32.</div>
+      </div>
+      <div class="doc-excerpt">
+        <div class="doc-exc-hdr c"><div class="doc-exc-pg">AD Form · Page 1 — what we found</div></div>
+        <div class="doc-exc-body">
+          Buyer: <span style="color:#047857">Guadalupe Estrada &nbsp; Date 02/03/2026 ✓</span><br><br>
+          Seller: <span class="exc-c">[ Not signed — blank ]</span> &nbsp; Date ______
+        </div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Why it matters</div>
+        <div class="detail-sec-body">CA Civil Code § 2079.14 requires a signed seller acknowledgment. Without it, the transaction <strong>cannot legally close</strong>.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to do</div>
+        <div class="detail-sec-body">Contact Agustin and get his signature on the AD form — <strong>pages 1 and 32</strong>. You can resend via DocuSign or have him sign in person. Once done, resubmit the updated document.</div>
+      </div>
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('detail-c1');openMarkFixed('c1')">Mark as Fixed</button>
+        <button class="sheet-btn primary" onclick="closeSheet('detail-c1');openHaveAMinute('c1')">Ask broker for help</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('detail-c1')">Back to checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="detail-c2" onclick="if(event.target===this)closeSheet('detail-c2')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Short Sale Addendum — Seller Sig</div>
+      <button class="sheet-close" onclick="closeSheet('detail-c2')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-c">🔴 Compliance · Must Fix</div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What&#39;s wrong</div>
+        <div class="detail-sec-body">The Short Sale Addendum (SSA) requires the Seller&#39;s signature. Buyer signed ✓ — but <strong>Agustin R. De Leon Calderon has not signed</strong> SSA page 30.</div>
+      </div>
+      <div class="doc-excerpt">
+        <div class="doc-exc-hdr c"><div class="doc-exc-pg">SSA · Page 30 (Para 2A)</div></div>
+        <div class="doc-exc-body">
+          Buyer: <span style="color:#047857">Guadalupe Estrada &nbsp; 02/03/2026 ✓</span><br><br>
+          Seller: <span class="exc-c">[ Not signed — blank ]</span> &nbsp; Date ______
+        </div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Why it matters</div>
+        <div class="detail-sec-body">Without the Seller&#39;s signature the SSA is <strong>unenforceable</strong>. The short sale contingency in Para 2A has no legal standing — leaving both parties unprotected.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to do</div>
+        <div class="detail-sec-body">Get Agustin&#39;s signature on SSA page 30. This can be done via DocuSign alongside the AD form fix — <strong>do both in one request</strong> to save time.</div>
+      </div>
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('detail-c2');openMarkFixed('c2')">Mark as Fixed</button>
+        <button class="sheet-btn primary" onclick="closeSheet('detail-c2');openHaveAMinute('c2')">Ask broker for help</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('detail-c2')">Back to checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="detail-c3" onclick="if(event.target===this)closeSheet('detail-c3')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">FRR-PA — Seller Date Missing</div>
+      <button class="sheet-close" onclick="closeSheet('detail-c3')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-c">🔴 Compliance · Must Fix</div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What&#39;s wrong</div>
+        <div class="detail-sec-body">The Federal Reporting Addendum (FRR-PA) on page 20 has the Seller&#39;s name printed but the <strong>date field is blank</strong>. The Buyer&#39;s section is complete ✓.</div>
+      </div>
+      <div class="doc-excerpt">
+        <div class="doc-exc-hdr c"><div class="doc-exc-pg">FRR-PA · Page 20</div></div>
+        <div class="doc-exc-body">
+          Buyer &nbsp; Guadalupe Estrada &nbsp; <span style="color:#047857">Date 02/03/2026 ✓</span><br><br>
+          Seller &nbsp; Agustin R. De Leon Calderon &nbsp; <span class="exc-c">Date [ BLANK ]</span>
+        </div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Why it matters</div>
+        <div class="detail-sec-body">FinCEN mandated this form effective March 1, 2026. Escrow <strong>will not close</strong> without a fully dated seller entry. This is a hard federal requirement.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to do</div>
+        <div class="detail-sec-body">Ask Agustin to add today&#39;s date next to his name on FRR-PA page 20. Combine this request with the other Seller signature items — <strong>one DocuSign for all three</strong>.</div>
+      </div>
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('detail-c3');openMarkFixed('c3')">Mark as Fixed</button>
+        <button class="sheet-btn primary" onclick="closeSheet('detail-c3');openHaveAMinute('c3')">Ask broker for help</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('detail-c3')">Back to checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="detail-r1" onclick="if(event.target===this)closeSheet('detail-r1')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Dual Agency Disclosure</div>
+      <button class="sheet-close" onclick="closeSheet('detail-r1')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-r">⚠️ Something to Check</div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What&#39;s flagged</div>
+        <div class="detail-sec-body">You (Mayra Escalante, DRE 02043967) are listed as the agent for <strong>both the Buyer and the Seller</strong> in this transaction. This is called dual agency.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Is this a problem?</div>
+        <div class="detail-sec-body">Dual agency is <strong>legal in California</strong> with proper written disclosure. The PRBS form is already signed by both parties ✓.<br><br>The only gap: the <strong>Seller hasn&#39;t signed the AD form</strong> (Issue #1 above), which is the form that formally acknowledges dual agency. Fix that and this is resolved automatically.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to do</div>
+        <div class="detail-sec-body">Fix Issue #1 (AD Seller signature). That one fix closes both issues at once. Nothing additional needed.</div>
+      </div>
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('detail-r1');openMarkFixed('r1')">Mark as Verified</button>
+        <button class="sheet-btn primary" onclick="closeSheet('detail-r1');openIssueDetail('c1')">Go to AD Signature fix</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('detail-r1');openHaveAMinute('r1')">Ask broker about this</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="detail-r2" onclick="if(event.target===this)closeSheet('detail-r2')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Short Sale — No Deadline Set</div>
+      <button class="sheet-close" onclick="closeSheet('detail-r2')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-r">⚠️ Something to Check</div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What&#39;s flagged</div>
+        <div class="detail-sec-body">SSA Para 2A says the lender must approve the short sale within <strong>"45 days — OR on: ___"</strong>. The specific date field is <strong>blank</strong>.</div>
+      </div>
+      <div class="doc-excerpt">
+        <div class="doc-exc-hdr r"><div class="doc-exc-pg r">SSA · Para 2A — Approval deadline</div></div>
+        <div class="doc-exc-body">
+          Lender approval by 5:00 PM, no later than 45 days after<br>
+          Acceptance (or on <span class="exc-r">[ date not specified ]</span>)
+        </div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Why it matters</div>
+        <div class="detail-sec-body">Without a hard date, there&#39;s no clear cutoff if the lender drags their feet. A specific date protects both you and the buyer from an open-ended wait.</div>
+      </div>
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to do</div>
+        <div class="detail-sec-body">Discuss a specific date with the buyer and seller — typically <strong>45–60 days from acceptance</strong> (offer was Feb 3, so that&#39;s around March 20 – April 3, 2026). Add the agreed date to Para 2A. Not sure what&#39;s appropriate? Ask your broker.</div>
+      </div>
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('detail-r2');openMarkFixed('r2')">Mark as Fixed</button>
+        <button class="sheet-btn primary" onclick="closeSheet('detail-r2');openHaveAMinute('r2')">Ask broker what date to use</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('detail-r2')">Back to checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     HAVE A MINUTE? SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="hamin-sheet" onclick="if(event.target===this)closeSheet('hamin-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">"Have a Minute?"</div>
+      <button class="sheet-close" onclick="closeSheet('hamin-sheet')">✕</button>
+    </div>
+    <div class="sheet-body" id="hamin-body">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     SENT CONFIRMATION SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="sent-sheet" onclick="if(event.target===this)closeSheet('sent-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-body" style="padding:24px 20px;">
+      <div class="success-check">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="success-title">Message sent</div>
+      <div class="success-sub">Sarah Chen was notified via email and in-system message with the subject "Have a Minute?"</div>
+      <div class="success-detail"><strong>What happens next:</strong> Sarah will see your question in her FileBuddyAI dashboard and also receive an email. She typically responds within a few hours. You&#39;ll get a notification here when she replies.</div>
+      <div class="sheet-btns">
+        <button class="sheet-btn primary" onclick="closeSheet('sent-sheet')">Back to my transaction</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     NOTIFICATIONS SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="notif-sheet" onclick="if(event.target===this)closeSheet('notif-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Notifications</div>
+      <button class="sheet-close" onclick="closeSheet('notif-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="notif-item">
+        <div class="notif-dot-outer"><div class="notif-unread"></div></div>
+        <div><div class="notif-text"><strong>FileBuddy</strong> reviewed 13292 Via Del Lago — 5 issues found, 28 checks passed</div><div class="notif-time">Today · 9:04 AM</div></div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-dot-outer"><div class="notif-unread"></div></div>
+        <div><div class="notif-text"><strong>Sarah Chen</strong> has been notified of your open issues. Fix them before your broker review.</div><div class="notif-time">Today · 9:12 AM</div></div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-dot-outer"><div style="width:8px;height:8px;border-radius:50%;background:#e2e8f0;"></div></div>
+        <div><div class="notif-text">Home inspection confirmed for <strong>May 15 with Ace Inspections LLC</strong></div><div class="notif-time">May 8 · 2:30 PM</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     PROFILE SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="profile-sheet" onclick="if(event.target===this)closeSheet('profile-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">My Profile</div>
+      <button class="sheet-close" onclick="closeSheet('profile-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="prof-avatar-lg">RH</div>
+      <div class="prof-name">Rich Hernandez</div>
+      <div class="prof-role">Real Estate Agent · eXp Realty</div>
+      <div class="prof-row"><div class="prof-key">Email</div><div class="prof-val">rich@exprealty.com</div></div>
+      <div class="prof-row"><div class="prof-key">DRE License</div><div class="prof-val">02043967</div></div>
+      <div class="prof-row"><div class="prof-key">Broker</div><div class="prof-val">Sarah Chen</div></div>
+      <div class="prof-row"><div class="prof-key">Brokerage</div><div class="prof-val">Chen Realty Group</div></div>
+      <div class="prof-row"><div class="prof-key">Active transactions</div><div class="prof-val" style="color:var(--sky)">1</div></div>
+      <div class="prof-row"><div class="prof-key">Compliance score</div><div class="prof-val" style="color:var(--cost-risk)">76 — At Risk</div></div>
+      <div class="prof-row"><div class="prof-key">Open issues</div><div class="prof-val" style="color:var(--compliance)">5 to resolve</div></div>
+      <div style="margin-top:20px">
+        <button class="sheet-btn danger" style="width:100%;margin-bottom:9px" onclick="closeSheet('profile-sheet')">Sign out</button>
+        <button class="sheet-btn secondary" style="width:100%" onclick="closeSheet('profile-sheet')">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════
+//  REPRESENTATION AGREEMENT TRACKING
+//  Per-transaction: has the rep agreement been confirmed?
+// ══════════════════════════════════════════════════════
+const repAgreementStatus = {
+  viadellago:  false,  // Not yet confirmed — will trigger broker alert
+  maplegrove:  true,
+  sierravista: true,
+  juniper:     false,
+};
+
+function isRepAgreementConfirmed(txnId) {
+  return !!repAgreementStatus[txnId];
+}
+function confirmRepAgreement(txnId) {
+  repAgreementStatus[txnId] = true;
+  // Add audit trail entry
+  const now = new Date();
+  const ts = 'May 11 · ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+  AUDIT_TRAIL.push({
+    time: ts, type:'fixed',
+    action: 'Representation Agreement confirmed on file',
+    detail: 'Agent-client agreement uploaded · Broker review now unlocked',
+    chip:'f', chipTxt:'Confirmed',
+  });
+  // Update the checklist item visually
+  updateRepChecklistItem(true);
+}
+
+function updateRepChecklistItem(confirmed) {
+  const el = document.getElementById('rep-checklist-item');
+  if (!el) return;
+  if (confirmed) {
+    el.className = 'check-item done';
+    el.querySelector('.check-box').innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    el.querySelector('.check-title').textContent = 'Representation agreement on file';
+    el.querySelector('.check-detail').textContent = 'Buyer/Seller agent agreement confirmed · Broker review unlocked';
+    const chipEl = el.querySelector('.rep-alert-chip');
+    if (chipEl) { chipEl.className='rep-alert-chip ok'; chipEl.innerHTML='✓ Confirmed'; }
+    el.onclick = null;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  BROKER ALERT GATE
+// ══════════════════════════════════════════════════════
+let alertProceedCallback = null;
+
+function checkRepBeforeBrokerReview(txnId, onProceed) {
+  if (isRepAgreementConfirmed(txnId)) {
+    onProceed();
+    return;
+  }
+  alertProceedCallback = onProceed;
+  document.getElementById('broker-alert-overlay').classList.add('active');
+}
+
+function closeBrokerAlert() {
+  document.getElementById('broker-alert-overlay').classList.remove('active');
+  alertProceedCallback = null;
+}
+
+function proceedDespiteAlert() {
+  // Log the override in audit trail
+  const now = new Date();
+  const ts = 'May 11 · ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+  AUDIT_TRAIL.push({
+    time: ts, type:'risk',
+    action: 'Broker review override — rep agreement not confirmed',
+    detail: 'Broker proceeded without confirmed representation agreement · Logged',
+    chip:'r', chipTxt:'Override',
+  });
+  document.getElementById('broker-alert-overlay').classList.remove('active');
+  if (alertProceedCallback) { alertProceedCallback(); alertProceedCallback = null; }
+}
+
+// ══════════════════════════════════════════════════════
+//  NEW TRANSACTION DROP — Dashboard upload
+// ══════════════════════════════════════════════════════
+let newTxnFileName = '';
+
+function openNewTxnDrop() {
+  closeAllSheets();
+  document.getElementById('new-txn-drop-overlay').classList.add('active');
+}
+function closeNewTxnDrop() {
+  document.getElementById('new-txn-drop-overlay').classList.remove('active');
+}
+function handleDashDrop(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const files = event.dataTransfer.files;
+  const name = files && files[0] ? files[0].name : '3_test.pdf';
+  const size = files && files[0] ? files[0].size : 2162688;
+  openNewTxnDrop();
+  setTimeout(() => {
+    newTxnShowFile(name, size);
+    // Auto-kick off review after user sees the file appear
+    setTimeout(() => newTxnStartReview(), 700);
+  }, 200);
+}
+function newTxnHandleDrop(event) {
+  event.preventDefault();
+  const dz = document.getElementById('new-txn-drop-zone');
+  if (dz) { dz.style.borderColor='#cbd5e1'; dz.style.background='#f8fafc'; }
+  const files = event.dataTransfer.files;
+  const name = files && files[0] ? files[0].name : '3_test.pdf';
+  const size = files && files[0] ? files[0].size : 2162688;
+  newTxnShowFile(name, size);
+  // Auto-start review after file appears
+  setTimeout(() => newTxnStartReview(), 700);
+}
+function newTxnHandleInput(input) {
+  if (input.files && input.files[0]) {
+    newTxnShowFile(input.files[0].name, input.files[0].size);
+    setTimeout(() => newTxnStartReview(), 700);
+  }
+}
+function newTxnSimulate() {
+  newTxnShowFile('3_test.pdf', 2162688);
+  // Auto-start after a brief moment so user sees the file card appear
+  setTimeout(() => newTxnStartReview(), 600);
+}
+function newTxnShowFile(name, size) {
+  newTxnFileName = name;
+  const mb = size ? (size/1048576).toFixed(1)+' MB' : '2.1 MB';
+  document.getElementById('new-txn-file-name').textContent = name;
+  document.getElementById('new-txn-file-meta').textContent = 'PDF · '+mb+' · Ready to process';
+  const card = document.getElementById('new-txn-file-card');
+  card.classList.add('visible'); card.style.display='flex';
+  const btn = document.getElementById('new-txn-submit');
+  btn.classList.add('ready');
+}
+function newTxnClearFile() {
+  newTxnFileName = '';
+  const card = document.getElementById('new-txn-file-card');
+  card.classList.remove('visible'); card.style.display='none';
+  document.getElementById('new-txn-submit').classList.remove('ready');
+  document.getElementById('new-txn-file-input').value='';
+}
+
+function newTxnStartReview() {
+  const fileName = newTxnFileName || '3_test.pdf';
+  const isRichDoc = fileName === '3_test.pdf';
+  closeNewTxnDrop();
+  setTimeout(() => runNewTxnProcessing(fileName, isRichDoc), 100);
+}
+
+function runNewTxnProcessing(fileName, isRichDoc) {
+  const proc = document.getElementById('agent-proc-overlay');
+  // Update proc labels for new transaction context
+  const procTitleEl = document.getElementById('proc-title'); if(procTitleEl) procTitleEl.textContent = 'Building your checklist…';
+  const procSubEl = document.getElementById('proc-sub'); if(procSubEl) procSubEl.textContent = isRichDoc
+    ? 'Reading 13292 Via Del Lago · 44 pages · CA RPA package'
+    : 'Reading ' + fileName + ' · Extracting property details';
+  proc.classList.add('active');
+
+  const steps = [
+    {id:'proc-c1',bid:'proc-b1',type:'done',  pct:15,lbl:'Extracting property details…',   cnt:''},
+    {id:'proc-c2',bid:'proc-b2',type:'done',  pct:30,lbl:'Identifying parties & dates…',   cnt:''},
+    {id:'proc-c3',bid:'proc-b3',type:isRichDoc?'flagged':'done', pct:50,lbl:'Checking signatures & initials…', cnt:isRichDoc?'3 issues':'✓'},
+    {id:'proc-c4',bid:'proc-b4',type:'done',  pct:65,lbl:'Validating financial figures…',  cnt:'✓ passed'},
+    {id:'proc-c5',bid:'proc-b5',type:'done',  pct:80,lbl:'Building closing checklist…',    cnt:'14 tasks'},
+    {id:'proc-c6',bid:'proc-b6',type:isRichDoc?'flagged':'done', pct:95,lbl:'Final review…', cnt:isRichDoc?'2 risks':'✓ clean'},
+  ];
+
+  const fill=document.getElementById('proc-fill'), pctEl=document.getElementById('proc-pct'), lblEl=document.getElementById('proc-lbl');
+  steps.forEach((chk,i) => {
+    setTimeout(() => { document.getElementById(chk.id).className='proc-item running'; fill.style.width=(chk.pct-10)+'%'; pctEl.textContent=(chk.pct-10)+'%'; }, (i+1)*550-260);
+    setTimeout(() => {
+      const el=document.getElementById(chk.id); el.className='proc-item '+chk.type;
+      const b=document.getElementById(chk.bid); if(chk.cnt){b.textContent=chk.cnt;b.style.display='';}
+      fill.style.width=chk.pct+'%'; pctEl.textContent=chk.pct+'%'; lblEl.textContent=chk.lbl;
+    }, (i+1)*550);
+  });
+
+  setTimeout(() => {
+    fill.style.width='100%'; pctEl.textContent='100%';
+    lblEl.textContent = isRichDoc ? 'Done · 5 issues found · Checklist ready' : 'Done · All clear · Checklist ready';
+    document.getElementById('proc-title').textContent = 'Checklist built!';
+    setTimeout(() => {
+      proc.classList.remove('active');
+      // Reset proc UI for future uses
+      document.getElementById('proc-title').textContent='Reviewing your document…';
+      steps.forEach(s => { document.getElementById(s.id).className='proc-item'; document.getElementById(s.bid).style.display='none'; });
+      fill.style.width='0%'; pctEl.textContent='0%'; lblEl.textContent='Initializing…';
+      // Add new transaction to dashboard and open it
+      addNewTransaction(fileName, isRichDoc);
+    }, 800);
+  }, steps.length*550+500);
+}
+
+// ══════════════════════════════════════════════════════
+//  ADD NEW TRANSACTION TO DASHBOARD
+// ══════════════════════════════════════════════════════
+let newTxnCounter = 0;
+
+function addNewTransaction(fileName, isRichDoc) {
+  newTxnCounter++;
+  // For the Rich Hernandez demo doc, map to viadellago data
+  const txnId = isRichDoc ? 'viadellago' : 'newtxn-' + newTxnCounter;
+
+  // For Rich's doc, we already have all data — just navigate to it
+  if (isRichDoc) {
+    repAgreementStatus['viadellago'] = false;
+    // Add card to dashboard if not already there
+    if (!document.getElementById('card-viadellago')) {
+      _insertTxnCard({
+        id: 'viadellago', addr: '13292 Via Del Lago', city: 'Victorville, CA 92392',
+        priceDisplay: '$410K', closeDisplay: 'Closes May 30',
+        tagHtml: '<span class="txn-card-tag" style="background:#fef2f2;color:#991b1b;border-color:#fecaca;">3 compliance</span><span class="txn-card-tag" style="background:#fffbeb;color:#92400e;border-color:#fde68a;">2 cost risks</span>',
+        statHtml: '<div class="txn-card-stat"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span style="color:#b91c1c">5 issues to fix</span></div><div class="txn-card-stat" style="color:var(--slate-500)">21 days left</div>',
+        progress: 50, done: 7, total: 15,
+      });
+    }
+    // Show the scan results overlay, then navigate
+    showScanResults('viadellago', true);
+    return;
+  }
+
+  // Generic new transaction
+  const txnData = {
+    id: txnId, addr: 'New Transaction', city: 'Extracted from ' + fileName,
+    price: 'TBD', closeDate: 'TBD', daysLeft: null,
+    commission: '3%', buyer: 'TBD', seller: 'TBD',
+    progress: 7, done: 1, total: 15,
+    fileName: fileName,
+  };
+  TXN[txnId] = txnData;
+  repAgreementStatus[txnId] = false;
+
+  _insertTxnCard({
+    id: txnId, addr: 'New Transaction', city: 'Extracted from ' + fileName,
+    priceDisplay: 'TBD', closeDisplay: 'Date TBD',
+    tagHtml: '<span class="new-badge">Checklist ready</span>',
+    statHtml: '<div class="txn-card-stat" style="color:var(--verified)">Ready to go</div><div class="txn-card-stat" style="color:var(--slate-500)">Dates TBD</div>',
+    progress: 7, done: 1, total: 15,
+  });
+
+  showScanResults(txnId, false);
+}
+
+function _insertTxnCard(d) {
+  if (document.getElementById('card-' + d.id)) return; // already there
+  const cardHtml = `<div class="txn-card new-txn" id="card-${d.id}" onclick="openTransaction('${d.id}')">
+    <div class="txn-card-top">
+      <div>
+        <div class="txn-card-addr">${d.addr}</div>
+        <div class="txn-card-city">${d.city}</div>
+        <div class="txn-card-tags">${d.tagHtml}</div>
+      </div>
+      <div>
+        <div class="txn-card-price">${d.priceDisplay}</div>
+        <div class="txn-card-close-lbl">${d.closeDisplay}</div>
+      </div>
+    </div>
+    <div class="txn-card-bar-row">
+      <div class="txn-card-track"><div class="txn-card-fill" style="width:${d.progress}%"></div></div>
+      <div class="txn-card-pct">${d.progress}% · ${d.done} of ${d.total}</div>
+    </div>
+    <div class="txn-card-footer">
+      <div class="txn-card-footer-left">${d.statHtml}</div>
+      <div class="txn-card-chevron"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+  </div>`;
+  const container = document.getElementById('txn-cards-container');
+  if (container) {
+    container.insertAdjacentHTML('afterbegin', cardHtml);
+    const activeEl = document.getElementById('dash-active-count');
+    if (activeEl) activeEl.textContent = parseInt(activeEl.textContent || '4') + 1;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  REPRESENTATION AGREEMENT CHECKLIST ITEM
+//  Injected into every transaction detail view
+// ══════════════════════════════════════════════════════
+function injectRepAgreementItem(txnId) {
+  // Insert BEFORE the first done check-item in the checklist
+  const card = document.querySelector('.checklist-card');
+  if (!card) return;
+  const confirmed = isRepAgreementConfirmed(txnId);
+  const itemHtml = confirmed
+    ? `<div class="check-item done" id="rep-checklist-item">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="check-body">
+          <div class="check-title">Representation agreement on file</div>
+          <div class="check-detail">Buyer/Seller agent agreement confirmed · Broker review unlocked</div>
+          <span class="rep-alert-chip ok">✓ Confirmed</span>
+        </div>
+      </div>`
+    : `<div class="check-item blocked" id="rep-checklist-item" onclick="openRepAgreementSheet()">
+        <div class="check-box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="check-body">
+          <div class="check-title">Representation agreement on file</div>
+          <div class="check-detail">Upload signed buyer or seller representation agreement · Required before broker review</div>
+          <span class="rep-alert-chip missing">⚠ Not yet confirmed — tap to upload</span>
+        </div>
+        <div class="check-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>`;
+
+  card.insertAdjacentHTML('afterbegin', itemHtml);
+}
+
+function openRepAgreementSheet() {
+  openSheet('rep-agreement-sheet');
+}
+
+// ══════════════════════════════════════════════════════
+//  OVERRIDE openTransaction to inject rep agreement item
+// ══════════════════════════════════════════════════════
+
+
+// ══════════════════════════════════════════════════════
+//  TRANSACTION DATA
+// ══════════════════════════════════════════════════════
+const TXN = {
+  viadellago: { id:'viadellago', addr:'13292 Via Del Lago', city:'Victorville, CA 92392', price:'$410,000', closeDate:'May 30, 2026', daysLeft:21, commission:'3%', buyer:'Guadalupe Estrada', seller:'Agustin R. De Leon Calderon', progress:50, done:7, total:14 },
+  maplegrove: { id:'maplegrove', addr:'847 Maple Grove Dr', city:'Apple Valley, CA 92307', price:'$385,000', closeDate:'Jun 6, 2026', daysLeft:26, commission:'2.5%', buyer:'Marcus & Denise Webb', seller:'Thomas Nguyen', progress:71, done:10, total:14 },
+  sierravista: { id:'sierravista', addr:'2204 Sierra Vista Blvd', city:'Hesperia, CA 92345', price:'$520,000', closeDate:'May 22, 2026', daysLeft:11, commission:'3%', buyer:'Kevin & Priya Okafor', seller:'Linda Castillo', progress:86, done:12, total:14 },
+  juniper: { id:'juniper', addr:'9034 Juniper St', city:'Victorville, CA 92392', price:'$295,000', closeDate:'Jun 18, 2026', daysLeft:38, commission:'3%', buyer:'Brianna Torres', seller:'Robert Simmons', progress:29, done:4, total:14 },
+};
+let activeTxnId = 'viadellago';
+
+// ── View navigation ──
+function goToDashboard() { document.body.classList.remove('in-detail'); window.scrollTo(0,0); }
+function openTransaction(txnId) {
+  activeTxnId = txnId;
+  renderTransactionDetail(txnId);
+  document.body.classList.add('in-detail');
+  window.scrollTo(0,0);
+  // Inject rep agreement item for dynamic transactions
+  if (txnId !== 'viadellago') {
+    setTimeout(() => injectRepAgreementItem(txnId), 50);
+  }
+  // For VDL static view, rep item is already in static HTML
+}
+
+function renderTransactionDetail(id) {
+  const txn = TXN[id];
+  if (!id || id === 'viadellago') { document.querySelector('.back-lbl').textContent = 'My Transactions'; return; }
+  renderHero(txn); renderProgress(txn); renderChecklist(txn); renderActivity(txn);
+  updateHaveAMinuteContext(txn);
+}
+
+function renderHero(txn) {
+  const issues = getTxnIssues(txn.id);
+  document.querySelector('.txn-hero-inner').innerHTML = `
+    <div class="txn-label">Your Active Transaction</div>
+    <div class="txn-address">${txn.addr}</div>
+    <div class="txn-city">${txn.city}</div>
+    <div class="txn-meta-row">
+      <div class="txn-meta-item"><div class="txn-meta-val">${txn.price}</div><div class="txn-meta-lbl">Sale Price</div></div>
+      <div class="txn-meta-item"><div class="txn-meta-val">${txn.closeDate.split(',')[0]}</div><div class="txn-meta-lbl">Target Close</div></div>
+      <div class="txn-meta-item"><div class="txn-meta-val">${txn.commission}</div><div class="txn-meta-lbl">Your Commission</div></div>
+    </div>
+    <div class="txn-status-row">
+      <div class="txn-days-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="txn-days-text">${txn.daysLeft} days to close</div>
+      </div>
+      ${issues.length ? `<div class="txn-issues-chip" onclick="openSheet('issues-sheet')"><div class="txn-issues-count">${issues.length}</div><div class="txn-issues-text">${issues.length === 1 ? 'Issue to fix' : 'Issues to fix'}</div><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>` : `<div class="txn-days-chip" style="background:rgba(4,120,87,0.18);border-color:rgba(4,120,87,0.3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div class="txn-days-text" style="color:#6ee7b7">All clear</div></div>`}
+    </div>`;
+}
+
+function renderProgress(txn) {
+  const issues = getTxnIssues(txn.id);
+  document.querySelector('.progress-card').innerHTML = `
+    <div class="progress-header"><div class="progress-title">Closing Progress</div><div class="progress-frac">${txn.done} of ${txn.total} complete</div></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${txn.progress}%"></div></div>
+    <div class="progress-sub">${issues.length > 0 ? issues.length + ' item' + (issues.length > 1 ? 's' : '') + ' need your attention' : 'Looking great — keep going!'}</div>`;
+}
+
+const TXN_ISSUES = {
+  maplegrove: [
+    { id:'mg-c1', type:'c', title:'Buyer initials missing — page 8', addr:'847 Maple Grove Dr', detail:'CA Civil Code · Two initial blocks on page 8 unsigned by Marcus Webb', tag:'Must fix · CA Civil Code',
+      what:'Marcus Webb needs to initial two boxes on page 8 of the RPA — Buyer Inspection Advisory section. Resend via DocuSign.',
+      why:'Without initials the Buyer Inspection Advisory is unacknowledged, a required CA disclosure.',
+      excerpt: { hdr:'RPA · Page 8', type:'c', lines:['Buyer Initials — Inspection Advisory', '<span class="exc-c">[ Marcus Webb — initials missing ]</span>'] } }
+  ],
+  sierravista: [],
+  juniper: [
+    { id:'jp-r1', type:'r', title:'Down payment percentage mismatch', addr:'9034 Juniper St', detail:'Contract states 15% down but dollar amount = 12.4% · $7,740 discrepancy', tag:'Verify · Math discrepancy',
+      what:'Check with the buyer and lender. Contract says 15% down on $295,000 = $44,250 — but stated amount is $36,510. One is wrong.',
+      why:'If wrong number goes to escrow the buyer could be short at closing. A $7,740 gap will collapse the closing.',
+      excerpt: { hdr:'RPA · Page 3 — Down Payment', type:'r', lines:['Down payment: 15% of purchase price', 'Down payment amount: <span class="exc-r">$36,510</span>  (expected $44,250)'] } }
+  ],
+};
+
+function getTxnIssues(id) {
+  if (id === 'viadellago') return ['c1','c2','c3','r1','r2'];
+  return TXN_ISSUES[id] || [];
+}
+
+const checklistData = {
+  maplegrove: {
+    done:[
+      {title:'Purchase Agreement signed',detail:'Both parties · Apr 28, 2026'},
+      {title:'Buyer pre-approval verified',detail:'Loan $308,000 · 80% LTV · Approved'},
+      {title:'Earnest money deposited',detail:'$9,625 · Received by escrow'},
+      {title:'Title search ordered',detail:'Pacific Title Co. · Completed'},
+      {title:'Home inspection completed',detail:'May 4 · No major issues found'},
+      {title:'Property appraisal completed',detail:'May 7 · Valued at $390,000 ✓'},
+      {title:'Buyer signatures on RPA forms',detail:'Marcus & Denise Webb · Most pages signed'},
+      {title:'Seller disclosures delivered',detail:'Thomas Nguyen · All required disclosures sent'},
+      {title:'Loan underwriting approved',detail:'Lender cleared · May 8'},
+      {title:'Contingencies removed',detail:'Inspection & loan contingencies waived'},
+    ],
+    blocked:[{issueId:'mg-c1',title:'Buyer initials on page 8 (Inspection Advisory)',detail:'Marcus Webb · Two initial blocks unsigned · Required before close',tag:'Must fix · CA Civil Code'}],
+    active:[
+      {title:'Final walk-through scheduled',detail:'Pending confirmation with buyers · Target May 30',tag:'Upcoming'},
+      {title:'Closing disclosure reviewed',detail:'Escrow will send 3 days before close · Jun 3',tag:'Upcoming'},
+      {title:'Keys & possession transferred',detail:'Upon funding · Target Jun 6',tag:'Upcoming'},
+    ]
+  },
+  sierravista: {
+    done:[
+      {title:'Purchase Agreement signed',detail:'Both parties · Apr 15, 2026'},
+      {title:'Buyer pre-approval verified',detail:'Loan $416,000 · 80% LTV · Approved'},
+      {title:'Earnest money deposited',detail:'$15,600 · Received by escrow'},
+      {title:'Title search completed',detail:'Desert Title Co. · Clean title confirmed'},
+      {title:'Home inspection completed',detail:'Apr 22 · Repairs negotiated and agreed'},
+      {title:'Property appraisal completed',detail:'Apr 28 · Valued at $525,000 ✓'},
+      {title:'Buyer signatures on all RPA forms',detail:'Kevin & Priya Okafor · All pages complete'},
+      {title:'Seller disclosures signed',detail:'Linda Castillo · All required forms complete'},
+      {title:'Loan underwriting approved',detail:'Final approval received · May 5'},
+      {title:'Contingencies fully removed',detail:'All contingencies waived · May 6'},
+      {title:'Seller repair credits confirmed',detail:'$3,200 credit agreed · In escrow instructions'},
+      {title:'Closing disclosure reviewed',detail:'CD signed by both parties · May 9'},
+    ],
+    blocked:[],
+    active:[
+      {title:'Final walk-through with buyer',detail:'Scheduled May 20 · 2 days before close',tag:'Coming up'},
+      {title:'Keys & possession transferred',detail:'Upon funding · Target May 22',tag:'Target May 22'},
+    ]
+  },
+  juniper: {
+    done:[
+      {title:'Purchase Agreement signed',detail:'Both parties · May 1, 2026'},
+      {title:'Buyer pre-approval verified',detail:'Loan $258,500 · 87.6% LTV · Approved'},
+      {title:'Earnest money deposited',detail:'$7,375 · Received by escrow'},
+      {title:'Title search ordered',detail:'Victor Valley Title Co. · In progress'},
+    ],
+    blocked:[{issueId:'jp-r1',title:'Verify down payment amount vs percentage',detail:'Stated 15% but dollar amount = 12.4% · $7,740 gap · Check with buyer & lender',tag:'Verify · Math discrepancy',warning:true}],
+    active:[
+      {title:'Home inspection scheduled',detail:'May 18, 2026 · Pro Inspect LLC',tag:'Coming up'},
+      {title:'Property appraisal ordered',detail:'Est. May 20 · Lender appraisal panel',tag:'In progress'},
+      {title:'Buyer RPA signatures',detail:'Some pages still need buyer signature',tag:'In progress'},
+      {title:'Seller disclosures delivery',detail:'Due before inspection · Not yet sent',tag:'Pending'},
+      {title:'Loan underwriting',detail:'Pending appraisal · Est. Jun 1',tag:'Upcoming'},
+      {title:'Contingency periods',detail:'Inspection: 17 days · Loan: 21 days',tag:'Upcoming'},
+      {title:'Final walk-through',detail:'To be scheduled · Target Jun 15',tag:'Upcoming'},
+      {title:'Closing disclosure',detail:'3 days before close · Est. Jun 15',tag:'Upcoming'},
+      {title:'Keys & possession',detail:'Upon funding · Target Jun 18',tag:'Upcoming'},
+    ]
+  }
+};
+
+const SVG_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const SVG_X='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const SVG_WARN='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+const SVG_DOT='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>';
+const SVG_CHEV='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+
+function renderChecklist(txn) {
+  const cl = checklistData[txn.id]; if (!cl) return;
+  const card = document.querySelector('.checklist-card'); let h = '';
+  cl.done.forEach(i => { h += `<div class="check-item done"><div class="check-box">${SVG_CHECK}</div><div class="check-body"><div class="check-title">${i.title}</div><div class="check-detail">${i.detail}</div></div></div>`; });
+  cl.blocked.forEach(i => {
+    const cls = i.warning ? 'warning' : 'blocked', icon = i.warning ? SVG_WARN : SVG_X, tagCls = i.warning ? 'tag-r' : 'tag-c';
+    h += `<div class="check-item ${cls}" onclick="openDynIssue('${txn.id}','${i.issueId}')"><div class="check-box">${icon}</div><div class="check-body"><div class="check-title">${i.title}</div><div class="check-detail">${i.detail}</div><span class="check-tag ${tagCls}">${i.tag}</span></div><div class="check-chevron">${SVG_CHEV}</div></div>`;
+  });
+  cl.active.forEach(i => { h += `<div class="check-item active"><div class="check-box">${SVG_DOT}</div><div class="check-body"><div class="check-title">${i.title}</div><div class="check-detail">${i.detail}</div><span class="check-tag tag-sky">${i.tag}</span></div></div>`; });
+  card.innerHTML = h;
+}
+
+function renderActivity(txn) {
+  const icons = {
+    file: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>',
+    check: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  };
+  const rows = [{cls:'sys',icon:'file',text:'Transaction opened',detail:`${txn.addr} · Rich Hernandez`,time:'May 1 · 9:00 AM'},{cls:'ok',icon:'check',text:'Purchase Agreement signed',detail:`${txn.buyer} & ${txn.seller}`,time:'May 1 · 11:30 AM'},{cls:'ok',icon:'check',text:'Buyer pre-approval confirmed',detail:'Loan approved by lender',time:'May 3 · 2:00 PM'}];
+  document.querySelector('.activity-card').innerHTML = `<div class="activity-hdr"><div class="activity-title">Transaction Log</div><div class="activity-see-all">See all</div></div>`
+    + rows.map((r,i) => `<div class="act-row"><div class="act-spine"><div class="act-dot ${r.cls}">${icons[r.icon]}</div>${i<rows.length-1?'<div class="act-line"></div>':''}</div><div class="act-body"><div class="act-time">${r.time}</div><div class="act-text">${r.text}</div><div class="act-detail">${r.detail}</div></div></div>`).join('');
+}
+
+function updateHaveAMinuteContext(txn) { issueContext['current'] = { label:`Question about ${txn.addr}`, desc:'' }; }
+
+// ══════════════════════════════════════════════════════
+//  AUDIT TRAIL — stateful, persistent in session
+// ══════════════════════════════════════════════════════
+const AUDIT_TRAIL = [
+  { time:'Feb 3 · 10:45 AM', type:'sys', action:'Transaction opened', detail:'13292 Via Del Lago · Rich Hernandez · eXp Realty' },
+  { time:'Feb 3 · 11:00 AM', type:'sys', action:'Purchase Agreement signed', detail:'Guadalupe Estrada & Agustin R. De Leon Calderon · $410,000' },
+  { time:'May 9 · 9:04 AM', type:'scan', action:'FileBuddy self-review — 5 issues found', detail:'44 pages scanned · 28 checks passed · 6 seconds', chip:'scan', chipTxt:'Agent Review' },
+  { time:'May 9 · 9:04 AM', type:'comp', action:'Flagged: Seller signature missing — AD form', detail:'Civil Code § 2079.14 · Pages 1 & 32', chip:'c', chipTxt:'Compliance' },
+  { time:'May 9 · 9:04 AM', type:'comp', action:'Flagged: Short Sale Addendum unsigned by Seller', detail:'SSA Page 30 · Para 2A', chip:'c', chipTxt:'Compliance' },
+  { time:'May 9 · 9:04 AM', type:'comp', action:'Flagged: FRR-PA Seller date missing', detail:'FinCEN · Page 20 · Date field blank', chip:'c', chipTxt:'Compliance' },
+  { time:'May 9 · 9:04 AM', type:'risk', action:'Flagged: Dual agency — AD seller sig missing', detail:'Mayra Escalante DRE 02043967 · Both sides', chip:'r', chipTxt:'Cost Risk' },
+  { time:'May 9 · 9:04 AM', type:'risk', action:'Flagged: Short sale contingency date blank', detail:'SSA Para 2A · No hard cutoff date', chip:'r', chipTxt:'Cost Risk' },
+  { time:'May 9 · 9:12 AM', type:'sys', action:'Broker notified of open issues', detail:'Sarah Chen · 5 issues sent to her dashboard' },
+];
+
+const ISSUE_LABELS = {
+  c1: { title:'AD Seller signature', type:'c' },
+  c2: { title:'SSA Seller signature', type:'c' },
+  c3: { title:'FRR-PA Seller date', type:'c' },
+  r1: { title:'Dual agency verification', type:'r' },
+  r2: { title:'SSA contingency deadline', type:'r' },
+};
+
+function renderAuditTrail() {
+  const el = document.getElementById('audit-trail-tl');
+  if (!el) return;
+  const dotTypeMap = { sys:'sys', scan:'scan', comp:'comp', risk:'risk', fixed:'fixed' };
+  const svgs = {
+    sys:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>',
+    scan: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0369a1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+    comp: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    risk: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    fixed:'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  };
+  el.innerHTML = AUDIT_TRAIL.map((row, i) => {
+    const dotCls = dotTypeMap[row.type] || 'sys';
+    const isLast = i === AUDIT_TRAIL.length - 1;
+    const chipHtml = row.chip ? `<span class="trail-chip ${row.chip}">${row.chipTxt}</span>` : '';
+    const noteHtml = row.note ? `<div class="trail-note">"${row.note}"</div>` : '';
+    const actionCls = row.type === 'fixed' ? ' fixed' : '';
+    return `<div class="trail-row">
+      <div class="trail-spine"><div class="trail-dot ${dotCls}">${svgs[row.type] || svgs.sys}</div>${!isLast ? '<div class="trail-line"></div>' : ''}</div>
+      <div class="trail-body">
+        <div class="trail-time">${row.time}</div>
+        <div class="trail-action${actionCls}">${row.action}</div>
+        <div class="trail-detail">${row.detail}</div>
+        ${chipHtml}${noteHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Open audit trail (renders first) ──
+const _origOpenSheet = openSheet;
+
+// ══════════════════════════════════════════════════════
+//  MARK AS FIXED
+// ══════════════════════════════════════════════════════
+let pendingFixId = null;
+const ISSUE_DETAILS_FOR_FIX = {
+  c1: { label:'Seller signature missing — Agency Disclosure (AD)', type:'c', placeholder:'e.g. Got Agustin to sign pages 1 & 32 via DocuSign on May 11' },
+  c2: { label:'Short Sale Addendum unsigned by Seller', type:'c', placeholder:'e.g. Seller signed SSA page 30 via DocuSign · May 11' },
+  c3: { label:'FRR-PA Seller date field blank', type:'c', placeholder:'e.g. Agustin added date to FRR-PA page 20 · May 11' },
+  r1: { label:'Dual agency — full disclosure verified', type:'r', placeholder:'e.g. Seller signed AD form · Dual agency now fully disclosed per § 2079.17' },
+  r2: { label:'Short sale contingency deadline added to SSA Para 2A', type:'r', placeholder:'e.g. Added Jun 23 as specific lender approval deadline · Agreed with all parties' },
+};
+
+function openMarkFixed(issueId) {
+  pendingFixId = issueId;
+  const d = ISSUE_DETAILS_FOR_FIX[issueId];
+  if (!d) return;
+  document.getElementById('mf-title').textContent = d.type === 'c' ? 'Mark as Fixed' : 'Mark as Verified';
+  const det = document.getElementById('mf-issue-detail');
+  det.className = 'fix-confirm-detail' + (d.type === 'r' ? ' r' : '');
+  det.textContent = d.label;
+  document.getElementById('mf-note').placeholder = d.placeholder;
+  document.getElementById('mf-note').value = '';
+  openSheet('mark-fixed-sheet');
+}
+
+function confirmMarkFixed() {
+  const id = pendingFixId;
+  const d = ISSUE_DETAILS_FOR_FIX[id];
+  if (!d) return;
+  const note = document.getElementById('mf-note').value.trim();
+  const now = new Date();
+  const timeStr = 'May 11 · ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+
+  // Add to audit trail
+  AUDIT_TRAIL.push({
+    time: timeStr,
+    type: 'fixed',
+    action: (d.type === 'c' ? 'Fixed: ' : 'Verified: ') + d.label,
+    detail: 'Marked by Rich Hernandez · Broker notified',
+    chip: 'f',
+    chipTxt: d.type === 'c' ? 'Fixed' : 'Verified',
+    note: note || null,
+  });
+
+  // Update checklist item visually for VDL (static HTML)
+  if (activeTxnId === 'viadellago') {
+    const detailMap2 = { c1:'detail-c1', c2:'detail-c2', c3:'detail-c3', r1:'detail-r1', r2:'detail-r2' };
+    // Mark the issue chip items in the overview sheet as resolved
+    // For now we update the issues-sheet count badge
+    updateIssuesCount(id);
+  }
+
+  // Show confirmation
+  const sub = document.getElementById('fix-confirmed-sub');
+  sub.textContent = (d.type === 'c' ? 'Issue marked as fixed' : 'Issue marked as verified') + ' · Logged in audit trail at ' + timeStr;
+  const det2 = document.getElementById('fix-confirmed-detail');
+  det2.innerHTML = `<strong>Issue:</strong> ${d.label}<br><strong>Time:</strong> ${timeStr}<br><strong>Logged by:</strong> Rich Hernandez${note ? '<br><strong>Note:</strong> ' + note : ''}`;
+
+  closeSheet('mark-fixed-sheet');
+  setTimeout(() => openSheet('fix-confirmed-sheet'), 150);
+  pendingFixId = null;
+}
+
+// Track fixed issues per transaction session
+const fixedIssues = new Set();
+function updateIssuesCount(fixedId) {
+  fixedIssues.add(fixedId);
+}
+
+// ══════════════════════════════════════════════════════
+//  AGENT FILE DROP & SELF-REVIEW
+// ══════════════════════════════════════════════════════
+function openAgentDrop() {
+  closeAllSheets();
+  document.getElementById('agent-drop-overlay').classList.add('active');
+}
+function closeAgentDrop() {
+  document.getElementById('agent-drop-overlay').classList.remove('active');
+}
+function agentHandleDrop(event) {
+  event.preventDefault();
+  const dz = document.getElementById('drop-zone') || event.currentTarget;
+  if (dz) { dz.style.borderColor = '#cbd5e1'; dz.style.background = '#f8fafc'; }
+  const files = event.dataTransfer.files;
+  agentShowFile(files && files[0] ? files[0].name : '3_test.pdf', files && files[0] ? files[0].size : 2162688);
+}
+function agentHandleInput(input) {
+  if (input.files && input.files[0]) agentShowFile(input.files[0].name, input.files[0].size);
+  else agentShowFile('3_test.pdf', 2162688);
+}
+function agentSimulateFile() {
+  agentShowFile('3_test.pdf', 2162688);
+}
+function agentShowFile(name, size) {
+  const mb = size ? (size / 1048576).toFixed(1) + ' MB' : '2.1 MB';
+  document.getElementById('agent-drop-name').textContent = name;
+  document.getElementById('agent-drop-meta').textContent = 'PDF · ' + mb + ' · Ready for self-review';
+  const card = document.getElementById('agent-drop-file-card');
+  card.classList.add('visible'); card.style.display = 'flex';
+  const btn = document.getElementById('agent-drop-submit');
+  btn.classList.add('ready');
+}
+function agentClearFile() {
+  const card = document.getElementById('agent-drop-file-card');
+  card.classList.remove('visible'); card.style.display = 'none';
+  const btn = document.getElementById('agent-drop-submit');
+  btn.classList.remove('ready');
+  document.getElementById('agent-file-input').value = '';
+}
+function agentStartReview() {
+  closeAgentDrop();
+  setTimeout(() => runAgentProcessing(), 100);
+}
+function runAgentProcessing() {
+  const proc = document.getElementById('agent-proc-overlay');
+  proc.classList.add('active');
+  const checks = [
+    { id:'proc-c1', bid:'proc-b1', type:'done',   pct:18, label:'Initializing…',                    cnt:'' },
+    { id:'proc-c2', bid:'proc-b2', type:'done',   pct:34, label:'Splitting 44 pages…',              cnt:'' },
+    { id:'proc-c3', bid:'proc-b3', type:'flagged',pct:52, label:'Detecting signature blocks…',       cnt:'3 issues' },
+    { id:'proc-c4', bid:'proc-b4', type:'done',   pct:68, label:'Cross-referencing CA Civil Code…', cnt:'✓ passed' },
+    { id:'proc-c5', bid:'proc-b5', type:'done',   pct:82, label:'Checking dual agency chain…',      cnt:'' },
+    { id:'proc-c6', bid:'proc-b6', type:'flagged',pct:95, label:'Validating SSA contingencies…',    cnt:'2 risks' },
+  ];
+  const fill = document.getElementById('proc-fill');
+  const pctEl = document.getElementById('proc-pct');
+  const lblEl = document.getElementById('proc-lbl');
+
+  // Add a new scan entry to audit trail
+  const now = new Date();
+  const ts = 'May 11 · ' + now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  // Remove any previous agent-initiated scan entries past the initial ones
+  const existingNewScan = AUDIT_TRAIL.findIndex(e => e.action && e.action.includes('Agent re-scan'));
+  if (existingNewScan > -1) AUDIT_TRAIL.splice(existingNewScan, 1);
+  AUDIT_TRAIL.push({ time: ts, type:'scan', action:'Agent re-scan initiated', detail:'3_test.pdf · 44 pages · Self-review', chip:'scan', chipTxt:'Agent Review' });
+
+  checks.forEach(chk => {
+    setTimeout(() => {
+      document.getElementById(chk.id).className = 'proc-item running';
+      fill.style.width = (chk.pct - 10) + '%';
+      pctEl.textContent = (chk.pct - 10) + '%';
+    }, (checks.indexOf(chk) + 1) * 580 - 280);
+    setTimeout(() => {
+      const el = document.getElementById(chk.id);
+      el.className = 'proc-item ' + chk.type;
+      const b = document.getElementById(chk.bid);
+      if (chk.cnt) { b.textContent = chk.cnt; b.style.display = ''; }
+      fill.style.width = chk.pct + '%';
+      pctEl.textContent = chk.pct + '%';
+      lblEl.textContent = chk.label;
+    }, (checks.indexOf(chk) + 1) * 580);
+  });
+
+  setTimeout(() => {
+    fill.style.width = '100%'; pctEl.textContent = '100%';
+    lblEl.textContent = 'Review complete — 5 issues found';
+    document.getElementById('proc-title').textContent = 'Review complete';
+    setTimeout(() => {
+      proc.classList.remove('active');
+      openSheet('agent-results-sheet');
+    }, 700);
+  }, checks.length * 580 + 600);
+}
+
+// ══════════════════════════════════════════════════════
+//  SHEET SYSTEM
+// ══════════════════════════════════════════════════════
+function closeAllSheets() {
+  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+}
+function openSheet(id) {
+  if (id === 'issues-sheet' && activeTxnId !== 'viadellago') renderIssuesSheet();
+  if (id === 'audit-trail-sheet') renderAuditTrail();
+  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+function closeSheet(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('active');
+}
+
+// ── Issue detail (static VDL) ──
+const detailMap = { c1:'detail-c1', c2:'detail-c2', c3:'detail-c3', r1:'detail-r1', r2:'detail-r2' };
+function openIssueDetail(id) { openSheet(detailMap[id]); }
+
+// ── Dynamic issue detail (other transactions) ──
+function openDynIssue(txnId, issueId) {
+  const issues = TXN_ISSUES[txnId] || [];
+  const issue = issues.find(i => i.id === issueId);
+  if (!issue) return;
+  const isComp = issue.type === 'c';
+  document.getElementById('dyn-issue-title').textContent = issue.title;
+  document.getElementById('dyn-issue-body').innerHTML = `
+    <div class="detail-badge ${isComp ? 'badge-c' : 'badge-r'}">${isComp ? '🔴 Compliance · Must Fix' : '⚠️ Something to Check'}</div>
+    <div class="detail-sec"><div class="detail-sec-lbl">What&#39;s wrong</div><div class="detail-sec-body">${issue.detail}</div></div>
+    <div class="doc-excerpt">
+      <div class="doc-exc-hdr ${isComp?'c':'r'}"><div class="doc-exc-pg">${issue.excerpt.hdr}</div></div>
+      <div class="doc-exc-body">${issue.excerpt.lines.join('<br>')}</div>
+    </div>
+    <div class="detail-sec"><div class="detail-sec-lbl">Why it matters</div><div class="detail-sec-body">${issue.why}</div></div>
+    <div class="detail-sec"><div class="detail-sec-lbl">What to do</div><div class="detail-sec-body">${issue.what}</div></div>
+    <div class="sheet-btns">
+      <button class="sheet-btn success" onclick="closeSheet('dyn-issue-sheet');openMarkFixed('current-dyn')">Mark as Fixed</button>
+      <button class="sheet-btn primary" onclick="closeSheet('dyn-issue-sheet');openHaveAMinute('current')">Ask broker for help</button>
+      <button class="sheet-btn secondary" onclick="closeSheet('dyn-issue-sheet')">Got it — I&#39;ll fix it</button>
+    </div>`;
+  openSheet('dyn-issue-sheet');
+}
+
+// ── Dynamic issues overview ──
+function renderIssuesSheet() {
+  const issues = TXN_ISSUES[activeTxnId] || [];
+  const el = document.getElementById('issues-sheet-body');
+  if (!el) return;
+  if (issues.length === 0) { el.innerHTML = '<p style="font-size:13px;color:#64748b;text-align:center;padding:20px 0;">No open issues — all clear ✓</p>'; return; }
+  el.innerHTML = `<p style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5;">Fix these before the broker&#39;s final review.</p>`
+    + issues.map(issue => {
+      const isComp = issue.type === 'c';
+      return `<div class="issue-card ${isComp?'compliance':'cost-risk'}" onclick="closeSheet('issues-sheet');openDynIssue('${activeTxnId}','${issue.id}')">
+        <div class="issue-type">${isComp?'🔴 Compliance — Must Fix':'⚠️ Something to Check'}</div>
+        <div class="issue-title">${issue.title}</div>
+        <div class="issue-detail">${issue.addr} · ${issue.detail}</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('issues-sheet');openDynIssue('${activeTxnId}','${issue.id}')">See what to do</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('current')">Ask broker</button>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+// ── Have a Minute? ──
+const issueContext = {
+  c1: { label:'Agency Disclosure — Seller signature missing', desc:'The Seller (Agustin R. De Leon Calderon) has not signed the Agency Disclosure form on pages 1 and 32. I need guidance on the best way to get this fixed quickly.' },
+  c2: { label:'Short Sale Addendum — Seller signature missing', desc:'The Seller hasn\'t signed the SSA on page 30 (Para 2A). Can you advise how to handle this, and whether I should resend via DocuSign or get an in-person signature?' },
+  c3: { label:'FRR-PA — Seller date field blank', desc:'The Federal Reporting Addendum on page 20 has the Seller\'s name but the date is missing. I\'m not fully sure what this form requires — can you walk me through it?' },
+  r1: { label:'Dual agency disclosure — need confirmation', desc:'I\'m listed as agent for both Buyer and Seller. I know the PRBS is signed, but I want to make sure everything is in order once the Seller signs the AD form. Can you confirm?' },
+  r2: { label:'Short sale contingency deadline — SSA Para 2A', desc:'Para 2A doesn\'t have a specific date — just the 45-day default. I\'m not sure what date to propose given the offer was accepted Feb 3. What do you recommend?' },
+  rep: { label:'Representation Agreement — need help getting this on file', desc:'I need to upload a signed representation agreement before the broker can review the purchase contract. Can you advise on what form to use and the quickest way to get it signed?' },
+  current: { label:'Question about my transaction', desc:'' },
+};
+
+function openHaveAMinute(issueId) {
+  const txn = TXN[activeTxnId];
+  const ctx = issueContext[issueId] || { label:`Question about ${txn ? txn.addr : 'my transaction'}`, desc:'' };
+  document.getElementById('hamin-body').innerHTML = `
+    <div class="ham-section-lbl">Subject (fixed)</div>
+    <div class="ham-subject-display">Have a Minute? — ${ctx.label}</div>
+    <div class="ham-section-lbl">To</div>
+    <div class="ham-to"><div class="ham-to-avatar">SC</div><div><div class="ham-to-name">Sarah Chen</div><div class="ham-to-role">Broker / Owner · Chen Realty Group</div></div></div>
+    <div class="ham-section-lbl">Your message</div>
+    <textarea class="ham-textarea" id="ham-message" placeholder="Hi Sarah, I have a quick question about this transaction…">${ctx.desc}</textarea>
+    <div class="ham-section-lbl">This will send as</div>
+    <div class="ham-sends">
+      <div class="ham-send-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email to Sarah</div>
+      <div class="ham-send-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>In-system message</div>
+    </div>
+    <button class="ham-submit" onclick="sendHaveAMinute()">Send "Have a Minute?" to Sarah</button>
+    <button class="sheet-btn secondary" style="width:100%;margin-top:8px" onclick="closeSheet('hamin-sheet')">Cancel</button>`;
+  openSheet('hamin-sheet');
+}
+
+function sendHaveAMinute() {
+  closeSheet('hamin-sheet');
+  setTimeout(() => openSheet('sent-sheet'), 150);
+}
+
+function simulateRepUpload() {
+  // Simulate the rep agreement being uploaded and confirmed
+  const now = new Date();
+  const ts = 'May 11 · ' + now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+  // Run a mini processing animation
+  document.getElementById('agent-proc-overlay').classList.add('active');
+  document.getElementById('proc-title').textContent = 'Verifying agreement…';
+  document.getElementById('proc-sub').textContent = 'BRBC_Signed_EstradaRH.pdf · 3 pages';
+  const fill=document.getElementById('proc-fill'), pctEl=document.getElementById('proc-pct'), lblEl=document.getElementById('proc-lbl');
+  fill.style.width='0%'; pctEl.textContent='0%';
+  setTimeout(()=>{fill.style.width='60%';pctEl.textContent='60%';lblEl.textContent='Reading signatures…';},400);
+  setTimeout(()=>{fill.style.width='100%';pctEl.textContent='100%';lblEl.textContent='Agreement verified ✓';document.getElementById('proc-title').textContent='Agreement confirmed!';},1100);
+  setTimeout(()=>{
+    document.getElementById('agent-proc-overlay').classList.remove('active');
+    // Reset proc
+    fill.style.width='0%'; pctEl.textContent='0%'; lblEl.textContent='Initializing…';
+    document.getElementById('proc-title').textContent='Reviewing your document…';
+    // Confirm rep agreement
+    confirmRepAgreement(activeTxnId);
+    // Show success sheet
+    document.getElementById('fix-confirmed-sub').textContent = 'Representation agreement confirmed · Broker review now unlocked';
+    document.getElementById('fix-confirmed-detail').innerHTML = '<strong>Document:</strong> BRBC_Signed_EstradaRH.pdf<br><strong>Time:</strong> '+ts+'<br><strong>Status:</strong> Verified · Logged in audit trail';
+    openSheet('fix-confirmed-sheet');
+  }, 1800);
+}
+
+function checkBrokerAlertForCurrentTxn() {
+  checkRepBeforeBrokerReview(activeTxnId, () => openSheet('agent-results-sheet'));
+}
+
+
+// ══════════════════════════════════════════════════════
+//  SCAN RESULTS SCREEN — shown after processing
+// ══════════════════════════════════════════════════════
+let pendingScanTxnId = null;
+
+const VDL_CHECKLIST_FOR_SCAN = [
+  { state:'blocked', label:'Representation agreement on file', tag:'c', tagLabel:'Required first' },
+  { state:'done',    label:'Purchase Agreement signed', tagLabel:null },
+  { state:'done',    label:'Buyer pre-approval verified', tagLabel:null },
+  { state:'done',    label:'Earnest money deposited', tagLabel:null },
+  { state:'done',    label:'Title search ordered', tagLabel:null },
+  { state:'done',    label:'Home inspection scheduled', tagLabel:null },
+  { state:'done',    label:'Property appraisal ordered', tagLabel:null },
+  { state:'done',    label:'Buyer signatures on RPA forms', tagLabel:null },
+  { state:'blocked', label:'Seller signs Agency Disclosure (AD)', tag:'c', tagLabel:'Must fix' },
+  { state:'blocked', label:'Seller signs Short Sale Addendum (SSA)', tag:'c', tagLabel:'Must fix' },
+  { state:'blocked', label:'Seller dates Federal Reporting form (FRR-PA)', tag:'c', tagLabel:'Must fix' },
+  { state:'warn',    label:'Confirm dual agency fully disclosed', tag:'r', tagLabel:'Verify' },
+  { state:'warn',    label:'Add hard deadline to SSA Para 2A', tag:'r', tagLabel:'Verify' },
+  { state:'sky',     label:'Home inspection completed & reviewed', tagLabel:'Coming up' },
+  { state:'sky',     label:'Loan underwriting approval', tagLabel:'In progress' },
+];
+
+const VDL_ISSUES_FOR_SCAN = [
+  { type:'c', title:'Seller signature missing — Agency Disclosure (AD)', detail:'Pages 1 & 32 · Agustin R. De Leon Calderon · Required by CA law', tag:'Civil Code § 2079.14' },
+  { type:'c', title:'Short Sale Addendum unsigned by Seller', detail:'SSA Page 30 · Para 2A · Unenforceable without signature', tag:'C.A.R. Form SSA' },
+  { type:'c', title:'FRR-PA Seller date field blank', detail:'Page 20 · FinCEN federal form · Escrow cannot close without it', tag:'FinCEN / FRR-PA' },
+  { type:'r', title:'Dual agency — AD seller signature needed', detail:'Mayra Escalante DRE 02043967 · Both sides · Fix Issue #1 to resolve', tag:'Dual Agency' },
+  { type:'r', title:'Short sale contingency date blank', detail:'SSA Para 2A · No hard cutoff date defined', tag:'Timeline risk' },
+];
+
+function showScanResults(txnId, isRichDoc) {
+  pendingScanTxnId = txnId;
+
+  const txn = TXN[txnId] || {};
+  const addr = isRichDoc ? '13292 Via Del Lago' : (txn.addr || 'New Transaction');
+  const city = isRichDoc ? 'Victorville, CA 92392' : (txn.city || '');
+  const issues = isRichDoc ? VDL_ISSUES_FOR_SCAN : [];
+  const checkItems = isRichDoc ? VDL_CHECKLIST_FOR_SCAN : [
+    { state:'sky', label:'Representation agreement on file', tag:'c', tagLabel:'Upload needed' },
+    { state:'sky', label:'Purchase Agreement received', tagLabel:'Pending' },
+    { state:'sky', label:'Buyer pre-approval', tagLabel:'Pending' },
+    { state:'sky', label:'Earnest money deposit', tagLabel:'Upcoming' },
+    { state:'sky', label:'Title search', tagLabel:'Upcoming' },
+    { state:'sky', label:'Home inspection', tagLabel:'Upcoming' },
+    { state:'sky', label:'Property appraisal', tagLabel:'Upcoming' },
+  ];
+
+  document.getElementById('sr-title').textContent = isRichDoc ? '5 issues found — review complete' : 'Checklist generated — all clear';
+
+  const svgCheck = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  const svgX     = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  const svgWarn  = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  const svgDot   = '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>';
+
+  const boxIcon = { done: svgCheck, blocked: svgX, warn: svgWarn, sky: svgDot };
+  const boxCls  = { done:'done', blocked:'blocked', warn:'warn', sky:'sky', todo:'todo' };
+
+  // Build checklist items HTML with staggered animation delays
+  const clHtml = checkItems.map((item, i) => {
+    const icon = boxIcon[item.state] || '';
+    const cls  = boxCls[item.state] || 'todo';
+    const labelCls = item.state === 'done' ? ' done-label' : '';
+    const tagHtml = item.tagLabel
+      ? `<span class="sr-cl-tag ${item.tag || 'ok'}">${item.tagLabel}</span>`
+      : '';
+    return `<div class="sr-cl-item" style="animation-delay:${i * 0.05}s">
+      <div class="sr-cl-box ${cls}">${icon}</div>
+      <div class="sr-cl-label${labelCls}">${item.label}</div>
+      ${tagHtml}
+    </div>`;
+  }).join('');
+
+  // Build issues HTML
+  const issuesHtml = issues.map((issue, i) => `
+    <div class="sr-issue-item ${issue.type}" style="animation-delay:${i * 0.07}s"
+         onclick="closeScanResults();openTransaction('${txnId}');setTimeout(()=>openIssueDetail('${['c1','c2','c3','r1','r2'][i]}'),300)">
+      <div class="sr-issue-type">${issue.type === 'c' ? '🔴 Compliance — Must Fix' : '⚠️ Cost Risk — Verify'}</div>
+      <div class="sr-issue-title">${issue.title}</div>
+      <div class="sr-issue-detail">${issue.detail}</div>
+      <span class="sr-issue-tag ${issue.type}">${issue.tag}</span>
+    </div>`).join('');
+
+  const passedHtml = isRichDoc
+    ? `<div class="sr-passed">✓ <strong>28 checks passed</strong> — purchase price consistent ($410,000) · buyer signed all forms · loan 75% ($307,500) matches · + 25 more</div>`
+    : `<div class="sr-passed">✓ <strong>Document processed</strong> — file read successfully · checklist generated · ready to fill in details</div>`;
+
+  document.getElementById('sr-body').innerHTML = `
+    <!-- Phase 1: Checklist -->
+    <div class="sr-phase">
+      <div class="sr-phase-num done">✓</div>
+      <div><div class="sr-phase-title">Closing checklist generated</div><div class="sr-phase-sub">${checkItems.length} tasks identified · ${addr}</div></div>
+    </div>
+    <div class="sr-checklist-card">${clHtml}</div>
+    <div class="sr-phase-connector"></div>
+
+    <!-- Phase 2: Document scan -->
+    <div class="sr-phase">
+      <div class="sr-phase-num done">✓</div>
+      <div><div class="sr-phase-title">Document reviewed</div><div class="sr-phase-sub">${isRichDoc ? '44 pages scanned · CA RPA + Disclosures · 6 seconds' : 'File processed · Structure extracted'}</div></div>
+    </div>
+    ${isRichDoc ? `
+    <div class="sr-issues-hero">
+      <div class="sr-issues-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="sr-issues-title">5 issues found</div>
+        <div class="sr-issues-meta">3 compliance blockers · 2 cost risks · fix before broker review</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:2px">13292 Via Del Lago · Victorville CA</div>
+      </div>
+    </div>
+    ${issuesHtml}
+    ${passedHtml}` : `<div style="background:var(--verified-bg);border:1px solid var(--verified-border);border-radius:var(--r-lg);padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--verified-text)">✓ No issues found — your document looks clean. Complete the checklist items to move toward closing.</div>`}
+    <div class="sr-phase-connector"></div>
+
+    <!-- Phase 3: Ready -->
+    <div class="sr-phase">
+      <div class="sr-phase-num done">✓</div>
+      <div>
+        <div class="sr-phase-title">Transaction ready</div>
+        <div class="sr-phase-sub">Tap below to open your full checklist and start fixing issues</div>
+      </div>
+    </div>
+    <div style="background:white;border-radius:var(--r-xl);padding:16px 18px;box-shadow:0 1px 4px rgba(10,22,40,0.06);">
+      <div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;">Transaction summary</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Address</div><div style="font-size:12px;font-weight:600;color:var(--navy)">${addr}</div></div>
+        <div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Price</div><div style="font-size:12px;font-weight:600;color:var(--navy)">${isRichDoc ? '$410,000' : 'TBD'}</div></div>
+        <div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Close date</div><div style="font-size:12px;font-weight:600;color:var(--navy)">${isRichDoc ? 'May 30, 2026' : 'TBD'}</div></div>
+        <div><div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Checklist</div><div style="font-size:12px;font-weight:600;color:${isRichDoc ? 'var(--compliance)' : 'var(--verified)'}">${isRichDoc ? '5 issues to fix' : 'All clear'}</div></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('scan-results-overlay').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function closeScanResults() {
+  document.getElementById('scan-results-overlay').classList.remove('active');
+  pendingScanTxnId = null;
+}
+
+function openTxnFromScan() {
+  const txnId = pendingScanTxnId || 'viadellago';
+  document.getElementById('scan-results-overlay').classList.remove('active');
+  openTransaction(txnId);
+}
+</script>
+
+
+
+<!-- ════════════════════════════════════
+     DYNAMIC ISSUE DETAIL SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="dyn-issue-sheet" onclick="if(event.target===this)closeSheet('dyn-issue-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title" id="dyn-issue-title">Issue Detail</div>
+      <button class="sheet-close" onclick="closeSheet('dyn-issue-sheet')">✕</button>
+    </div>
+    <div class="sheet-body" id="dyn-issue-body"></div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     AGENT DROP OVERLAY
+     ════════════════════════════════════ -->
+<div id="agent-drop-overlay" onclick="if(event.target===this)closeAgentDrop()">
+  <div class="drop-card">
+    <button class="drop-close" onclick="closeAgentDrop()">✕</button>
+    <div class="drop-hdr">
+      <div class="drop-hdr-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div>
+        <div class="drop-hdr-title">Review My Document</div>
+        <div class="drop-hdr-sub">FileBuddyAI · Self-review before broker sees it</div>
+      </div>
+    </div>
+
+    <div class="drop-zone"
+      ondragover="event.preventDefault();this.style.borderColor='#0ea5e9';this.style.background='rgba(14,165,233,0.05)'"
+      ondragleave="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc'"
+      ondrop="agentHandleDrop(event)"
+      onclick="document.getElementById('agent-file-input').click()">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;display:block;animation:pfloat2 3s ease-in-out infinite"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <div class="drop-zone-title">Drop your updated file here</div>
+      <div class="drop-zone-sub">Or click to browse · FileBuddy checks it privately before your broker sees it</div>
+      <div class="drop-zone-tags">
+        <span class="drop-zone-tag">PDF</span>
+        <span class="drop-zone-tag">DOCX</span>
+        <span class="drop-zone-tag">ZIP</span>
+      </div>
+    </div>
+
+    <div id="agent-drop-file-card" class="drop-file-card">
+      <div class="drop-file-ico">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div id="agent-drop-name" class="drop-file-name"></div>
+        <div id="agent-drop-meta" class="drop-file-meta"></div>
+      </div>
+      <button class="drop-file-rm" onclick="agentClearFile()">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <button id="agent-drop-submit" class="drop-submit" onclick="agentStartReview()">Review this file</button>
+    <input type="file" id="agent-file-input" accept=".pdf,.docx,.zip" style="display:none" onchange="agentHandleInput(this)">
+    <button class="drop-sim-btn" onclick="agentSimulateFile()">↓ Simulate drop — load 3_test.pdf (demo)</button>
+    <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:8px;">Your review is private · Broker is notified only when you submit</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     PROCESSING OVERLAY
+     ════════════════════════════════════ -->
+<div id="agent-proc-overlay" onclick="">
+  <div class="proc-card">
+    <div class="proc-pulse">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <div class="proc-title" id="proc-title">Reviewing your document…</div>
+    <div class="proc-sub" id="proc-sub">Checking CA Civil Code, C.A.R. standards &amp; brokerage rules</div>
+    <div id="proc-c1" class="proc-item"><div class="proc-dot"></div><span>Parsing document structure</span><span id="proc-b1" class="proc-badge"></span></div>
+    <div id="proc-c2" class="proc-item"><div class="proc-dot"></div><span>Checking agency disclosures</span><span id="proc-b2" class="proc-badge"></span></div>
+    <div id="proc-c3" class="proc-item"><div class="proc-dot"></div><span>Verifying signatures &amp; initials</span><span id="proc-b3" class="proc-badge">3 issues</span></div>
+    <div id="proc-c4" class="proc-item"><div class="proc-dot"></div><span>Validating financial figures</span><span id="proc-b4" class="proc-badge">✓ passed</span></div>
+    <div id="proc-c5" class="proc-item"><div class="proc-dot"></div><span>CA state law cross-check</span><span id="proc-b5" class="proc-badge"></span></div>
+    <div id="proc-c6" class="proc-item"><div class="proc-dot"></div><span>Business logic validation</span><span id="proc-b6" class="proc-badge">2 risks</span></div>
+    <div class="proc-bar-row"><span id="proc-lbl">Initializing…</span><span id="proc-pct">0%</span></div>
+    <div class="proc-track"><div class="proc-fill" id="proc-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     AGENT REVIEW RESULTS SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="agent-results-sheet" onclick="if(event.target===this)closeSheet('agent-results-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Your Review Results</div>
+      <button class="sheet-close" onclick="closeSheet('agent-results-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="review-result-hero">
+        <div class="rr-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="rr-title">5 issues found</div>
+          <div class="rr-meta">3 compliance · 2 cost risks · 28 checks passed</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px">3_test.pdf · 44 pages · 13292 Via Del Lago</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#64748b;margin-bottom:14px;line-height:1.5;">These are the same issues your broker will see. Fix them now and resubmit before it reaches their desk.</p>
+
+      <div class="issue-card compliance" onclick="closeSheet('agent-results-sheet');openIssueDetail('c1')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">Seller signature missing — Agency Disclosure</div>
+        <div class="issue-detail">Pages 1 &amp; 32 · Required by CA law before close</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('agent-results-sheet');openMarkFixed('c1')">Mark fixed</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c1')">Ask broker</button>
+        </div>
+      </div>
+      <div class="issue-card compliance" onclick="closeSheet('agent-results-sheet');openIssueDetail('c2')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">Short Sale Addendum unsigned by Seller</div>
+        <div class="issue-detail">SSA Page 30 · Para 2A · Addendum unenforceable</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('agent-results-sheet');openMarkFixed('c2')">Mark fixed</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c2')">Ask broker</button>
+        </div>
+      </div>
+      <div class="issue-card compliance" onclick="closeSheet('agent-results-sheet');openIssueDetail('c3')">
+        <div class="issue-type">🔴 Compliance — Must Fix</div>
+        <div class="issue-title">FRR-PA Seller date field blank</div>
+        <div class="issue-detail">Page 20 · FinCEN · Escrow cannot close</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('agent-results-sheet');openMarkFixed('c3')">Mark fixed</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('c3')">Ask broker</button>
+        </div>
+      </div>
+      <div class="issue-card cost-risk" onclick="closeSheet('agent-results-sheet');openIssueDetail('r1')">
+        <div class="issue-type">⚠️ Something to Check</div>
+        <div class="issue-title">Dual agency — AD seller signature needed</div>
+        <div class="issue-detail">Fix Issue #1 and this resolves automatically</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('agent-results-sheet');openMarkFixed('r1')">Mark verified</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('r1')">Ask broker</button>
+        </div>
+      </div>
+      <div class="issue-card cost-risk" onclick="closeSheet('agent-results-sheet');openIssueDetail('r2')">
+        <div class="issue-type">⚠️ Something to Check</div>
+        <div class="issue-title">Short sale contingency date blank</div>
+        <div class="issue-detail">SSA Para 2A · Specific date missing</div>
+        <div class="issue-action-row">
+          <button class="issue-btn fix" onclick="event.stopPropagation();closeSheet('agent-results-sheet');openMarkFixed('r2')">Mark fixed</button>
+          <button class="issue-btn ask" onclick="event.stopPropagation();openHaveAMinute('r2')">Ask broker</button>
+        </div>
+      </div>
+
+      <div style="background:var(--verified-bg);border:1px solid var(--verified-border);border-radius:11px;padding:11px 13px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--verified-text);margin-bottom:6px;">✓ 28 checks passed</div>
+        <div style="font-size:11px;color:#065f46;">Purchase price consistent · Buyer signed all forms · Loan 75% matches · + 25 more</div>
+      </div>
+
+      <div class="sheet-btns" style="margin-top:16px">
+        <button class="sheet-btn success" onclick="closeSheet('agent-results-sheet');openSheet('audit-trail-sheet')">View Audit Trail</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('agent-results-sheet')">Back to my checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     MARK AS FIXED SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="mark-fixed-sheet" onclick="if(event.target===this)closeSheet('mark-fixed-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title" id="mf-title">Mark as Fixed</div>
+      <button class="sheet-close" onclick="closeSheet('mark-fixed-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <p style="font-size:13px;color:#64748b;margin-bottom:12px;line-height:1.5;">Tell FileBuddy how you resolved this. It'll be recorded in your audit trail and visible to your broker.</p>
+      <div id="mf-issue-detail" class="fix-confirm-detail"></div>
+      <div style="font-size:11px;font-weight:600;color:var(--slate-500);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">How you fixed it (optional note)</div>
+      <textarea id="mf-note" class="fix-note-area" placeholder="e.g. Got Agustin to sign via DocuSign on May 11 · Pages 1 and 32 complete"></textarea>
+      <div style="font-size:11px;font-weight:600;color:var(--slate-500);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">This will record</div>
+      <div class="fix-sends">
+        <div class="fix-send-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Timestamped in audit trail
+        </div>
+        <div class="fix-send-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Visible to broker
+        </div>
+        <div class="fix-send-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Checklist updated
+        </div>
+      </div>
+      <button class="fix-submit" onclick="confirmMarkFixed()">Confirm — Mark as Fixed</button>
+      <button class="sheet-btn secondary" style="width:100%;margin-top:8px" onclick="closeSheet('mark-fixed-sheet')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     AUDIT TRAIL SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="audit-trail-sheet" onclick="if(event.target===this)closeSheet('audit-trail-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Audit Trail</div>
+      <button class="sheet-close" onclick="closeSheet('audit-trail-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="trail-summary">
+        <strong>13292 Via Del Lago · Victorville CA</strong><br>
+        44-page CA RPA package · Broker: Sarah Chen<br>
+        Agent self-review enabled
+      </div>
+      <div class="trail-tl" id="audit-trail-tl">
+        <!-- rendered by renderAuditTrail() -->
+      </div>
+      <div class="sheet-btns" style="margin-top:16px">
+        <button class="sheet-btn primary" onclick="closeSheet('audit-trail-sheet')">Back to my checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     FIX CONFIRMED SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="fix-confirmed-sheet" onclick="if(event.target===this)closeSheet('fix-confirmed-sheet')">
+  <div class="sheet">
+    <div class="sheet-body" style="padding:24px 20px;">
+      <div class="success-check">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <div class="success-title">Marked as fixed</div>
+      <div class="success-sub" id="fix-confirmed-sub">Logged in your audit trail. Broker can see this.</div>
+      <div class="success-detail" id="fix-confirmed-detail"></div>
+      <div class="sheet-btns">
+        <button class="sheet-btn primary" onclick="closeSheet('fix-confirmed-sheet');openSheet('audit-trail-sheet')">View Audit Trail</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('fix-confirmed-sheet')">Back to my checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     NEW TRANSACTION DROP OVERLAY
+     ════════════════════════════════════ -->
+<div id="new-txn-drop-overlay" onclick="if(event.target===this)closeNewTxnDrop()">
+  <div class="drop-card">
+    <button class="drop-close" onclick="closeNewTxnDrop()">✕</button>
+    <div class="drop-hdr">
+      <div class="drop-hdr-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="drop-hdr-title">New Transaction</div>
+        <div class="drop-hdr-sub">FileBuddyAI · Upload purchase agreement to get started</div>
+      </div>
+    </div>
+
+    <div id="new-txn-drop-zone" class="drop-zone"
+      ondragover="event.preventDefault();this.style.borderColor='#0ea5e9';this.style.background='rgba(14,165,233,0.05)'"
+      ondragleave="this.style.borderColor='#cbd5e1';this.style.background='#f8fafc'"
+      ondrop="newTxnHandleDrop(event)"
+      onclick="document.getElementById('new-txn-file-input').click()">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto;display:block;animation:pfloat2 3s ease-in-out infinite"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <div class="drop-zone-title">Drop your purchase agreement here</div>
+      <div class="drop-zone-sub">FileBuddy reads it, builds your closing checklist, and flags any issues — instantly</div>
+      <div class="drop-zone-tags">
+        <span class="drop-zone-tag">PDF</span>
+        <span class="drop-zone-tag">DOCX</span>
+        <span class="drop-zone-tag">CA RPA</span>
+      </div>
+    </div>
+
+    <div id="new-txn-file-card" class="drop-file-card">
+      <div class="drop-file-ico">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div id="new-txn-file-name" class="drop-file-name"></div>
+        <div id="new-txn-file-meta" class="drop-file-meta"></div>
+      </div>
+      <button class="drop-file-rm" onclick="newTxnClearFile()">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <button id="new-txn-submit" class="drop-submit" onclick="newTxnStartReview()">Review &amp; build checklist</button>
+    <input type="file" id="new-txn-file-input" accept=".pdf,.docx,.zip" style="display:none" onchange="newTxnHandleInput(this)">
+    <button class="drop-sim-btn" onclick="newTxnSimulate()">↓ Simulate — load 3_test.pdf (Rich Hernandez · Via Del Lago)</button>
+    <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:8px;">Your checklist is generated automatically from the document</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BROKER ALERT — NO REPRESENTATION AGREEMENT
+     ════════════════════════════════════ -->
+<div id="broker-alert-overlay">
+  <div class="broker-alert-card">
+    <div class="bal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+    </div>
+    <div class="bal-title">Hold on — something's missing</div>
+    <div class="bal-sub">Before reviewing the purchase agreement, the broker needs to confirm a signed representation agreement is on file for this transaction.</div>
+
+    <div class="bal-detail">
+      <div class="bal-detail-title">🔴 Representation Agreement — Not Confirmed</div>
+      <div class="bal-detail-body">No signed buyer or seller representation agreement has been uploaded or confirmed for 13292 Via Del Lago. This is required before broker review of the purchase contract can proceed.</div>
+    </div>
+
+    <div class="bal-what-needed">
+      <div class="bal-what-needed-title">What's needed</div>
+      <div class="bal-what-item"><div class="bal-what-dot"></div>Signed Buyer Representation Agreement (BRA) — or</div>
+      <div class="bal-what-item"><div class="bal-what-dot"></div>Signed Seller Listing Agreement — confirming the agent-client relationship</div>
+      <div class="bal-what-item"><div class="bal-what-dot"></div>Upload the signed document and mark the checklist item as complete before proceeding</div>
+    </div>
+
+    <div class="bal-btns">
+      <button class="bal-btn block" onclick="closeBrokerAlert()">
+        ← Go back · I'll get this first
+      </button>
+      <button class="bal-btn proceed" onclick="proceedDespiteAlert()" style="font-size:11px;color:#94a3b8;">
+        Proceed anyway (override — logged in audit trail)
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     REPRESENTATION AGREEMENT SHEET
+     ════════════════════════════════════ -->
+<div class="overlay" id="rep-agreement-sheet" onclick="if(event.target===this)closeSheet('rep-agreement-sheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">Representation Agreement</div>
+      <button class="sheet-close" onclick="closeSheet('rep-agreement-sheet')">✕</button>
+    </div>
+    <div class="sheet-body">
+      <div class="detail-badge badge-c">🔴 Required Before Broker Review</div>
+
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Why this is required</div>
+        <div class="detail-sec-body">Before the broker can review the purchase agreement, a signed <strong>representation agreement</strong> must be on file. This confirms the agent-client relationship and is required by CA law (AB 2992, effective Jan 1, 2025) and brokerage policy for all transactions.</div>
+      </div>
+
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">What to upload</div>
+        <div class="detail-sec-body">
+          <strong>For buyers:</strong> Buyer Representation and Broker Compensation Agreement (BRBC / BRA)<br><br>
+          <strong>For sellers:</strong> Residential Listing Agreement (RLA) or Exclusive Authorization and Right to Sell
+        </div>
+      </div>
+
+      <div class="detail-sec">
+        <div class="detail-sec-lbl">Broker alert</div>
+        <div class="detail-sec-body" style="color:var(--compliance-text);background:var(--compliance-bg);border-color:var(--compliance-border)">If no representation agreement is confirmed when the broker opens this transaction for review, they will see a <strong>blocking alert</strong> and cannot proceed without either getting the agreement or manually overriding (which is logged in the audit trail).</div>
+      </div>
+
+      <div class="sheet-btns">
+        <button class="sheet-btn success" onclick="closeSheet('rep-agreement-sheet');simulateRepUpload()">
+          Upload signed agreement
+        </button>
+        <button class="sheet-btn secondary" onclick="closeSheet('rep-agreement-sheet');openHaveAMinute('rep')">Ask broker for help</button>
+        <button class="sheet-btn secondary" onclick="closeSheet('rep-agreement-sheet')">I'll do this later</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     SCAN RESULTS — Full-screen overlay
+     shown after processing completes
+     ════════════════════════════════════ -->
+<div id="scan-results-overlay">
+  <div class="sr-topbar">
+    <div class="sr-topbar-title" id="sr-title">Review Complete</div>
+    <button class="sr-close-btn" onclick="openTxnFromScan()">Open transaction →</button>
+  </div>
+  <div class="sr-body" id="sr-body">
+    <!-- populated by showScanResults() -->
+  </div>
+  <div class="sr-cta">
+    <button class="sr-btn primary" onclick="openTxnFromScan()">Open my transaction &amp; checklist</button>
+    <button class="sr-btn ghost" onclick="closeScanResults()">Back to dashboard</button>
+  </div>
+</div>
+
+</body>
+</html>
