@@ -15,6 +15,49 @@
     align-items: center; justify-content: center;
     padding: 24px;
   }
+  #gate {
+    position: fixed; inset: 0; z-index: 999;
+    background: #0a1628;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .gate-card {
+    background: white; border-radius: 24px;
+    padding: 40px 36px; width: 100%; max-width: 380px; text-align: center;
+  }
+  .gate-mark {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: linear-gradient(135deg, #0ea5e9, #0d9488);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .gate-title {
+    font-family: 'Syne', sans-serif; font-size: 20px;
+    font-weight: 800; color: #0a1628; margin-bottom: 6px;
+  }
+  .gate-sub { font-size: 13px; color: #64748b; margin-bottom: 28px; line-height: 1.5; }
+  .gate-input {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid #e2e8f0; border-radius: 12px;
+    font-family: 'Geist', sans-serif; font-size: 15px;
+    color: #0a1628; letter-spacing: 0.08em;
+    text-align: center; margin-bottom: 12px;
+    transition: border-color 0.15s; outline: none;
+  }
+  .gate-input:focus { border-color: #0ea5e9; }
+  .gate-input.error { border-color: #b91c1c; animation: shake 0.35s ease; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+  }
+  .gate-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #0ea5e9, #0d9488);
+    color: white; border: none; border-radius: 12px;
+    font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .gate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(14,165,233,0.3); }
+  .gate-error { font-size: 12px; color: #b91c1c; margin-top: 10px; min-height: 18px; }
   .logo-row {
     display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
   }
@@ -87,6 +130,42 @@
 </style>
 </head>
 <body>
+
+<!-- Password gate -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/>
+        <polyline points="9 12 11 14 15 10"/>
+      </svg>
+    </div>
+    <div class="gate-title">FileBuddyAI</div>
+    <div class="gate-sub">This prototype is confidential.<br>Enter the access code to continue.</div>
+    <input class="gate-input" id="gate-input" type="password" placeholder="Access code" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="gate-btn" onclick="checkPassword()">Continue</button>
+    <div class="gate-error" id="gate-error"></div>
+  </div>
+</div>
+
+<script>
+  function checkPassword() {
+    const val = document.getElementById('gate-input').value;
+    const input = document.getElementById('gate-input');
+    if (val === 'N03rr0rs') {
+      document.getElementById('gate').style.display = 'none';
+      sessionStorage.setItem('fba_auth', '1');
+    } else {
+      input.classList.add('error');
+      document.getElementById('gate-error').textContent = 'Incorrect code — try again.';
+      document.getElementById('gate-input').value = '';
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  }
+  if (sessionStorage.getItem('fba_auth') === '1') {
+    document.getElementById('gate').style.display = 'none';
+  }
+</script>
 
   <div class="logo-row">
     <div class="logo-mark">
