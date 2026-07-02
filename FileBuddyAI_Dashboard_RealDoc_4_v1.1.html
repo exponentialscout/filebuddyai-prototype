@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FileBuddyAI — Broker Dashboard</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════
    DESIGN SYSTEM TOKENS
@@ -41,8 +41,8 @@
   --white:     #ffffff;
   --border:    #e2e8f0;
 
-  --font-d: 'Syne', sans-serif;
-  --font-b: 'Geist', 'Helvetica Neue', sans-serif;
+  --font-d: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-b: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-full: 999px;
 
@@ -56,6 +56,7 @@ body {
   background: #eef2f7;
   color: var(--navy);
   font-feature-settings: 'kern' 1, 'liga' 1;
+  font-variant-numeric: tabular-nums;
   min-height: 100vh;
   overflow: hidden;
   display: grid;
@@ -144,7 +145,7 @@ body {
   letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 6px;
   display: flex; align-items: center; gap: 6px;
 }
-.savings-value { font-family: var(--font-d); font-size: 28px; font-weight: 800; color: #6ee7b7; line-height: 1; margin-bottom: 4px; }
+.savings-value { font-family: var(--font-d); font-size: 28px; font-weight: 700; color: #6ee7b7; line-height: 1.1; margin-bottom: 4px; }
 .savings-sub { font-size: 11px; color: rgba(255,255,255,0.35); }
 
 .sidebar-user {
@@ -267,8 +268,8 @@ body {
 .stat-delta.up { background: var(--verified-bg); color: var(--verified-text); }
 .stat-delta.down-good { background: var(--verified-bg); color: var(--verified-text); }
 .stat-delta.up-bad { background: var(--compliance-bg); color: var(--compliance-text); }
-.stat-value { font-family: var(--font-d); font-size: 32px; font-weight: 800; line-height: 1; margin-bottom: 5px; }
-.stat-label { font-size: 12px; color: var(--slate-500); font-weight: 500; }
+.stat-value { font-family: var(--font-d); font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 5px; }
+.stat-label { font-size: 13px; color: var(--slate-500); font-weight: 400; }
 
 /* ── CONTENT GRID ── */
 .content-grid { display: grid; grid-template-columns: 60% 40%; gap: 20px; align-items: start; width: 100%; }
@@ -279,7 +280,7 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   padding: 20px 24px 0; margin-bottom: 20px;
 }
-.card-title { font-family: var(--font-d); font-size: 15px; font-weight: 700; }
+.card-title { font-family: var(--font-d); font-size: 16px; font-weight: 600; }
 .card-subtitle { font-size: 12px; color: var(--slate-500); margin-top: 2px; }
 .card-action {
   display: flex; align-items: center; gap: 5px;
@@ -371,13 +372,13 @@ body {
 .chart-rule { width: 100%; height: 1px; background: var(--border); margin-top: 4px; }
 .chart-summary { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--slate-50); border-radius: var(--r-lg); margin-top: 4px; cursor: pointer; transition: background 0.15s; }
 .chart-summary:hover { background: var(--slate-100); }
-.chart-summary-val { font-family: var(--font-d); font-size: 20px; font-weight: 800; color: var(--sky); }
+.chart-summary-val { font-family: var(--font-d); font-size: 20px; font-weight: 700; color: var(--sky); }
 .chart-summary-lbl { font-size: 11px; color: var(--slate-500); margin-top: 1px; }
 .chart-trend { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--verified-text); background: var(--verified-bg); padding: 3px 9px; border-radius: var(--r-full); border: 1px solid var(--verified-border); }
 
 /* Savings */
 .savings-card-body { padding: 0 24px 24px; }
-.savings-big { font-family: var(--font-d); font-size: 40px; font-weight: 800; color: var(--verified); line-height: 1; margin-bottom: 4px; }
+.savings-big { font-family: var(--font-d); font-size: 40px; font-weight: 700; color: var(--verified); line-height: 1.1; margin-bottom: 4px; }
 .savings-sub-label { font-size: 12px; color: var(--slate-500); margin-bottom: 20px; }
 .savings-breakdown { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
 .savings-row {
@@ -404,7 +405,7 @@ body {
   color: white; border-radius: var(--r-md);
   width: 44px; text-align: center; padding: 7px 4px; flex-shrink: 0;
 }
-.closing-day { font-family: var(--font-d); font-size: 18px; font-weight: 800; line-height: 1; }
+.closing-day { font-family: var(--font-d); font-size: 18px; font-weight: 700; line-height: 1.1; }
 .closing-mon { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.65; margin-top: 2px; }
 .closing-info { flex: 1; min-width: 0; }
 .closing-address { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
@@ -475,7 +476,7 @@ body {
   border-radius: var(--r-lg); padding: 14px;
   text-align: center;
 }
-.panel-stat-val { font-family: var(--font-d); font-size: 22px; font-weight: 800; }
+.panel-stat-val { font-family: var(--font-d); font-size: 22px; font-weight: 700; }
 .panel-stat-lbl { font-size: 11px; color: var(--slate-500); margin-top: 3px; }
 
 /* Transaction list row */
@@ -799,7 +800,7 @@ body {
 .p-it { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.7px; margin-bottom:3px; }
 .p-ic.pc .p-it { color:#991b1b; } .p-ic.pr .p-it { color:#92400e; }
 .p-ititle { font-size:12px; font-weight:600; color:var(--navy); margin-bottom:2px; }
-.p-idetail { font-size:11px; color:#64748b; line-height:1.4; }
+.p-idetail { font-size:12px; color:#64748b; line-height:1.5; }
 .p-itag { display:inline-flex; align-items:center; font-size:10px; font-weight:700; padding:2px 7px; border-radius:999px; border:1px solid; margin-top:4px; }
 .p-itag.c { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
 .p-itag.r { background:#fffbeb; color:#92400e; border-color:#fde68a; }
@@ -810,11 +811,11 @@ body {
 .p-dnav { display:flex; align-items:center; gap:9px; margin-bottom:16px; }
 .p-dback { width:28px; height:28px; border-radius:8px; border:1px solid #e2e8f0; background:#f8fafc; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.12s; flex-shrink:0; }
 .p-dback:hover { background:#f1f5f9; }
-.p-dhed { font-family:var(--font-d); font-size:13px; color:var(--navy); font-weight:700; }
+.p-dhed { font-family:var(--font-d); font-size:14px; color:var(--navy); font-weight:600; }
 .p-dbadge { display:inline-flex; align-items:center; padding:3px 9px; border-radius:999px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px; border:1px solid; }
 .p-dbadge.c { background:#fef2f2; color:#991b1b; border-color:#fecaca; }
 .p-dbadge.r { background:#fffbeb; color:#92400e; border-color:#fde68a; }
-.p-slbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--sky); margin-bottom:5px; }
+.p-slbl { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--sky); margin-bottom:5px; }
 .p-sblk { background:#f8fafc; border:1px solid #e2e8f0; border-radius:9px; padding:11px 13px; font-size:12px; color:#475569; line-height:1.6; margin-bottom:12px; }
 .p-sblk strong { color:var(--navy); }
 .p-fv { color:#b91c1c; font-weight:700; } .p-cv { color:#b45309; font-weight:700; }
@@ -923,6 +924,12 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--slate-200); border-radius: 10px; }
 </style>
+<!-- PDF.js for document viewer (C7: PDF Highlight Feature) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  // Set PDF.js worker for PDF parsing
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
 </head>
 <body>
 
@@ -966,15 +973,15 @@ body {
       <span class="nav-item-label">Transactions</span>
     </div>
 
-    <div class="nav-item" id="nav-issues" onclick="openPanel('panel-compliance')">
+
+    <div class="nav-item" id="nav-all-issues" onclick="openPanel('panel-feed')">
       <div class="nav-item-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/>
-          <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
         </svg>
       </div>
-      <span class="nav-item-label">Open Issues</span>
-      <span class="nav-badge red">6</span>
+      <span class="nav-item-label">All Open Risks</span>
+      <span class="nav-badge amber">17</span>
     </div>
 
     <div class="nav-item" id="nav-completed" onclick="openPanel('panel-completed')">
@@ -1006,16 +1013,6 @@ body {
         </svg>
       </div>
       <span class="nav-item-label">Performance</span>
-    </div>
-
-    <div class="nav-item" id="nav-feed" onclick="openPanel('panel-feed')">
-      <div class="nav-item-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-      </div>
-      <span class="nav-item-label">Issues Feed</span>
-      <span class="nav-badge amber">11</span>
     </div>
 
     <div class="nav-section-label">Settings</div>
@@ -1118,7 +1115,7 @@ body {
           </div>
         </div>
         <div class="stat-value" style="color:var(--compliance)">6</div>
-        <div class="stat-label">Compliance Issues Open</div>
+        <div class="stat-label">Compliance Risks Open</div>
       </div>
 
       <div class="stat-card" onclick="openPanel('panel-contingencyrisk')">
@@ -1132,7 +1129,7 @@ body {
             4 resolved
           </div>
         </div>
-        <div class="stat-value" style="color:var(--contingency-risk)">11</div>
+        <div class="stat-value" style="color:var(--contingency-risk)">8</div>
         <div class="stat-label">Contingency Risks Flagged</div>
       </div>
 
@@ -1232,7 +1229,7 @@ body {
           <div class="closing-item" onclick="openClosingPanel('88 River Rd','Maria Reyes','12','May','excellent','All checks passed')">
             <div class="closing-date-block"><div class="closing-day">12</div><div class="closing-mon">May</div></div>
             <div class="closing-info"><div class="closing-address">88 River Rd</div><div class="closing-agent">Maria Reyes</div></div>
-            <span class="status-badge sb-excellent"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Clear</span>
+            <span class="status-badge sb-excellent"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Ready to Close</span>
           </div>
           <div class="closing-item" onclick="openClosingPanel('22 Birch Ln','James Carter','15','May','action','Timeline conflict — dates need fixing')">
             <div class="closing-date-block"><div class="closing-day">15</div><div class="closing-mon">May</div></div>
@@ -1254,11 +1251,31 @@ body {
         <div class="card-divider"></div>
         <div class="chart-area" style="padding-top:20px">
           <div class="chart-bars">
-            <div class="chart-bar-col" onclick="openPanel('panel-weekly')"><div class="chart-bar" style="height:40%"></div></div>
-            <div class="chart-bar-col" onclick="openPanel('panel-weekly')"><div class="chart-bar" style="height:65%"></div></div>
-            <div class="chart-bar-col" onclick="openPanel('panel-weekly')"><div class="chart-bar" style="height:55%"></div></div>
-            <div class="chart-bar-col" onclick="openPanel('panel-weekly')"><div class="chart-bar" style="height:90%"></div></div>
-            <div class="chart-bar-col" onclick="openPanel('panel-weekly')"><div class="chart-bar dim" style="height:28%"></div></div>
+            <div class="chart-bar-col" onclick="openPanel('panel-weekly')">
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:6px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">38</div><div>txns</div></div>
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:8px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">4</div><div>risks</div></div>
+              <div class="chart-bar" style="height:40%"></div>
+            </div>
+            <div class="chart-bar-col" onclick="openPanel('panel-weekly')">
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:6px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">42</div><div>txns</div></div>
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:8px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">5</div><div>risks</div></div>
+              <div class="chart-bar" style="height:65%"></div>
+            </div>
+            <div class="chart-bar-col" onclick="openPanel('panel-weekly')">
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:6px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">40</div><div>txns</div></div>
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:8px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">4</div><div>risks</div></div>
+              <div class="chart-bar" style="height:55%"></div>
+            </div>
+            <div class="chart-bar-col" onclick="openPanel('panel-weekly')">
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:6px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">43</div><div>txns</div></div>
+              <div style="font-size:10px;color:var(--slate-500);text-align:center;margin-bottom:8px;line-height:1.2"><div style="font-weight:600;color:var(--navy)">4</div><div>risks</div></div>
+              <div class="chart-bar" style="height:90%"></div>
+            </div>
+            <div class="chart-bar-col" onclick="openPanel('panel-weekly')">
+              <div style="font-size:10px;color:var(--slate-400);text-align:center;margin-bottom:6px;line-height:1.2"><div style="font-weight:600">25</div><div>txns</div></div>
+              <div style="font-size:10px;color:var(--slate-400);text-align:center;margin-bottom:8px;line-height:1.2"><div style="font-weight:600">3</div><div>risks</div></div>
+              <div class="chart-bar dim" style="height:28%"></div>
+            </div>
           </div>
           <div class="chart-rule"></div>
           <div style="display:flex;gap:10px">
@@ -1269,10 +1286,21 @@ body {
             <div class="chart-bar-col"><div class="chart-label" style="color:var(--slate-300)">W5</div></div>
           </div>
           <div class="chart-summary" onclick="openPanel('panel-weekly')">
-            <div><div class="chart-summary-val">163</div><div class="chart-summary-lbl">total this month</div></div>
-            <div class="chart-trend">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-              24% vs last month
+            <div>
+              <div style="display:flex;gap:16px;margin-bottom:8px">
+                <div><div class="chart-summary-val">163</div><div class="chart-summary-lbl">total transactions</div></div>
+                <div><div class="chart-summary-val">20</div><div class="chart-summary-lbl">total risks</div></div>
+              </div>
+              <div style="display:flex;gap:16px">
+                <div class="chart-trend">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                  24% vs last month
+                </div>
+                <div class="chart-trend" style="color:#047857">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                  ↓ 18% risks vs last month
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1294,7 +1322,7 @@ body {
         </div>
           <div class="feed-item" onclick="openProto('results')">
             <div class="feed-icon-wrap fi-cost"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-            <div class="feed-content"><div class="feed-title">Interest rate 2pts above market</div><div class="feed-meta">501 Park Blvd · Lisa Park</div></div>
+            <div class="feed-content"><div class="feed-title">Inspection deadline — 3 days remaining</div><div class="feed-meta">88 River Rd · David Kim</div></div>
             <div class="feed-right"><div class="feed-time">3h ago</div><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
           </div>
           <div class="feed-item" onclick="openProto('results')">
@@ -1327,16 +1355,16 @@ body {
     <div class="panel-stat-strip">
       <div class="panel-stat"><div class="panel-stat-val" style="color:var(--sky)">47</div><div class="panel-stat-lbl">Active</div></div>
       <div class="panel-stat"><div class="panel-stat-val" style="color:var(--compliance)">6</div><div class="panel-stat-lbl">Blocked</div></div>
-      <div class="panel-stat"><div class="panel-stat-val" style="color:var(--verified)">31</div><div class="panel-stat-lbl">Clear</div></div>
+      <div class="panel-stat"><div class="panel-stat-val" style="color:var(--verified)">31</div><div class="panel-stat-lbl">Ready to Close</div></div>
     </div>
     <div class="p-section-label">Needs attention</div>
     <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--compliance)"></div><div class="txn-info"><div class="txn-address">456 Oak Ave</div><div class="txn-agent">Lisa Park · Compliance blocker</div></div><div class="txn-meta"><span class="status-badge sb-action" style="font-size:10px">Blocked</span><div class="txn-date">Closes May 9</div></div></div>
     <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--compliance)"></div><div class="txn-info"><div class="txn-address">22 Birch Ln</div><div class="txn-agent">James Carter · Timeline conflict</div></div><div class="txn-meta"><span class="status-badge sb-action" style="font-size:10px">Blocked</span><div class="txn-date">Closes May 15</div></div></div>
     <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--contingency-risk)"></div><div class="txn-info"><div class="txn-address">123 Main St</div><div class="txn-agent">Rich Hernandez · Commission risk</div></div><div class="txn-meta"><span class="status-badge sb-risk" style="font-size:10px">Risk</span><div class="txn-date">Closes May 7</div></div></div>
     <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--contingency-risk)"></div><div class="txn-info"><div class="txn-address">789 Elm Dr</div><div class="txn-agent">James Carter · ID verification</div></div><div class="txn-meta"><span class="status-badge sb-risk" style="font-size:10px">Risk</span><div class="txn-date">Closes May 18</div></div></div>
-    <div class="p-section-label" style="margin-top:20px">All clear</div>
-    <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--verified)"></div><div class="txn-info"><div class="txn-address">88 River Rd</div><div class="txn-agent">Maria Reyes</div></div><div class="txn-meta"><span class="status-badge sb-excellent" style="font-size:10px">Clear</span><div class="txn-date">Closes May 12</div></div></div>
-    <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--verified)"></div><div class="txn-info"><div class="txn-address">501 Park Blvd</div><div class="txn-agent">David Kim</div></div><div class="txn-meta"><span class="status-badge sb-excellent" style="font-size:10px">Clear</span><div class="txn-date">Closes May 20</div></div></div>
+    <div class="p-section-label" style="margin-top:20px">Ready to Close</div>
+    <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--verified)"></div><div class="txn-info"><div class="txn-address">88 River Rd</div><div class="txn-agent">Maria Reyes</div></div><div class="txn-meta"><span class="status-badge sb-excellent" style="font-size:10px">Ready to Close</span><div class="txn-date">Closes May 12</div></div></div>
+    <div class="txn-row" onclick="openProto('results')"><div class="txn-signal" style="background:var(--verified)"></div><div class="txn-info"><div class="txn-address">501 Park Blvd</div><div class="txn-agent">David Kim</div></div><div class="txn-meta"><span class="status-badge sb-excellent" style="font-size:10px">Ready to Close</span><div class="txn-date">Closes May 20</div></div></div>
     <div style="text-align:center;padding:16px;font-size:12px;color:var(--slate-400)">+ 41 more transactions</div>
   </div>
   <div class="panel-footer">
@@ -1376,19 +1404,16 @@ body {
 <div class="panel" id="panel-contingencyrisk">
   <div class="panel-header">
     <div class="panel-back" onclick="closeAll()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
-    <div><div class="panel-title">Contingency Risks</div><div class="panel-subtitle">11 flagged · Verify &amp; decide</div></div>
+    <div><div class="panel-title">Contingency Risks</div><div class="panel-subtitle">8 flagged · Verify &amp; decide</div></div>
   </div>
   <div class="panel-body">
     <div class="panel-stat-strip">
-      <div class="panel-stat"><div class="panel-stat-val" style="color:var(--contingency-risk)">11</div><div class="panel-stat-lbl">Open</div></div>
+      <div class="panel-stat"><div class="panel-stat-val" style="color:var(--contingency-risk)">8</div><div class="panel-stat-lbl">Open</div></div>
       <div class="panel-stat"><div class="panel-stat-val" style="color:var(--verified)">4</div><div class="panel-stat-lbl">Resolved</div></div>
       <div class="panel-stat"><div class="panel-stat-val" style="color:var(--contingency-risk)">$41K</div><div class="panel-stat-lbl">At stake</div></div>
     </div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Commission: $3.00 vs 3%</div><div class="issue-detail-sm">123 Main St · Rich Hernandez</div><div><span class="issue-chip chip-r">$13,497 at stake</span></div></div></div>
     <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Closing before inspection</div><div class="issue-detail-sm">22 Birch Ln · James Carter</div><div><span class="issue-chip chip-r">Timeline conflict</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Interest rate 2pts above market</div><div class="issue-detail-sm">501 Park Blvd · Lisa Park</div><div><span class="issue-chip chip-r">8.2% vs 6.2% market</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Down payment math mismatch</div><div class="issue-detail-sm">789 Elm Dr · James Carter</div><div><span class="issue-chip chip-r">$5,400 discrepancy</span></div></div></div>
-    <div style="text-align:center;padding:14px;font-size:12px;color:var(--slate-400)">+ 7 more cost risks</div>
+    <div style="text-align:center;padding:14px;font-size:12px;color:var(--slate-400)">+ 7 more contingency risks</div>
   </div>
   <div class="panel-footer">
     <button class="btn-p primary" onclick="openProto('results')">Open review flow</button>
@@ -1400,7 +1425,7 @@ body {
 <div class="panel" id="panel-completed">
   <div class="panel-header">
     <div class="panel-back" onclick="closeAll()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
-    <div><div class="panel-title">Closed</div><div class="panel-subtitle">28 this month · All clear</div></div>
+    <div><div class="panel-title">Closed</div><div class="panel-subtitle">28 this month · Ready to Close</div></div>
   </div>
   <div class="panel-body">
     <div class="panel-stat-strip">
@@ -1457,7 +1482,6 @@ body {
     </div>
     <div class="p-section-label">Open issues</div>
     <div id="agent-issues-list">
-      <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Commission: $3.00 vs 3%</div><div class="issue-detail-sm">123 Main St · $13,497 at stake</div></div></div>
     </div>
   </div>
   <div id="agent-file-badge" style="display:none;margin:0 16px 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;flex-direction:row;align-items:center;gap:10px;">
@@ -1496,7 +1520,7 @@ body {
     <div class="perf-agent-bar"><div class="perf-name">Lisa Park</div><div class="perf-bar-outer"><div class="perf-bar-inner score-action" style="width:58%"></div></div><div class="perf-score" style="color:var(--compliance)">58</div></div>
     <div class="p-section-label" style="margin-top:24px">Most common errors</div>
     <div class="issue-row"><div class="issue-icon-sm" style="background:var(--compliance-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="issue-body"><div class="issue-title-sm">Missing signature (3 agents)</div><div class="issue-detail-sm">Most frequent compliance error</div></div></div>
-    <div class="issue-row"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Commission format error (2 agents)</div><div class="issue-detail-sm">$ vs % typo recurring pattern</div></div></div>
+    <div class="issue-row"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Closing before inspection (2 agents)</div><div class="issue-detail-sm">Most frequent timeline conflict</div></div></div>
   </div>
   <div class="panel-footer"><button class="btn-p secondary" onclick="closeAll()">Close</button></div>
 </div>
@@ -1505,16 +1529,12 @@ body {
 <div class="panel" id="panel-feed">
   <div class="panel-header">
     <div class="panel-back" onclick="closeAll()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
-    <div><div class="panel-title">Issues Feed</div><div class="panel-subtitle">11 active · Real-time</div></div>
+    <div><div class="panel-title">All Open Risks (Compliance + Contingency)</div><div class="panel-subtitle">17 active · Sorted by age</div></div>
   </div>
   <div class="panel-body">
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--compliance-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="issue-body"><div class="issue-title-sm">Lead paint signature missing</div><div class="issue-detail-sm">456 Oak Ave · Lisa Park · 2m ago</div><div><span class="issue-chip chip-c">Compliance</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Commission: $3.00 vs 3%</div><div class="issue-detail-sm">123 Main St · Rich Hernandez · $13,497 · 18m ago</div><div><span class="issue-chip chip-r">Contingency Risk</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--compliance-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="issue-body"><div class="issue-title-sm">Buyer ID not verified</div><div class="issue-detail-sm">789 Elm Dr · James Carter · 1h ago</div><div><span class="issue-chip chip-c">Compliance</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Closing before inspection</div><div class="issue-detail-sm">22 Birch Ln · James Carter · 2h ago</div><div><span class="issue-chip chip-r">Contingency Risk</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="issue-body"><div class="issue-title-sm">Interest rate 2pts above market</div><div class="issue-detail-sm">501 Park Blvd · Lisa Park · 3h ago</div><div><span class="issue-chip chip-r">Contingency Risk</span></div></div></div>
-    <div class="issue-row" onclick="openProto('results')"><div class="issue-icon-sm" style="background:var(--compliance-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="issue-body"><div class="issue-title-sm">Missing seller disclosure</div><div class="issue-detail-sm">88 River Rd · James Carter · 5h ago</div><div><span class="issue-chip chip-c">Compliance</span></div></div></div>
-    <div style="text-align:center;padding:14px;font-size:12px;color:var(--slate-400)">+ 5 more issues</div>
+    <div class="feed-list" id="panel-feed-list">
+      <!-- Feed rendered by JS renderFeed() -->
+    </div>
   </div>
   <div class="panel-footer"><button class="btn-p secondary" onclick="closeAll()">Close</button></div>
 </div>
@@ -1549,10 +1569,7 @@ body {
     <div class="rule-row"><div class="rule-icon" style="background:var(--compliance-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="rule-name">Lead Paint Disclosure</div><div class="rule-desc">42 U.S.C. § 4852d · Buyer signature required</div></div><span class="rule-badge" style="background:var(--compliance-bg);color:var(--compliance-text);border-color:var(--compliance-border)">Active</span></div>
     <div class="rule-row"><div class="rule-icon" style="background:var(--compliance-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="rule-name">RESPA Buyer Verification</div><div class="rule-desc">12 U.S.C. § 2604 · ID must be on file</div></div><span class="rule-badge" style="background:var(--compliance-bg);color:var(--compliance-text);border-color:var(--compliance-border)">Active</span></div>
     <div class="rule-row"><div class="rule-icon" style="background:var(--compliance-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div><div class="rule-name">IL Seller Property Disclosure</div><div class="rule-desc">IL-765 ILCS 77/1 · State requirement</div></div><span class="rule-badge" style="background:var(--compliance-bg);color:var(--compliance-text);border-color:var(--compliance-border)">Active</span></div>
-    <div class="p-section-label" style="margin-top:20px">Business logic rules</div>
-    <div class="rule-row"><div class="rule-icon" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><div class="rule-name">Commission Format Check</div><div class="rule-desc">Detects $ vs % typos in commission fields</div></div><span class="rule-badge" style="background:var(--contingency-risk-bg);color:var(--contingency-risk-text);border-color:var(--contingency-risk-border)">Active</span></div>
     <div class="rule-row"><div class="rule-icon" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><div class="rule-name">Timeline Sequence Validation</div><div class="rule-desc">Inspection → appraisal → closing order</div></div><span class="rule-badge" style="background:var(--contingency-risk-bg);color:var(--contingency-risk-text);border-color:var(--contingency-risk-border)">Active</span></div>
-    <div class="rule-row"><div class="rule-icon" style="background:var(--contingency-risk-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div><div class="rule-name">Market Rate Outlier Detection</div><div class="rule-desc">Flags rates &gt;1.5pts above current market</div></div><span class="rule-badge" style="background:var(--contingency-risk-bg);color:var(--contingency-risk-text);border-color:var(--contingency-risk-border)">Active</span></div>
   </div>
   <div class="panel-footer"><button class="btn-p secondary" onclick="closeAll()">Close</button></div>
 </div>
@@ -1592,10 +1609,12 @@ body {
       <div class="cdh-date">Closing <strong id="closing-dh-date">May 7</strong></div>
     </div>
     <div id="closing-status-area" class="p-section"></div>
-    <div class="p-section-label">Checks run</div>
-    <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Loan amount matches purchase price</div><div class="issue-detail-sm">$450,000 consistent across all pages</div></div></div>
-    <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Buyer/seller names consistent</div><div class="issue-detail-sm">All pages match · 4 checks</div></div></div>
-    <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Property address consistent</div><div class="issue-detail-sm">Matched on all 15 pages</div></div></div>
+    <div id="closing-issues-list">
+      <div class="p-section-label">Checks run</div>
+      <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Loan amount matches purchase price</div><div class="issue-detail-sm">$450,000 consistent across all pages</div></div></div>
+      <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Buyer/seller names consistent</div><div class="issue-detail-sm">All pages match · 4 checks</div></div></div>
+      <div class="issue-row"><div class="issue-icon-sm" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="issue-body"><div class="issue-title-sm">Property address consistent</div><div class="issue-detail-sm">Matched on all 15 pages</div></div></div>
+    </div>
   </div>
   <div class="panel-footer">
     <button class="btn-p primary" onclick="openProto('results')">Open review</button>
@@ -1675,7 +1694,7 @@ body {
     <div class="search-results" id="search-results">
       <div class="search-result-row" onclick="openProto('results');closeSearch()"><div class="search-result-icon" style="background:var(--contingency-risk-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div><div class="search-result-main">123 Main St</div><div class="search-result-sub">Rich Hernandez · 1 cost risk · Closes May 7</div></div></div>
       <div class="search-result-row" onclick="openProto('results');closeSearch()"><div class="search-result-icon" style="background:var(--compliance-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div><div class="search-result-main">456 Oak Ave</div><div class="search-result-sub">Lisa Park · Compliance blocker · Closes May 9</div></div></div>
-      <div class="search-result-row" onclick="openProto('results');closeSearch()"><div class="search-result-icon" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div><div class="search-result-main">88 River Rd</div><div class="search-result-sub">Maria Reyes · All clear · Closes May 12</div></div></div>
+      <div class="search-result-row" onclick="openProto('results');closeSearch()"><div class="search-result-icon" style="background:var(--verified-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg></div><div><div class="search-result-main">88 River Rd</div><div class="search-result-sub">Maria Reyes · Ready to Close · Closes May 12</div></div></div>
       <div class="search-result-row" onclick="openAgentPanel('LP','Lisa Park','3 open blockers',58,'action',9,5,'linear-gradient(135deg,#b91c1c,#dc2626)');closeSearch()"><div class="search-result-icon" style="background:#f1f5f9"><div class="agent-avatar" style="width:28px;height:28px;background:linear-gradient(135deg,#b91c1c,#dc2626);font-size:10px">LP</div></div><div><div class="search-result-main">Lisa Park</div><div class="search-result-sub">Agent · 9 issues · Score 58</div></div></div>
       <div class="search-result-row" onclick="openAgentPanel('JC','James Carter','Needs coaching',72,'risk',6,7,'linear-gradient(135deg,#b45309,#d97706)');closeSearch()"><div class="search-result-icon" style="background:#f1f5f9"><div class="agent-avatar" style="width:28px;height:28px;background:linear-gradient(135deg,#b45309,#d97706);font-size:10px">JC</div></div><div><div class="search-result-main">James Carter</div><div class="search-result-sub">Agent · 6 issues · Score 72</div></div></div>
     </div>
@@ -1702,6 +1721,13 @@ body {
             <div class="proto-header-sub">Automated Compliance Review</div>
           </div>
         </div>
+      </div>
+
+      <!-- Modal Tab Navigation (C7: PDF Viewer) -->
+      <div class="proto-tabs" id="proto-tabs" style="display:none;border-bottom:1px solid #e2e8f0;background:#f8fafc;display:flex;gap:0;padding:0;margin:0;height:40px;align-items:center;">
+        <button class="proto-tab active" id="tab-results" onclick="pTab('results')" style="flex:1;border:none;background:transparent;border-bottom:2px solid #0ea5e9;color:#0a1628;font-size:12px;font-weight:600;cursor:pointer;padding:10px 0;margin:0;">Results</button>
+        <button class="proto-tab" id="tab-detail" onclick="pTab('detail')" style="flex:1;border:none;background:transparent;border-bottom:2px solid transparent;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;padding:10px 0;margin:0;">Detail</button>
+        <button class="proto-tab" id="tab-document" onclick="pTab('pdf-viewer')" style="flex:1;border:none;background:transparent;border-bottom:2px solid transparent;color:#64748b;font-size:12px;font-weight:600;cursor:pointer;padding:10px 0;margin:0;">Document</button>
       </div>
 
       <!-- SCREEN: Upload -->
@@ -1764,7 +1790,43 @@ body {
         <div class="pbg">
           <button class="pb primary" onclick="ps('send')">Send all issues to agent</button>
           <button class="pb ghost" onclick="ps('doc-issues')">View document with highlights</button>
-          <button class="pb secondary" onclick="ps('success')">Mark as reviewed</button>
+          <button class="pb secondary" onclick="openAuditTrail()">View audit trail</button>
+        </div>
+      </div>
+
+      <!-- SCREEN: PDF Viewer (C7) -->
+      <div class="pscreen" id="ps-pdf-viewer">
+        <div class="p-dnav" style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">
+          <button class="p-dback" onclick="ps('detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="p-dhed" id="p-pdf-title">Document Viewer</div>
+          <div style="margin-left:auto;display:flex;gap:8px;align-items:center;font-size:11px;color:#64748b;">
+            <button onclick="pdfPrevPage()" style="border:1px solid #e2e8f0;background:#fff;padding:4px 6px;cursor:pointer;border-radius:4px;font-size:10px;">−</button>
+            <span id="pdf-page-info" style="min-width:40px;text-align:center;">1</span>
+            <button onclick="pdfNextPage()" style="border:1px solid #e2e8f0;background:#fff;padding:4px 6px;cursor:pointer;border-radius:4px;font-size:10px;">+</button>
+          </div>
+        </div>
+        <div id="pdf-viewer-container" style="flex:1;overflow:auto;background:#f5f5f5;position:relative;display:flex;align-items:center;justify-content:center;">
+          <div style="position:relative;width:100%;height:100%;">
+            <canvas id="pdf-canvas" style="display:block;margin:0 auto;background:white;max-width:100%;max-height:100%;"></canvas>
+            <svg id="pdf-highlights" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></svg>
+          </div>
+          <div id="pdf-error-msg" style="display:none;padding:40px;text-align:center;color:#b91c1c;font-size:13px;position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;">
+            <div>
+              <div style="font-weight:600;margin-bottom:8px;">PDF Could Not Load</div>
+              <div id="pdf-error-detail" style="font-size:11px;color:#64748b;line-height:1.5;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN: Audit Trail (C8) -->
+      <div class="pscreen" id="ps-audit-trail">
+        <div class="p-dnav" style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">
+          <button class="p-dback" onclick="ps('results')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="p-dhed">Audit Trail</div>
+        </div>
+        <div id="audit-timeline" style="flex:1;overflow-y:auto;padding:16px;background:#f8fafc;">
+          <!-- Timeline rendered here by renderAuditTimeline() -->
         </div>
       </div>
 
@@ -1845,7 +1907,7 @@ body {
       <!-- SCREEN: Document — Corrected -->
       <div class="pscreen" id="ps-doc-corrected" style="padding:18px 18px;">
         <div class="p-dtbar"><div><div class="p-dtitle">Transaction Package</div><div class="p-dsub">All issues resolved</div></div><button class="p-dclose" onclick="ps('success')">✕</button></div>
-        <div class="p-corrb"><div class="p-corri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div><div class="p-corrt">5 corrections verified</div><div class="p-corrs">All compliance blockers cleared · Ready to proceed</div></div></div>
+        <div class="p-corrb"><div class="p-corri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div><div class="p-corrt">5 corrections verified</div><div class="p-corrs">All compliance blockers resolved · Ready to Close</div></div></div>
         <div class="p-dtog"><button class="p-togb active" id="pt-show" onclick="pSetDocView('show')">Show corrections</button><button class="p-togb" id="pt-clean" onclick="pSetDocView('clean')">Clean view</button></div>
         <div class="p-dscr" id="p-corrected-doc">
           <div class="p-dph"><div class="p-dpn">Agency Disclosure (AD)</div><div class="p-dpp">Page 1 of 44</div></div>
@@ -1892,8 +1954,13 @@ function openPanel(id) {
   document.getElementById(id).classList.add('active');
   // Update nav active state
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const navMap = { 'panel-transactions':'nav-transactions','panel-compliance':'nav-issues','panel-completed':'nav-completed','panel-agents':'nav-agents','panel-performance':'nav-performance','panel-feed':'nav-feed','panel-integrations':'nav-integrations','panel-rules':'nav-rules' };
-  if (navMap[id]) document.getElementById(navMap[id]).classList.add('active');
+  const navMap = { 'panel-transactions':'nav-transactions','panel-compliance':'nav-issues','panel-completed':'nav-completed','panel-agents':'nav-agents','panel-performance':'nav-performance','panel-feed':'nav-all-issues','panel-integrations':'nav-integrations','panel-rules':'nav-rules' };
+  if (navMap[id]) {
+    const navElement = document.getElementById(navMap[id]);
+    if (navElement) navElement.classList.add('active');
+  }
+  // Render feed if opening panel-feed
+  if (id === 'panel-feed') renderFeed(null);
 }
 
 function closeAll() {
@@ -1948,8 +2015,7 @@ const AGENT_DATA = {
     grad: 'linear-gradient(135deg,#1e40af,#0ea5e9)',
     file: 'PurchaseAgreement_88RiverRd.pdf', isRealDoc: false,
     issueList: [
-      { type:'r', label:'Contingency Risk', title:'Interest rate above market range', detail:'88 River Rd · Rate: 8.2% vs market 6.3% · Verify with buyer', tag:'Contingency Risk · $4,200 over 5yr' },
-      { type:'r', label:'Contingency Risk', title:'Down payment math inconsistency', detail:'310 Maple Ave · Stated 15% but dollar amount = 12.8%', tag:'Contingency Risk · $9,400 discrepancy' },
+      { type:'r', label:'Contingency Risk', title:'Appraisal contingency expires soon', detail:'88 River Rd · Appraisal valid until 5/15 · Closing 5/18', tag:'Timeline Risk' },
     ]
   },
   JC: {
@@ -1975,12 +2041,8 @@ const AGENT_DATA = {
       { type:'c', label:'Compliance', title:'Lead paint signature missing', detail:'456 Oak Ave · Federal law · Buyer signature required', tag:'42 U.S.C. § 4852d' },
       { type:'c', label:'Compliance', title:'TDS not delivered to buyer', detail:'501 Park Blvd · Transfer Disclosure Statement missing', tag:'CA Civil Code § 1102' },
       { type:'c', label:'Compliance', title:'Earnest money receipt not filed', detail:'456 Oak Ave · Broker policy · Missing from transaction', tag:'Brokerage Policy' },
-      { type:'r', label:'Contingency Risk', title:'Commission format error — $ vs %', detail:'501 Park Blvd · Written $5.00, should be 5%', tag:'Contingency Risk · $18,750 at stake' },
-      { type:'r', label:'Contingency Risk', title:'Interest rate 2pts above market', detail:'501 Park Blvd · Rate 8.4% vs market 6.3%', tag:'Contingency Risk · Verify' },
       { type:'r', label:'Contingency Risk', title:'Closing date before appraisal expiry', detail:'88 Cedar Ave · Appraisal expires 5/12, closing 5/10', tag:'Timeline Risk' },
-      { type:'r', label:'Contingency Risk', title:'Seller concession exceeds 3% limit', detail:'456 Oak Ave · Stated 4.1% on FHA loan', tag:'FHA Limit Exceeded' },
       { type:'r', label:'Contingency Risk', title:'Missing smoke alarm compliance cert', detail:'88 Cedar Ave · IL state point-of-sale requirement', tag:'IL State Law' },
-      { type:'r', label:'Contingency Risk', title:'HOA transfer fee not allocated', detail:'501 Park Blvd · Not assigned to buyer or seller in RPA', tag:'Contingency Risk · $1,200 unallocated' },
     ]
   }
 };
@@ -1995,8 +2057,6 @@ const ALL_FEED_ITEMS = [
   { agentId:'RH', type:'c', icon:'shield', title:'Seller signature missing — AD form', meta:'13292 Via Del Lago · Rich Hernandez', time:'18m ago' },
   { agentId:'JC', type:'c', icon:'shield', title:'Buyer ID not verified', meta:'789 Elm Dr · James Carter', time:'1h ago' },
   { agentId:'JC', type:'r', icon:'warn', title:'Closing scheduled before inspection', meta:'22 Birch Ln · James Carter', time:'2h ago' },
-  { agentId:'DK', type:'r', icon:'warn', title:'Interest rate above market range', meta:'88 River Rd · David Kim', time:'3h ago' },
-  { agentId:'LP', type:'r', icon:'warn', title:'Commission format error — $ vs %', meta:'501 Park Blvd · Lisa Park', time:'4h ago' },
   { agentId:'LP', type:'c', icon:'shield', title:'TDS not delivered to buyer', meta:'501 Park Blvd · Lisa Park', time:'5h ago' },
   { agentId:'RH', type:'c', icon:'shield', title:'Short Sale Addendum unsigned by Seller', meta:'13292 Via Del Lago · Rich Hernandez', time:'6h ago' },
   { agentId:'JC', type:'c', icon:'shield', title:'Missing seller property disclosure', meta:'22 Birch Ln · James Carter', time:'7h ago' },
@@ -2062,13 +2122,10 @@ function openAgentPanel(initials, name, role, score, status, issues, txns, grad)
   const typeChip = { c: 'chip-c', r: 'chip-r' };
 
   if (issueData.length === 0) {
-    if (issueList) issueList.innerHTML = '<div style="padding:16px 0;font-size:13px;color:var(--slate-400);text-align:center;">No open issues — all clear</div>';
+    if (issueList) issueList.innerHTML = '<div style="padding:16px 0;font-size:13px;color:var(--slate-400);text-align:center;">No open issues · Ready to Close</div>';
   } else {
     const html = issueData.map(issue => {
-      const onclick = initials === 'RH'
-        ? "openProto('results')"
-        : "openDummyReview('" + initials + "')";
-      return '<div class="issue-row" onclick="' + onclick + '">'
+      return '<div class="issue-row" onclick="openProto(\'results\')">'
         + '<div class="issue-icon-sm" style="background:' + typeBg[issue.type] + '">' + typeIcon[issue.type] + '</div>'
         + '<div class="issue-body">'
         + '<div class="issue-title-sm">' + issue.title + '</div>'
@@ -2094,14 +2151,11 @@ function openAgentPanel(initials, name, role, score, status, issues, txns, grad)
   // Footer button
   const footerBtn = document.getElementById('agent-panel-review-btn');
   if (footerBtn) {
-    if (initials === 'RH') {
-      footerBtn.textContent = 'Open review — 13292 Via Del Lago';
-      footerBtn.onclick = () => { closeAll(); openProto('results'); };
-    } else if (issueData.length > 0) {
+    if (issueData.length > 0) {
       footerBtn.textContent = 'Review transactions';
-      footerBtn.onclick = () => { closeAll(); openDummyReview(initials); };
+      footerBtn.onclick = () => { closeAll(); openProto('results'); };
     } else {
-      footerBtn.textContent = 'All clear — no action needed';
+      footerBtn.textContent = 'Ready to Close · no action needed';
       footerBtn.onclick = null;
     }
   }
@@ -2127,6 +2181,23 @@ function openClosingPanel(address, agent, day, month, status, note) {
   const colors = { excellent: ['var(--verified-bg)', 'var(--verified-border)', 'var(--verified-text)', '#047857'], risk: ['var(--contingency-risk-bg)', 'var(--contingency-risk-border)', 'var(--contingency-risk-text)', '#b45309'], action: ['var(--compliance-bg)', 'var(--compliance-border)', 'var(--compliance-text)', '#b91c1c'], good: ['var(--verified-bg)', 'var(--verified-border)', 'var(--verified-text)', '#047857'] };
   const c = colors[status] || colors.good;
   sa.innerHTML = `<div style="background:${c[0]};border:1px solid ${c[1]};border-radius:var(--r-lg);padding:14px 16px;display:flex;align-items:center;gap:10px"><div style="font-size:13px;color:${c[2]};font-weight:600">${note}</div></div>`;
+
+  // Populate issues from ALL_FEED
+  const issuesContainer = document.getElementById('closing-issues-list');
+  const transactionIssues = ALL_FEED.filter(item => item.meta.includes(address));
+  
+  if (transactionIssues.length === 0) {
+    const checksHTML = '<div class="p-section-label">Checks run</div><div style="padding:16px 0;text-align:center;font-size:13px;color:var(--slate-400);">No issues found · Ready to Close</div>';
+    issuesContainer.innerHTML = checksHTML;
+  } else {
+    const issueTypeIcon = { c: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 5v6c0 4.5 3.3 8.7 8 9.9C17.7 19.7 21 15.5 21 11V5l-9-3z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>', r: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' };
+    const issueBg = { c: 'var(--compliance-bg)', r: 'var(--contingency-risk-bg)' };
+    const issueChip = { c: 'chip-c', r: 'chip-r' };
+    const checksHTML = '<div class="p-section-label">Issues found (' + transactionIssues.length + ')</div>' + transactionIssues.map(issue => {
+      return '<div class="issue-row" onclick="openProto(\'results\')" style="cursor:pointer"><div class="issue-icon-sm" style="background:' + issueBg[issue.t] + '">' + issueTypeIcon[issue.t] + '</div><div class="issue-body"><div class="issue-title-sm">' + issue.title + '</div><div class="issue-detail-sm">' + issue.meta + '</div><span class="issue-chip ' + issueChip[issue.t] + '">' + issue.time + '</span></div></div>';
+    }).join('');
+    issuesContainer.innerHTML = checksHTML;
+  }
 
   openPanel('panel-closing');
 }
@@ -2242,7 +2313,7 @@ const pDetails = {
       { lbl:'Regulation', html:'California Civil Code § 2079.14 requires agents to obtain a <strong>signed acknowledgment of receipt</strong> from both Buyer and Seller.' },
       { lbl:'Document excerpt', custom:`<div class="p-dexc"><div class="p-dexc-h"><div class="p-dexc-pg">AD Form · Page 1</div></div><div class="p-dexc-b">☑ Buyer ☐ Seller ☐ Landlord ☐ Tenant<br><span style="color:#047857">Guadalupe Estrada &nbsp; Date 02/03/2026</span><br><br>☐ Buyer ☐ Seller ☐ Landlord ☐ Tenant<br><span class="p-ec">[ Seller signature — blank ] &nbsp; Date ______</span></div></div>` },
       { lbl:'Action', html:'Request that Seller signs AD form on pages 1 and 32 before any further steps.' }
-    ], footer:`<button class="pb primary" style="flex:1" onclick="ps('send')">Send to agent</button><button class="pb ghost" style="flex:1;width:auto" onclick="ps('doc-issues')">See in doc</button>` },
+    ], footer:`<button class="pb primary" style="flex:1" onclick="ps('send')">Send to agent</button><button class="pb ghost" style="flex:1;width:auto" onclick="openPdfViewer('c1')">See in document</button>` },
   c2: { title:'SSA Seller signature missing', badge:'c', badgeText:'Compliance · Must Fix',
     sections:[
       { lbl:'What we found', html:'Short Sale Addendum (C.A.R. Form SSA) requires signatures from both parties.<br><br>Buyer: <span style="color:#047857">✓ Signed 02/03/2026</span><br>Seller: <span class="p-fv">NOT SIGNED</span>' },
@@ -2255,12 +2326,13 @@ const pDetails = {
       { lbl:'Why it matters', html:'Beginning <strong>March 1, 2026</strong>, FinCEN requires escrow to collect and report buyer/seller info. Without a fully <strong>dated</strong> FRR-PA, escrow <strong>cannot close the transaction</strong>.' },
       { lbl:'Document excerpt', custom:`<div class="p-dexc"><div class="p-dexc-h"><div class="p-dexc-pg">FRR-PA · Page 20</div></div><div class="p-dexc-b">Buyer &nbsp; Guadalupe Estrada &nbsp; Date 02/03/2026 ✓<br><br>Seller &nbsp; Agustin R. De Leon Calderon &nbsp; <span class="p-ec">Date [ BLANK ]</span></div></div>` }
     ], footer:`<button class="pb primary" style="flex:1" onclick="ps('send')">Send to agent</button><button class="pb secondary" style="flex:1;width:auto" onclick="ps('results')">Back</button>` },
-  r1: { title:'Dual agency — same agent both sides', badge:'r', badgeText:'Contingency Risk · Verify',
+  r1: { title:'Closing before final walkthrough', badge:'r', badgeText:'Contingency Risk · Timeline',
     sections:[
-      { lbl:'What we found', html:'<strong>Mayra Escalante (DRE 02043967)</strong> is listed as both Buyer&#39;s Agent and Seller&#39;s Agent across all forms in the package.' },
-      { lbl:'Risk assessment', html:'Dual agency is <strong>legal in California</strong> with proper disclosures — PRBS is signed by both parties ✓.<br><br><span class="p-cv">Key gap:</span> The seller&#39;s AD form is unsigned (Issue C1), meaning the Seller has not formally acknowledged the dual agency relationship per § 2079.17.' },
-      { lbl:'Resolution', html:'Fix Issue C1 (AD seller signature) and dual agency will be fully disclosed. No additional forms needed.' }
-    ], footer:`<button class="pb primary" style="flex:1" onclick="pGoDetail('c1')">Fix C1 first (AD signature)</button><button class="pb secondary" style="flex:1;width:auto" onclick="ps('results')">Back</button>` },
+      { lbl:'What we found', html:'Purchase Agreement states final walkthrough must occur within 48 hours before closing. Scheduled closing: <strong>May 10, 2026</strong>. Final walkthrough scheduled: <strong>May 12, 2026</strong> (2 days after closing).' },
+      { lbl:'Contingency date deadline', html:'<span style="font-weight:700;color:#b45309;font-size:14px">Final Walkthrough Deadline: May 9, 2026 at 5:00 PM</span><br><br>Current closing date (May 10) occurs <strong>before</strong> the inspection contingency deadline of May 12. Reschedule closing to May 13 or later, or move final walkthrough to May 9 (day before closing).' },
+      { lbl:'Document excerpt', custom:`<div class="p-dexc"><div class="p-dexc-h"><div class="p-dexc-pg">PA · Pages 14-15</div></div><div class="p-dexc-b">"Buyer's Final Walk-through: Within 48 hours before Close of Escrow<br>Scheduled: 05/12/2026 [AFTER closing]<br>Closing Date: 05/10/2026"</div></div>` },
+      { lbl:'Action', html:'Coordinate with agent to reschedule closing to May 13+ OR move walkthrough to May 9. Confirm new date in writing.' }
+    ], footer:`<button class="pb primary" style="flex:1" onclick="ps('send')">Send to agent</button><button class="pb ghost" style="flex:1;width:auto" onclick="ps('doc-issues')">See in doc</button>` },
   r2: { title:'Short sale deadline — no date set', badge:'r', badgeText:'Contingency Risk · Verify',
     sections:[
       { lbl:'What we found', html:'SSA Para 2A: "…by 5:00 PM no later than <strong>45 days</strong> after Acceptance (or on <span class="p-cv">[ blank ]</span> date)"<br><br>The optional specific date field is empty.' },
@@ -2303,9 +2375,8 @@ function pSetDocView(mode) {
 // ═══════════════════════════════════════════════════════════
 const AGENTS = {
   MR: { name:'Maria Reyes',    initials:'MR', sub:'Top performer',         score:97, status:'excellent', issues:0,  txns:12, grad:'linear-gradient(135deg,#0ea5e9,#0d9488)', file:null,                        issues30d:[] },
-  DK: { name:'David Kim',      initials:'DK', sub:'Senior agent',          score:91, status:'good',      issues:2,  txns:9,  grad:'linear-gradient(135deg,#1e40af,#0ea5e9)', file:'Agreement_DavidKim.pdf',     issues30d:[
-    { t:'r', title:'Interest rate above market range',      addr:'88 River Rd',   detail:'Rate 8.2% vs market 6.3% · verify with buyer', tag:'Contingency Risk · ~$4,200/yr' },
-    { t:'r', title:'Down payment math inconsistency',       addr:'310 Maple Ave', detail:'Stated 15% but dollar amount = 12.8%',           tag:'Contingency Risk · $9,400 gap' },
+  DK: { name:'David Kim',      initials:'DK', sub:'Senior agent',          score:91, status:'good',      issues:1,  txns:9,  grad:'linear-gradient(135deg,#1e40af,#0ea5e9)', file:'Agreement_DavidKim.pdf',     issues30d:[
+    { t:'r', title:'Appraisal contingency expires soon',       addr:'88 River Rd',   detail:'Appraisal valid until May 15 · Closing May 18', tag:'Timeline Risk' },
   ]},
   RH: { name:'Rich Hernandez', initials:'RH', sub:'New agent',             score:76, status:'risk',      issues:5,  txns:6,  grad:'linear-gradient(135deg,#6d28d9,#0ea5e9)', file:'3_test.pdf', filePages:44, realDoc:true, issues30d:[
     { t:'c', title:'Seller signature missing — AD form',   addr:'13292 Via Del Lago', detail:'Agency Disclosure · Pages 1 & 32 · Seller unsigned',   tag:'Civil Code § 2079.14' },
@@ -2322,30 +2393,31 @@ const AGENTS = {
     { t:'r', title:'Closing before inspection',            addr:'22 Birch Ln',   detail:'Closing May 10 · Inspection May 15 · conflict',       tag:'Timeline conflict' },
     { t:'r', title:'Buyer name inconsistency across pages',addr:'456 Pine St',   detail:'"Jonathan" p.1, "John" p.7, "Jon" p.12',             tag:'Name mismatch' },
   ]},
-  LP: { name:'Lisa Park',      initials:'LP', sub:'3 open compliance blockers', score:58, status:'action', issues:9, txns:5, grad:'linear-gradient(135deg,#b91c1c,#dc2626)', file:'Transactions_LPark.pdf', issues30d:[
+  LP: { name:'Lisa Park',      initials:'LP', sub:'3 open compliance blockers', score:58, status:'action', issues:5, txns:5, grad:'linear-gradient(135deg,#b91c1c,#dc2626)', file:'Transactions_LPark.pdf', issues30d:[
     { t:'c', title:'Lead paint signature missing',         addr:'456 Oak Ave',   detail:'Federal law · Buyer signature line blank',           tag:'42 U.S.C. § 4852d' },
     { t:'c', title:'TDS not delivered to buyer',           addr:'501 Park Blvd', detail:'Transfer Disclosure Statement missing from file',    tag:'CA Civil Code § 1102' },
     { t:'c', title:'Earnest money receipt not filed',      addr:'456 Oak Ave',   detail:'Broker policy · Missing from transaction folder',    tag:'Brokerage Policy' },
-    { t:'r', title:'Commission format error — $ vs %',     addr:'501 Park Blvd', detail:'Written $5.00 · should be 5% · $18,750 at stake',   tag:'Contingency Risk · $18,750' },
-    { t:'r', title:'Interest rate 2pts above market',      addr:'501 Park Blvd', detail:'Rate 8.4% vs market 6.3% · verify with buyer',      tag:'Contingency Risk · Verify' },
     { t:'r', title:'Closing date before appraisal expiry', addr:'88 Cedar Ave',  detail:'Appraisal expires May 12 · Closing May 10',         tag:'Timeline Risk' },
-    { t:'r', title:'Seller concession exceeds FHA 3% cap', addr:'456 Oak Ave',   detail:'Stated 4.1% on FHA loan · exceeds allowed limit',   tag:'FHA Limit Exceeded' },
-    { t:'r', title:'HOA transfer fee not allocated',       addr:'501 Park Blvd', detail:'$1,200 fee not assigned to buyer or seller in RPA', tag:'Contingency Risk · $1,200' },
     { t:'r', title:'Missing smoke alarm compliance cert',  addr:'88 Cedar Ave',  detail:'IL state point-of-sale requirement · not on file',  tag:'IL State Law' },
   ]},
 };
 
 const ALL_FEED = [
-  { aid:'LP', t:'c', title:'Lead paint signature missing',           meta:'456 Oak Ave · Lisa Park',            time:'2m ago' },
-  { aid:'RH', t:'c', title:'Seller signature missing — AD form',    meta:'13292 Via Del Lago · Rich Hernandez', time:'14m ago' },
-  { aid:'RH', t:'r', title:'Dual agency — AD seller sig missing',   meta:'13292 Via Del Lago · Rich Hernandez', time:'18m ago' },
-  { aid:'JC', t:'c', title:'Buyer ID not verified',                  meta:'789 Elm Dr · James Carter',          time:'1h ago' },
-  { aid:'JC', t:'r', title:'Closing scheduled before inspection',   meta:'22 Birch Ln · James Carter',          time:'2h ago' },
-  { aid:'DK', t:'r', title:'Interest rate above market range',       meta:'88 River Rd · David Kim',            time:'3h ago' },
-  { aid:'LP', t:'r', title:'Commission format error — $ vs %',      meta:'501 Park Blvd · Lisa Park',          time:'4h ago' },
-  { aid:'LP', t:'c', title:'TDS not delivered to buyer',            meta:'501 Park Blvd · Lisa Park',           time:'5h ago' },
-  { aid:'RH', t:'c', title:'Short Sale Addendum unsigned by Seller',meta:'13292 Via Del Lago · Rich Hernandez', time:'6h ago' },
-  { aid:'JC', t:'c', title:'Missing seller property disclosure',    meta:'22 Birch Ln · James Carter',          time:'7h ago' },
+  { aid:'LP', t:'c', title:'TDS not delivered to buyer',            meta:'501 Park Blvd · Lisa Park',           time:'7w ago' },
+  { aid:'JC', t:'r', title:'Closing scheduled before inspection',   meta:'22 Birch Ln · James Carter',          time:'5w ago' },
+  { aid:'RH', t:'c', title:'Short Sale Addendum unsigned by Seller',meta:'13292 Via Del Lago · Rich Hernandez', time:'4w ago' },
+  { aid:'LP', t:'c', title:'Lead paint signature missing',           meta:'456 Oak Ave · Lisa Park',            time:'2w ago' },
+  { aid:'RH', t:'r', title:'Dual agency — AD seller sig missing',   meta:'13292 Via Del Lago · Rich Hernandez', time:'10d ago' },
+  { aid:'JC', t:'r', title:'Closing before final walkthrough',      meta:'22 Birch Ln · James Carter',          time:'8d ago' },
+  { aid:'RH', t:'c', title:'Seller signature missing — AD form',    meta:'13292 Via Del Lago · Rich Hernandez', time:'3d ago' },
+  { aid:'JC', t:'r', title:'Missing contingency deadline in file',   meta:'22 Birch Ln · James Carter',          time:'2d ago' },
+  { aid:'DK', t:'r', title:'Appraisal contingency — 17d not 21d',    meta:'88 River Rd · David Kim',            time:'18h ago' },
+  { aid:'LP', t:'c', title:'HOA document not reviewed',              meta:'456 Oak Ave · Lisa Park',            time:'1d ago' },
+  { aid:'JC', t:'r', title:'Survey requirement unclear — missing',   meta:'22 Birch Ln · James Carter',          time:'8h ago' },
+  { aid:'DK', t:'r', title:'Inspection deadline — 3 days remaining', meta:'88 River Rd · David Kim',            time:'6h ago' },
+  { aid:'RH', t:'c', title:'Earnest money check not deposited',      meta:'13292 Via Del Lago · Rich Hernandez', time:'4h ago' },
+  { aid:'LP', t:'r', title:'Financing contingency — rate locked',    meta:'501 Park Blvd · Lisa Park',          time:'2h ago' },
+  { aid:'DK', t:'r', title:'Title search — lien discovered',         meta:'88 River Rd · David Kim',            time:'45m ago' },
 ];
 
 // SVG icons
@@ -2357,12 +2429,12 @@ const IC = {
 
 // ── Feed renderer ──
 function renderFeed(filterId) {
-  const el = document.getElementById('main-feed-list');
+  const el = document.getElementById('panel-feed-list');
   if (!el) return;
-  const items = filterId ? ALL_FEED.filter(i => i.aid === filterId) : ALL_FEED.slice(0, 6);
+  const items = filterId ? ALL_FEED.filter(i => i.aid === filterId) : ALL_FEED;
   const chevron = IC.chev;
   if (items.length === 0) {
-    el.innerHTML = '<div style="padding:24px;text-align:center;font-size:13px;color:#94a3b8;">No open issues — all clear</div>';
+    el.innerHTML = '<div style="padding:24px;text-align:center;font-size:13px;color:#94a3b8;">No open issues · Ready to Close</div>';
     return;
   }
   el.innerHTML = items.map(item => {
@@ -2378,80 +2450,7 @@ function renderFeed(filterId) {
 }
 
 // ── Agent panel ──
-function openAgentPanel(id) {
-  const a = AGENTS[id];
-  if (!a) return;
 
-  document.getElementById('agent-panel-name').textContent  = a.name;
-  document.getElementById('agent-panel-role').textContent  = a.issues30d.length + ' open issue' + (a.issues30d.length !== 1 ? 's' : '') + ' · ' + a.txns + ' transactions';
-  document.getElementById('agent-panel-name2').textContent = a.name;
-  document.getElementById('agent-panel-role2').textContent = a.sub;
-  document.getElementById('agent-panel-score').textContent = a.score;
-  document.getElementById('ap-score').textContent = a.score;
-  document.getElementById('ap-txns').textContent  = a.txns;
-  document.getElementById('ap-issues').textContent = a.issues;
-
-  const av = document.getElementById('agent-panel-avatar');
-  av.textContent  = a.initials;
-  av.style.background = a.grad;
-
-  const bar = document.getElementById('agent-panel-bar');
-  bar.style.width = a.score + '%';
-  const cmap = { excellent:'linear-gradient(90deg,#047857,#059669)', good:'linear-gradient(90deg,#0ea5e9,#0d9488)', risk:'linear-gradient(90deg,#b45309,#d97706)', action:'linear-gradient(90deg,#b91c1c,#dc2626)' };
-  bar.style.background = cmap[a.status] || cmap.good;
-  const scol = { excellent:'#047857', good:'#0ea5e9', risk:'#b45309', action:'#b91c1c' };
-  document.getElementById('agent-panel-score').style.color = scol[a.status];
-
-  // Issue list
-  const il = document.getElementById('agent-issues-list');
-  if (a.issues30d.length === 0) {
-    il.innerHTML = '<div style="padding:16px 0;text-align:center;font-size:13px;color:#94a3b8;">No open issues — all clear ✓</div>';
-  } else {
-    const fn = id === 'RH' ? "openProto('results')" : "openDummyReview('" + id + "')";
-    il.innerHTML = a.issues30d.map(issue => {
-      const bg = issue.t === 'c' ? 'var(--compliance-bg)' : 'var(--contingency-risk-bg)';
-      const icon = issue.t === 'c' ? IC.shield : IC.warn;
-      const chip = issue.t === 'c' ? 'chip-c' : 'chip-r';
-      return '<div class="issue-row" onclick="' + fn + '" style="cursor:pointer">'
-        + '<div class="issue-icon-sm" style="background:' + bg + '">' + icon + '</div>'
-        + '<div class="issue-body">'
-        + '<div class="issue-title-sm">' + issue.title + '</div>'
-        + '<div class="issue-detail-sm">' + issue.addr + ' · ' + issue.detail + '</div>'
-        + '<span class="issue-chip ' + chip + '">' + issue.tag + '</span>'
-        + '</div></div>';
-    }).join('');
-  }
-
-  // File badge
-  const badge = document.getElementById('agent-file-badge');
-  if (a.file) {
-    badge.style.display = 'flex';
-    badge.querySelector('.file-badge-name').textContent  = a.file;
-    badge.querySelector('.file-badge-pages').textContent = a.filePages ? a.filePages + ' pages · CA RPA package' : 'PDF · uploaded';
-  } else {
-    badge.style.display = 'none';
-  }
-
-  // Footer button
-  const btn = document.getElementById('agent-panel-review-btn');
-  if (id === 'RH') {
-    btn.textContent = 'Open review — 13292 Via Del Lago';
-    btn.onclick = () => { closeAll(); openProto('results'); };
-    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto';
-  } else if (a.issues30d.length > 0) {
-    btn.textContent = 'Review transactions (' + a.issues30d.length + ' issues)';
-    btn.onclick = () => { closeAll(); openDummyReview(id); };
-    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto';
-  } else {
-    btn.textContent = 'All clear — no action needed';
-    btn.onclick = null;
-    btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none';
-  }
-
-  // Filter feed
-  renderFeed(id);
-  openPanel('panel-agent-detail');
-}
 
 // ── Dummy review (for non-RH agents) ──
 function openDummyReview(id) {
@@ -2584,8 +2583,227 @@ function startDropReview() {
   }
 }
 
-// ── Proto functions (keep existing + init feed on load) ──
-document.addEventListener('DOMContentLoaded', () => { renderFeed(null); });
+// ========== C8: AUDIT TRAIL FUNCTIONS ==========
+const auditTrailEvents = [
+  { timestamp: '2026-02-03 09:15', actor: 'Rich Hernandez', role: 'Broker', action: 'File uploaded', detail: 'Purchase agreement + disclosures (44 pages)', type: 'submission' },
+  { timestamp: '2026-02-03 09:16', actor: 'FileBuddyAI', role: 'System', action: 'Compliance review completed', detail: '5 issues found: 3 compliance · 2 contingency risks', type: 'review' },
+  { timestamp: '2026-02-03 09:18', actor: 'Rich Hernandez', role: 'Broker', action: 'Email sent to agent', detail: 'Mayra Escalante via agent@realbrokers.com', type: 'email' },
+  { timestamp: '2026-02-03 11:42', actor: 'Mayra Escalante', role: 'Agent', action: 'Seller signature added', detail: 'Agency Disclosure (AD form) — page 1 signed', type: 'correction' },
+  { timestamp: '2026-02-03 11:45', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 4 issues remaining (c1 resolved)', type: 're-review' },
+  { timestamp: '2026-02-03 12:30', actor: 'Mayra Escalante', role: 'Agent', action: 'Short Sale Addendum signed', detail: 'SSA page 1 — Seller signature added', type: 'correction' },
+  { timestamp: '2026-02-03 12:32', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 3 issues remaining (c2 resolved)', type: 're-review' },
+  { timestamp: '2026-02-03 14:15', actor: 'Mayra Escalante', role: 'Agent', action: 'FRR-PA date added', detail: 'Federal Reporting form — date field completed', type: 'correction' },
+  { timestamp: '2026-02-03 14:17', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 2 issues remaining (c3 resolved)', type: 're-review' },
+  { timestamp: '2026-02-04 10:00', actor: 'Rich Hernandez', role: 'Broker', action: 'Audit trail reviewed', detail: 'Transaction review marked complete', type: 'review_complete' }
+];
+
+function openAuditTrail() {
+  renderAuditTimeline();
+  ps('audit-trail');
+}
+
+function renderAuditTimeline() {
+  const container = document.getElementById('audit-timeline');
+  container.innerHTML = '';
+  
+  auditTrailEvents.forEach((evt, idx) => {
+    const eventDiv = document.createElement('div');
+    eventDiv.style.cssText = 'margin-bottom:20px;display:flex;gap:12px;';
+    
+    // Timeline dot & connector
+    const dotColor = evt.role === 'System' ? '#0ea5e9' : evt.role === 'Broker' ? '#0a1628' : '#0d9488';
+    const dotBg = evt.role === 'System' ? 'rgba(14,165,233,0.1)' : evt.role === 'Broker' ? 'rgba(10,22,40,0.1)' : 'rgba(13,148,136,0.1)';
+    
+    const timeline = document.createElement('div');
+    timeline.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:8px;width:30px;flex-shrink:0;`;
+    
+    const dot = document.createElement('div');
+    dot.style.cssText = `width:10px;height:10px;border-radius:50%;background:${dotColor};border:2px solid #fff;box-shadow:0 0 0 2px ${dotColor};flex-shrink:0;`;
+    timeline.appendChild(dot);
+    
+    if (idx < auditTrailEvents.length - 1) {
+      const line = document.createElement('div');
+      line.style.cssText = `width:2px;height:60px;background:#e2e8f0;flex-grow:1;`;
+      timeline.appendChild(line);
+    }
+    
+    eventDiv.appendChild(timeline);
+    
+    // Event content
+    const content = document.createElement('div');
+    content.style.cssText = 'flex:1;padding:10px 12px;background:#fff;border-radius:6px;border:1px solid #e2e8f0;';
+    
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;gap:8px;align-items:baseline;margin-bottom:4px;';
+    
+    const time = document.createElement('div');
+    time.style.cssText = 'font-size:10px;color:#94a3b8;font-weight:500;min-width:130px;';
+    time.textContent = evt.timestamp;
+    header.appendChild(time);
+    
+    const actor = document.createElement('div');
+    actor.style.cssText = `font-size:11px;font-weight:600;color:${dotColor};`;
+    actor.textContent = evt.actor;
+    header.appendChild(actor);
+    
+    const badge = document.createElement('div');
+    badge.style.cssText = `font-size:9px;padding:2px 6px;border-radius:3px;background:${dotBg};color:${dotColor};font-weight:500;`;
+    badge.textContent = evt.role;
+    header.appendChild(badge);
+    
+    content.appendChild(header);
+    
+    const action = document.createElement('div');
+    action.style.cssText = 'font-size:12px;font-weight:600;color:#0a1628;margin-bottom:2px;';
+    action.textContent = evt.action;
+    content.appendChild(action);
+    
+    const detail = document.createElement('div');
+    detail.style.cssText = 'font-size:11px;color:#64748b;line-height:1.4;';
+    detail.textContent = evt.detail;
+    content.appendChild(detail);
+    
+    eventDiv.appendChild(content);
+    container.appendChild(eventDiv);
+  });
+}
+// ========== END C8 FUNCTIONS ==========
+
+// ========== C7: PDF VIEWER FUNCTIONS ==========
+let pdfDoc = null;
+let currentPdfPage = 1;
+let currentPdfScale = 1.5;
+// Use raw Google Drive file ID for CORS-friendly access
+const PDF_FILE_ID = '1PlslV7yXW1GMpNzQwUlbOxl1j9G7bEUq';
+const PDF_URL = `https://drive.google.com/uc?export=download&id=${PDF_FILE_ID}`;
+
+// Risk highlights data structure
+const riskHighlights = {
+  'c1': { page: 1, box: { x: 0.2, y: 0.15, w: 0.6, h: 0.08 }, type: 'c', title: 'Seller signature missing — AD form' },
+  'c2': { page: 30, box: { x: 0.15, y: 0.75, w: 0.7, h: 0.06 }, type: 'c', title: 'Short Sale Addendum unsigned by Seller' },
+  'c3': { page: 20, box: { x: 0.3, y: 0.45, w: 0.5, h: 0.08 }, type: 'c', title: 'FRR-PA Seller date missing' },
+  'r1': { page: 5, box: { x: 0.25, y: 0.60, w: 0.5, h: 0.06 }, type: 'r', title: 'Same agent both sides (dual agency)' },
+  'r2': { page: 30, box: { x: 0.2, y: 0.82, w: 0.6, h: 0.06 }, type: 'r', title: 'Short sale contingency date blank' }
+};
+
+// Lead paint specific: Page 3, normalized coordinates for signature area
+riskHighlights['lead-paint'] = { page: 3, box: { x: 0.65, y: 0.92, w: 0.3, h: 0.06 }, type: 'c', title: 'Lead paint disclosure signature missing' };
+
+function showPdfError(msg, detail) {
+  const errorDiv = document.getElementById('pdf-error-msg');
+  const canvas = document.getElementById('pdf-canvas');
+  const detailDiv = document.getElementById('pdf-error-detail');
+  canvas.style.display = 'none';
+  errorDiv.style.display = 'flex';
+  detailDiv.innerHTML = detail || msg;
+  console.error('PDF Error:', msg, detail);
+}
+
+function loadPDF(pdfUrl) {
+  const pdfjsLib = window.pdfjsLib;
+  if (!pdfjsLib) { 
+    showPdfError('PDF.js Library Not Loaded', 'PDF.js library failed to initialize. This may be a browser compatibility issue.');
+    return; 
+  }
+  document.getElementById('pdf-error-msg').style.display = 'none';
+  document.getElementById('pdf-canvas').style.display = 'none';
+  pdfjsLib.getDocument({ url: pdfUrl, withCredentials: false }).promise.then(pdf => {
+    pdfDoc = pdf;
+    document.getElementById('pdf-canvas').style.display = 'block';
+    renderPdfPage(currentPdfPage);
+  }).catch(err => {
+    console.error('PDF load error:', err);
+    let detail = 'Unable to load PDF. Likely CORS restrictions. Provide a CORS-enabled URL.';
+    if (err.message.includes('NetworkError')) detail = 'Network error. Check connection and PDF URL.';
+    showPdfError('PDF Load Failed', detail);
+  });
+}
+
+function renderPdfPage(pageNum) {
+  if (!pdfDoc) return;
+  if (pageNum < 1) currentPdfPage = 1;
+  if (pageNum > pdfDoc.numPages) currentPdfPage = pdfDoc.numPages;
+  else currentPdfPage = pageNum;
+  
+  pdfDoc.getPage(currentPdfPage).then(page => {
+    const viewport = page.getViewport({ scale: currentPdfScale });
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    page.render({ canvasContext: ctx, viewport: viewport }).promise.then(() => {
+      drawRiskHighlights(currentPdfPage, viewport);
+      updatePageInfo();
+    }).catch(err => {
+      console.error('Page render error:', err);
+      showPdfError('Page Render Error', 'Failed to render page. PDF may be corrupted.');
+    });
+  }).catch(err => {
+    console.error('Get page error:', err);
+    showPdfError('Page Error', 'Failed to load page ' + currentPdfPage);
+  });
+}
+
+function drawRiskHighlights(pageNum, viewport) {
+  const svgContainer = document.getElementById('pdf-highlights');
+  svgContainer.innerHTML = '';
+  Object.entries(riskHighlights).forEach(([riskId, risk]) => {
+    if (risk.page === pageNum) {
+      const box = risk.box;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      const x = box.x * viewport.width;
+      const y = box.y * viewport.height;
+      const w = box.w * viewport.width;
+      const h = box.h * viewport.height;
+      rect.setAttribute('x', x);
+      rect.setAttribute('y', y);
+      rect.setAttribute('width', w);
+      rect.setAttribute('height', h);
+      rect.setAttribute('fill', risk.type === 'c' ? 'rgba(185,28,28,0.25)' : 'rgba(180,83,9,0.25)');
+      rect.setAttribute('stroke', risk.type === 'c' ? '#b91c1c' : '#b45309');
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('rx', '3');
+      rect.setAttribute('cursor', 'pointer');
+      rect.setAttribute('data-risk-id', riskId);
+      rect.setAttribute('title', risk.title);
+      rect.style.transition = 'fill 0.2s';
+      rect.addEventListener('mouseover', () => {
+        rect.setAttribute('fill', risk.type === 'c' ? 'rgba(185,28,28,0.4)' : 'rgba(180,83,9,0.4)');
+      });
+      rect.addEventListener('mouseout', () => {
+        rect.setAttribute('fill', risk.type === 'c' ? 'rgba(185,28,28,0.25)' : 'rgba(180,83,9,0.25)');
+      });
+      rect.addEventListener('click', (e) => { e.stopPropagation(); pGoDetail(riskId); });
+      svgContainer.appendChild(rect);
+    }
+  });
+}
+
+function pdfNextPage() { if (pdfDoc && currentPdfPage < pdfDoc.numPages) renderPdfPage(currentPdfPage + 1); }
+function pdfPrevPage() { if (currentPdfPage > 1) renderPdfPage(currentPdfPage - 1); }
+function updatePageInfo() {
+  const pageInfo = document.getElementById('pdf-page-info');
+  if (pageInfo && pdfDoc) pageInfo.textContent = `${currentPdfPage} / ${pdfDoc.numPages}`;
+}
+
+function pTab(screenName) {
+  const tabBar = document.getElementById('proto-tabs');
+  if (['results', 'detail', 'pdf-viewer'].includes(screenName)) tabBar.style.display = 'flex';
+  else tabBar.style.display = 'none';
+  document.querySelectorAll('.proto-tab').forEach(btn => btn.classList.remove('active'));
+  const tabBtn = document.getElementById('tab-' + screenName);
+  if (tabBtn) tabBtn.classList.add('active');
+  ps(screenName);
+}
+
+function openPdfViewer(riskId) {
+  if (!pdfDoc) loadPDF(PDF_URL);
+  const risk = riskHighlights[riskId];
+  if (risk) { currentPdfPage = risk.page; renderPdfPage(risk.page); }
+  pTab('pdf-viewer');
+}
+// ========== END C7 FUNCTIONS ==========
+
 </script>
 
 
