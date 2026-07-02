@@ -165,3 +165,84 @@ Risk coordinates estimated; requires validation against actual RPA.
 **Version:** 1.0  
 **Last Updated:** July 2, 2026  
 **Status:** Ready for v1.3 Release
+
+---
+
+## CHANGE 2 (C8): AUDIT TRAIL — TRANSACTION TIMELINE
+
+**Change ID:** C8  
+**Category:** Product Feature — Critical Blocker  
+**Priority:** Experiment 2C with Joe Castillo  
+**Status:** Implemented (v1.3)
+
+### Summary
+
+Chronological audit trail showing transaction review lifecycle. Events include: file submission, compliance review results, emails sent to agent, agent corrections, re-review outcomes. Simple timeline view with no filtering. Color-coded by actor type (system/broker/agent).
+
+### Technical Changes
+
+**1. Audit Trail Screen**
+- New screen: `ps-audit-trail`
+- Navigation: Back button returns to Results
+- Header: "Transaction Timeline"
+- Content: Chronological event list (scrollable)
+
+**2. Event Data Structure**
+```javascript
+{
+  timestamp: '2026-02-03 09:15',
+  actor: 'Rich Hernandez',
+  role: 'Broker | Agent | System',
+  action: 'File uploaded | Email sent | Correction | Re-review | etc.',
+  detail: 'Description of what happened',
+  type: 'submission | review | email | correction | re-review | review_complete'
+}
+```
+
+**3. Timeline Rendering**
+- Vertical timeline with dots + connector lines
+- Color-coded dots: Navy (Broker), Teal (Agent), Sky (System)
+- Event cards with: timestamp, actor name, role badge, action, detail
+
+**4. Screen Navigation**
+- "View timeline" button added to Results screen footer
+- Opens audit trail screen with sample transaction lifecycle
+
+**5. Sample Events** (10 total for demo)
+- File submission, compliance review, email to agent
+- Agent corrections (3 sequential)
+- System re-reviews after each correction
+- Transaction marked complete
+
+### Design System Compliance
+
+**Colors:**
+- System: Sky (#0ea5e9)
+- Broker: Navy (#0a1628)
+- Agent: Teal (#0d9488)
+- Background: Light gray (#f8fafc)
+- Cards: White (#fff)
+
+**Typography:**
+- Timestamp: 10px, gray
+- Actor: 11px, font-weight 600
+- Action: 12px, navy, font-weight 600
+- Detail: 11px, slate gray
+
+### Testing Status
+
+**Implemented (v1.3):**
+- ✅ Audit trail screen
+- ✅ Timeline rendering with dots/lines
+- ✅ Color-coding by actor
+- ✅ Sample event data (10 events)
+- ✅ Navigation integration
+
+**Known Limitations:**
+- Sample data only (hardcoded for demo)
+- No backend integration yet
+- No filtering or grouping
+
+**Version:** 1.1  
+**Last Updated:** July 2, 2026  
+**Status:** Ready for v1.3 Release

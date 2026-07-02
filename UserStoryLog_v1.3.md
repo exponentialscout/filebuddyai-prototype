@@ -250,7 +250,157 @@ Next: Audit trail (C8) completes the transaction lifecycle visibility that Joe s
 
 ---
 
-**Document Version:** 1.0  
-**Created:** July 2, 2026  
-**Last Updated:** July 2, 2026  
-**Status:** Ready for Experiment 2C Validation
+## C8: AUDIT TRAIL — TRANSACTION LIFECYCLE VISIBILITY
+
+### User Story
+
+**As a** broker (Joe Castillo, pilot participant)  
+**I want to** see the complete timeline of what happened with this transaction from upload to completion  
+**So that** I can understand the correction history, know who made changes when, and have a record for compliance audits
+
+### Acceptance Criteria
+
+1. **Timeline Display**
+   - [ ] Events shown in reverse chronological order (newest first) or oldest-first (chronological)
+   - [ ] Vertical timeline visual with dots and connector lines
+   - [ ] No filtering or search functionality (chronological list only)
+   - [ ] Scrollable if more than 10 events
+
+2. **Event Information**
+   - [ ] Timestamp displayed (date and time)
+   - [ ] Actor name (who performed action)
+   - [ ] Role badge (Broker/Agent/System)
+   - [ ] Action description (what happened)
+   - [ ] Event detail (context/specifics)
+
+3. **Event Coverage**
+   - [ ] File submission event
+   - [ ] Initial compliance review result
+   - [ ] Email notifications sent to agents
+   - [ ] Agent corrections (each signed/added field)
+   - [ ] System re-reviews after each correction
+   - [ ] Transaction completion/closure
+
+4. **Visual Design**
+   - [ ] Color-coded by actor role (Navy/Teal/Sky)
+   - [ ] Timeline dots clearly visible
+   - [ ] Connector lines between events
+   - [ ] Event cards readable with clear hierarchy
+   - [ ] Consistent spacing and typography
+
+5. **Navigation**
+   - [ ] "View timeline" button on Results screen
+   - [ ] Back button returns to Results
+   - [ ] No modal tab switching (separate screen, not tabbed)
+
+### Evidence Source
+
+**Customer Signal:** Joe Castillo (IL pilot broker, Experiment 2A)  
+**Session:** Experiment 2A Interview, June 2026  
+**Quote (paraphrased):** "I need to see when each issue was fixed. Did the agent fix it this morning or yesterday? When did we send it to them? This helps me track what's happening."
+
+**Supporting Evidence:** Ray Hernandez (CA broker)  
+Mentioned need to "track the flow" of corrections through the transaction lifecycle.
+
+### Strategic Alignment
+
+**QA vs QC Distinction:**
+Audit trail + timestamps enable QA at scale — broker can see exactly when agents made corrections in response to AI findings, proving the system's coaching loop works. This is defensible data for Phase 2 (agent performance scoring).
+
+**High Visibility Vector:**
+"When was this fixed? Who fixed it? Did we email them?" — Audit trail answers these in one place. Reduces broker cognitive load.
+
+**Market Entry Logic:**
+Brokers need confidence they can audit the system's recommendations and corrections. Audit trail = transparency = trust = adoption.
+
+### Implementation Notes
+
+**Event Types (C8 v1.3):**
+1. `submission` — File uploaded by broker
+2. `review` — Compliance review completed (initial or re-review)
+3. `email` — Notification sent to agent
+4. `correction` — Agent corrected/completed a field
+5. `re-review` — System re-reviewed after correction
+6. `review_complete` — Broker marked transaction reviewed
+
+**Data Structure:**
+Each event has: timestamp, actor, role, action, detail, type
+
+**Sample Lifecycle (10 events):**
+- 09:15 — Submission (Rich uploads 44 pages)
+- 09:16 — Review (System finds 5 issues)
+- 09:18 — Email (Rich sends to Mayra)
+- 11:42 — Correction 1 (Mayra signs AD form)
+- 11:45 — Re-review 1 (4 issues remain)
+- 12:30 — Correction 2 (Mayra signs SSA)
+- 12:32 — Re-review 2 (3 issues remain)
+- 14:15 — Correction 3 (Mayra completes FRR-PA)
+- 14:17 — Re-review 3 (2 issues remain)
+- Next day 10:00 — Complete (Rich marks reviewed)
+
+**Why Chronological Only (No Filtering):**
+Per Erwin's instruction: "simple chronological list, no filtering." Keeps cognitive load minimal. Single job per screen.
+
+### Timeline Rendering Strategy
+
+**Visual Hierarchy:**
+- Dots (10px) mark events
+- Connecting lines show flow
+- Event cards grouped by hour/day visually through spacing
+- No grouping headers (pure timeline)
+
+**Color Strategy:**
+- System (Sky #0ea5e9) — informational, AI findings
+- Broker (Navy #0a1628) — authority, supervisory actions
+- Agent (Teal #0d9488) — execution, corrections
+
+Colors reinforce "who controls what" in transaction flow.
+
+**Readability:**
+- Timestamp always visible (left column)
+- Actor name prominent (bold, role color)
+- Role badge provides additional context (Broker/Agent/System)
+- Full text visible (no truncation)
+
+### Known Unknowns (Resolved in v1.4 or Experiment 2C)
+
+1. **Backend Event Logging** — Currently hardcoded sample data
+   - Status: Not implemented yet
+   - Blocker: Need API endpoint for transaction events
+   - Question: What events does backend capture? What granularity?
+
+2. **Time Zone Handling** — All times shown as "2026-02-03 09:15"
+   - Status: Local time displayed; no TZ conversion yet
+   - Risk: May be confusing if broker and agent in different zones
+   - Question: Should timestamps be localized to broker's TZ?
+
+3. **Very Old Transactions** — Scrolling through 100+ events?
+   - Status: Not tested yet
+   - Risk: Performance may degrade; UX may suffer
+   - Question: Should we add "load more" or date-based sections in v1.4?
+
+4. **Custom Event Types** — Are the 6 event types sufficient?
+   - Status: Assumed sufficient based on Joe's request
+   - Risk: May need additional types (task creation, approvals, etc.)
+   - Question: What events matter most to Joe?
+
+### Success Metrics (for Joe's Feedback)
+
+Joe will validate C8 success by answering:
+
+1. "Can you quickly see when corrections were made?" → **Yes/Mostly/No**
+2. "Is the timeline clear about who did what and when?" → **Yes/Mostly/No**
+3. "Would you use this to audit transactions or explain to agents?" → **Yes/Maybe/No**
+4. "Do you need more information or fewer events?" → **More/Perfect/Less**
+
+### Next Steps (v1.4)
+
+After Joe's Experiment 2C feedback:
+
+1. **Backend Integration** — Connect to real event logging API
+2. **Time Zone Handling** — Support multi-TZ display if needed
+3. **Extended Event Types** — Add custom events Joe requests
+4. **Performance Profiling** — Test with 50+ event transactions
+5. **Filtering or Grouping** — Add if Joe requests (violates current constraint)
+
+---

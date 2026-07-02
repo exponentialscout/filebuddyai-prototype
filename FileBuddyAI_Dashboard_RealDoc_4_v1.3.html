@@ -1790,7 +1790,7 @@ body {
         <div class="pbg">
           <button class="pb primary" onclick="ps('send')">Send all issues to agent</button>
           <button class="pb ghost" onclick="ps('doc-issues')">View document with highlights</button>
-          <button class="pb secondary" onclick="ps('success')">Mark as reviewed</button>
+          <button class="pb secondary" onclick="openAuditTrail()">View timeline</button>
         </div>
       </div>
 
@@ -1805,9 +1805,28 @@ body {
             <button onclick="pdfNextPage()" style="border:1px solid #e2e8f0;background:#fff;padding:4px 6px;cursor:pointer;border-radius:4px;font-size:10px;">+</button>
           </div>
         </div>
-        <div id="pdf-viewer-container" style="flex:1;overflow:auto;background:#f5f5f5;position:relative;">
-          <canvas id="pdf-canvas" style="max-width:100%;height:auto;display:block;margin:0 auto;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
-          <svg id="pdf-highlights" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></svg>
+        <div id="pdf-viewer-container" style="flex:1;overflow:auto;background:#f5f5f5;position:relative;display:flex;align-items:center;justify-content:center;">
+          <div style="position:relative;width:100%;height:100%;">
+            <canvas id="pdf-canvas" style="display:block;margin:0 auto;background:white;max-width:100%;max-height:100%;"></canvas>
+            <svg id="pdf-highlights" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></svg>
+          </div>
+          <div id="pdf-error-msg" style="display:none;padding:40px;text-align:center;color:#b91c1c;font-size:13px;position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;">
+            <div>
+              <div style="font-weight:600;margin-bottom:8px;">PDF Could Not Load</div>
+              <div id="pdf-error-detail" style="font-size:11px;color:#64748b;line-height:1.5;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN: Audit Trail (C8) -->
+      <div class="pscreen" id="ps-audit-trail" style="padding:0;display:flex;flex-direction:column;">
+        <div class="p-dnav" style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">
+          <button class="p-dback" onclick="ps('results')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <div class="p-dhed">Transaction Timeline</div>
+        </div>
+        <div id="audit-timeline" style="flex:1;overflow-y:auto;padding:16px;background:#f8fafc;">
+          <!-- Timeline rendered here by renderAuditTimeline() -->
         </div>
       </div>
 
@@ -2564,11 +2583,99 @@ function startDropReview() {
   }
 }
 
+// ========== C8: AUDIT TRAIL FUNCTIONS ==========
+const auditTrailEvents = [
+  { timestamp: '2026-02-03 09:15', actor: 'Rich Hernandez', role: 'Broker', action: 'File uploaded', detail: 'Purchase agreement + disclosures (44 pages)', type: 'submission' },
+  { timestamp: '2026-02-03 09:16', actor: 'FileBuddyAI', role: 'System', action: 'Compliance review completed', detail: '5 issues found: 3 compliance · 2 contingency risks', type: 'review' },
+  { timestamp: '2026-02-03 09:18', actor: 'Rich Hernandez', role: 'Broker', action: 'Email sent to agent', detail: 'Mayra Escalante via agent@realbrokers.com', type: 'email' },
+  { timestamp: '2026-02-03 11:42', actor: 'Mayra Escalante', role: 'Agent', action: 'Seller signature added', detail: 'Agency Disclosure (AD form) — page 1 signed', type: 'correction' },
+  { timestamp: '2026-02-03 11:45', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 4 issues remaining (c1 resolved)', type: 're-review' },
+  { timestamp: '2026-02-03 12:30', actor: 'Mayra Escalante', role: 'Agent', action: 'Short Sale Addendum signed', detail: 'SSA page 1 — Seller signature added', type: 'correction' },
+  { timestamp: '2026-02-03 12:32', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 3 issues remaining (c2 resolved)', type: 're-review' },
+  { timestamp: '2026-02-03 14:15', actor: 'Mayra Escalante', role: 'Agent', action: 'FRR-PA date added', detail: 'Federal Reporting form — date field completed', type: 'correction' },
+  { timestamp: '2026-02-03 14:17', actor: 'FileBuddyAI', role: 'System', action: 'File re-reviewed', detail: 'Updated: 2 issues remaining (c3 resolved)', type: 're-review' },
+  { timestamp: '2026-02-04 10:00', actor: 'Rich Hernandez', role: 'Broker', action: 'Audit trail reviewed', detail: 'Transaction review marked complete', type: 'review_complete' }
+];
+
+function openAuditTrail() {
+  renderAuditTimeline();
+  ps('audit-trail');
+}
+
+function renderAuditTimeline() {
+  const container = document.getElementById('audit-timeline');
+  container.innerHTML = '';
+  
+  auditTrailEvents.forEach((evt, idx) => {
+    const eventDiv = document.createElement('div');
+    eventDiv.style.cssText = 'margin-bottom:20px;display:flex;gap:12px;';
+    
+    // Timeline dot & connector
+    const dotColor = evt.role === 'System' ? '#0ea5e9' : evt.role === 'Broker' ? '#0a1628' : '#0d9488';
+    const dotBg = evt.role === 'System' ? 'rgba(14,165,233,0.1)' : evt.role === 'Broker' ? 'rgba(10,22,40,0.1)' : 'rgba(13,148,136,0.1)';
+    
+    const timeline = document.createElement('div');
+    timeline.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:8px;`;
+    
+    const dot = document.createElement('div');
+    dot.style.cssText = `width:10px;height:10px;border-radius:50%;background:${dotColor};border:2px solid #fff;box-shadow:0 0 0 2px ${dotColor};flex-shrink:0;`;
+    timeline.appendChild(dot);
+    
+    if (idx < auditTrailEvents.length - 1) {
+      const line = document.createElement('div');
+      line.style.cssText = `width:2px;height:60px;background:#e2e8f0;flex-grow:1;`;
+      timeline.appendChild(line);
+    }
+    
+    eventDiv.appendChild(timeline);
+    
+    // Event content
+    const content = document.createElement('div');
+    content.style.cssText = 'flex:1;padding:10px 12px;background:#fff;border-radius:6px;border:1px solid #e2e8f0;';
+    
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;gap:8px;align-items:baseline;margin-bottom:4px;';
+    
+    const time = document.createElement('div');
+    time.style.cssText = 'font-size:10px;color:#94a3b8;font-weight:500;min-width:130px;';
+    time.textContent = evt.timestamp;
+    header.appendChild(time);
+    
+    const actor = document.createElement('div');
+    actor.style.cssText = `font-size:11px;font-weight:600;color:${dotColor};`;
+    actor.textContent = evt.actor;
+    header.appendChild(actor);
+    
+    const badge = document.createElement('div');
+    badge.style.cssText = `font-size:9px;padding:2px 6px;border-radius:3px;background:${dotBg};color:${dotColor};font-weight:500;`;
+    badge.textContent = evt.role;
+    header.appendChild(badge);
+    
+    content.appendChild(header);
+    
+    const action = document.createElement('div');
+    action.style.cssText = 'font-size:12px;font-weight:600;color:#0a1628;margin-bottom:2px;';
+    action.textContent = evt.action;
+    content.appendChild(action);
+    
+    const detail = document.createElement('div');
+    detail.style.cssText = 'font-size:11px;color:#64748b;line-height:1.4;';
+    detail.textContent = evt.detail;
+    content.appendChild(detail);
+    
+    eventDiv.appendChild(content);
+    container.appendChild(eventDiv);
+  });
+}
+// ========== END C8 FUNCTIONS ==========
+
 // ========== C7: PDF VIEWER FUNCTIONS ==========
 let pdfDoc = null;
 let currentPdfPage = 1;
 let currentPdfScale = 1.5;
-const PDF_URL = 'https://drive.google.com/uc?export=download&id=1PlslV7yXW1GMpNzQwUlbOxl1j9G7bEUq'; // Placeholder
+// Use raw Google Drive file ID for CORS-friendly access
+const PDF_FILE_ID = '1PlslV7yXW1GMpNzQwUlbOxl1j9G7bEUq';
+const PDF_URL = `https://drive.google.com/uc?export=download&id=${PDF_FILE_ID}`;
 
 // Risk highlights data structure
 const riskHighlights = {
@@ -2582,15 +2689,33 @@ const riskHighlights = {
 // Lead paint specific: Page 3, normalized coordinates for signature area
 riskHighlights['lead-paint'] = { page: 3, box: { x: 0.65, y: 0.92, w: 0.3, h: 0.06 }, type: 'c', title: 'Lead paint disclosure signature missing' };
 
+function showPdfError(msg, detail) {
+  const errorDiv = document.getElementById('pdf-error-msg');
+  const canvas = document.getElementById('pdf-canvas');
+  const detailDiv = document.getElementById('pdf-error-detail');
+  canvas.style.display = 'none';
+  errorDiv.style.display = 'flex';
+  detailDiv.innerHTML = detail || msg;
+  console.error('PDF Error:', msg, detail);
+}
+
 function loadPDF(pdfUrl) {
   const pdfjsLib = window.pdfjsLib;
-  if (!pdfjsLib) { console.error('PDF.js not loaded'); return; }
-  pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+  if (!pdfjsLib) { 
+    showPdfError('PDF.js Library Not Loaded', 'PDF.js library failed to initialize. This may be a browser compatibility issue.');
+    return; 
+  }
+  document.getElementById('pdf-error-msg').style.display = 'none';
+  document.getElementById('pdf-canvas').style.display = 'none';
+  pdfjsLib.getDocument({ url: pdfUrl, withCredentials: false }).promise.then(pdf => {
     pdfDoc = pdf;
+    document.getElementById('pdf-canvas').style.display = 'block';
     renderPdfPage(currentPdfPage);
   }).catch(err => {
     console.error('PDF load error:', err);
-    document.getElementById('pdf-viewer-container').innerHTML = '<div style="padding:20px;color:#b91c1c;">Error loading PDF</div>';
+    let detail = 'Unable to load PDF. Likely CORS restrictions. Provide a CORS-enabled URL.';
+    if (err.message.includes('NetworkError')) detail = 'Network error. Check connection and PDF URL.';
+    showPdfError('PDF Load Failed', detail);
   });
 }
 
@@ -2609,7 +2734,13 @@ function renderPdfPage(pageNum) {
     page.render({ canvasContext: ctx, viewport: viewport }).promise.then(() => {
       drawRiskHighlights(currentPdfPage, viewport);
       updatePageInfo();
+    }).catch(err => {
+      console.error('Page render error:', err);
+      showPdfError('Page Render Error', 'Failed to render page. PDF may be corrupted.');
     });
+  }).catch(err => {
+    console.error('Get page error:', err);
+    showPdfError('Page Error', 'Failed to load page ' + currentPdfPage);
   });
 }
 
